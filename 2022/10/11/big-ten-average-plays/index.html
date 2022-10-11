@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.104.3" />
+
+
+<title>Big Ten Average Plays - A Hugo website</title>
+<meta property="og:title" content="Big Ten Average Plays - A Hugo website">
+
+
+  <link href='https://mcharles317.github.io/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://github.com/mcharles317">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/rstudio">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">2 min read</span>
+    
+
+    <h1 class="article-title">Big Ten Average Plays</h1>
+
+    
+    <span class="article-date">2022-10-11</span>
+    
+
+    <div class="article-content">
+      
+
+
+<div id="big-ten-average-plays-analysis" class="section level2">
+<h2>Big Ten Average Plays Analysis</h2>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>## ✔ ggplot2 3.3.5     ✔ purrr   0.3.4
+## ✔ tibble  3.1.8     ✔ dplyr   1.0.7
+## ✔ tidyr   1.1.4     ✔ stringr 1.4.1
+## ✔ readr   2.1.1     ✔ forcats 0.5.1</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(scales)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;scales&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:purrr&#39;:
+## 
+##     discard</code></pre>
+<pre><code>## The following object is masked from &#39;package:readr&#39;:
+## 
+##     col_factor</code></pre>
+<pre class="r"><code>B10 &lt;- read_csv (&quot;https://dwillis.github.io/sports-data-files/footballlogs21.csv&quot;)</code></pre>
+<pre><code>## Rows: 1655 Columns: 54
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr   (8): HomeAway, Opponent, Result, TeamFull, TeamURL, Outcome, Team, Con...
+## dbl  (45): Game, PassingCmp, PassingAtt, PassingPct, PassingYds, PassingTD, ...
+## date  (1): Date
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>Teams &lt;- B10 %&gt;% 
+  filter(Conference == &quot;Big Ten Conference&quot;) %&gt;% 
+  group_by(TeamFull) %&gt;%
+summarise(totalgames =n(), totalplays =sum(OffensivePlays)) %&gt;% 
+  mutate(playspergame = totalplays/totalgames)</code></pre>
+<pre class="r"><code>ggplot() + 
+  geom_bar(
+    data=Teams, 
+    aes(
+      x=reorder(TeamFull, playspergame),
+      weight = playspergame)
+  ) +
+    scale_y_continuous(labels=comma) + 
+  labs(
+    title=&quot;Offensive Plays Per Game in 2022 for Big Ten Football Teams&quot;, 
+    x=&quot;Team&quot;, 
+    y=&quot;Offensive Plays Per Game&quot;
+)+
+  coord_flip() +
+  theme_minimal()</code></pre>
+<p><img src="https://mcharles317.github.io/2022/10/11/big-ten-average-plays/index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>This season, Purdue, Maryland and Penn State are clear of the rest of the Big Ten in avergae plays per game. Iowa, Minnesotta and Illinois rank last in the conference in this metric. This number is specifically interesting to me because there is an 8 play gap on average between the best and worst team in this category. 8 plays can add atleast two additional drives per game but is hard to contextualize its impact on winning. For example, a team can run a lot of plays because they are chasing points all game.</p>
+</div>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+  </body>
+</html>
+
