@@ -1769,36 +1769,25 @@ the chunk or by placing your cursor inside it and pressing
 <em>Cmd+Shift+Enter</em>.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaW5zdGFsbC5wYWNrYWdlcyhcImhvb3BSXCIpXG5gYGAifQ== -->
-<pre class="r"><code>install.packages(&quot;hoopR&quot;)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gaW5zdGFsbC5wYWNrYWdlcyA6IFVwZGF0aW5nIGxvYWRlZCBwYWNrYWdlc1xuIn0= -->
-<pre><code>Error in install.packages : Updating loaded packages</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5gYGAifQ== -->
-<pre class="r"><code>library(tidyverse)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoi4pSA4pSAIEF0dGFjaGluZyBwYWNrYWdlcyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlIDEuMy4yIOKUgOKUgOKclCBnZ3Bsb3QyIDMuMy42ICAgICAg4pyUIHB1cnJyICAgMC4zLjUgXG7inJQgdGliYmxlICAzLjEuOCAgICAgIOKclCBkcGx5ciAgIDEuMC4xMFxu4pyUIHRpZHlyICAgMS4yLjEgICAgICDinJQgc3RyaW5nciAxLjQuMSBcbuKclCByZWFkciAgIDIuMS4zICAgICAg4pyUIGZvcmNhdHMgMC41LjIg4pSA4pSAIENvbmZsaWN0cyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlX2NvbmZsaWN0cygpIOKUgOKUgFxu4pyWIGRwbHlyOjpmaWx0ZXIoKSBtYXNrcyBzdGF0czo6ZmlsdGVyKClcbuKcliBkcGx5cjo6bGFnKCkgICAgbWFza3Mgc3RhdHM6OmxhZygpXG4ifQ== -->
-<pre><code>── Attaching packages ────────────────────────────────────────────────────────────── tidyverse 1.3.2 ──✔ ggplot2 3.3.6      ✔ purrr   0.3.5 
-✔ tibble  3.1.8      ✔ dplyr   1.0.10
-✔ tidyr   1.2.1      ✔ stringr 1.4.1 
-✔ readr   2.1.3      ✔ forcats 0.5.2 ── Conflicts ───────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh3YWZmbGUpXG5pbnN0YWxsLnBhY2thZ2VzKFwiaG9vcFJcIilcbmBgYCJ9 -->
-<pre class="r"><code>library(waffle)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5saWJyYXJ5KHdhZmZsZSlcbmluc3RhbGwucGFja2FnZXMoXCJob29wUlwiKVxuYGBgIn0= -->
+<pre class="r"><code>library(tidyverse)
+library(waffle)
 install.packages(&quot;hoopR&quot;)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gaW5zdGFsbC5wYWNrYWdlcyA6IFVwZGF0aW5nIGxvYWRlZCBwYWNrYWdlc1xuIn0= -->
 <pre><code>Error in install.packages : Updating loaded packages</code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBZb3UgY2FuIGluc3RhbGwgdXNpbmcgdGhlIHBhY21hbiBwYWNrYWdlIHVzaW5nIHRoZSBmb2xsb3dpbmcgY29kZTpcbmlmICghcmVxdWlyZU5hbWVzcGFjZSgncGFjbWFuJywgcXVpZXRseSA9IFRSVUUpKXtcbiAgaW5zdGFsbC5wYWNrYWdlcygncGFjbWFuJylcbn1cbmxpYnJhcnkoZHBseXIpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBZb3UgY2FuIGluc3RhbGwgdXNpbmcgdGhlIHBhY21hbiBwYWNrYWdlIHVzaW5nIHRoZSBmb2xsb3dpbmcgY29kZTpcbmlmICghcmVxdWlyZU5hbWVzcGFjZSgncGFjbWFuJywgcXVpZXRseSA9IFRSVUUpKXtcbiAgaW5zdGFsbC5wYWNrYWdlcygncGFjbWFuJylcbn1cbmxpYnJhcnkoaG9vcFIpXG5saWJyYXJ5KGRwbHlyKVxubGlicmFyeSh0aWR5dmVyc2UpXG5saWJyYXJ5KGNsdXN0ZXIpXG5cbnNldC5zZWVkKDEyMzQpXG5gYGAifQ== -->
 <pre class="r"><code># You can install using the pacman package using the following code:
 if (!requireNamespace(&#39;pacman&#39;, quietly = TRUE)){
   install.packages(&#39;pacman&#39;)
 }
-library(dplyr)</code></pre>
+library(hoopR)
+library(dplyr)
+library(tidyverse)
+library(cluster)
+
+set.seed(1234)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-chunk-begin -->
@@ -1829,34 +1818,90 @@ progressr::with_progress({
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGljdG9jOjp0b2MoKVxuYGBgIn0= -->
 <pre class="r"><code>tictoc::toc()</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiMi4wMzMgc2VjIGVsYXBzZWRcbiJ9 -->
-<pre><code>2.033 sec elapsed</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiMi4wOTEgc2VjIGVsYXBzZWRcbiJ9 -->
+<pre><code>2.091 sec elapsed</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuTkJBMjAyMiA8LSBuYmFfdGVhbV9ib3ggJT4lIFxuICBmaWx0ZXIoc2Vhc29uID09IFwiMjAyMVwiKSAlPiUgXG4gIGdyb3VwX2J5ICh0ZWFtX25hbWUpICU+JSBcbnN1bW1hcml6ZShhdmdfM3B0ID0gbWVhbih0aHJlZV9wb2ludF9maWVsZF9nb2FsX3BjdCkpXG5gYGAifQ== -->
-<pre class="r"><code>NBA2022 &lt;- nba_team_box %&gt;% 
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmJhX3RlYW1fYm94X2JldHRlciA8LSBuYmFfdGVhbV9ib3ggJT4lXG4gIHNlcGFyYXRlKHRocmVlX3BvaW50X2ZpZWxkX2dvYWxzX21hZGVfdGhyZWVfcG9pbnRfZmllbGRfZ29hbHNfYXR0ZW1wdGVkLCBjKCd0aHJlZV9wb2ludF9tYWtlcycsICd0aHJlZV9wb2ludF9hdHRlbXB0cycpLFwiLVwiKSAlPiUgXG4gIG11dGF0ZSh0aHJlZV9wb2ludF9tYWtlcz0gYXMubnVtZXJpYyh0aHJlZV9wb2ludF9tYWtlcyksIHRocmVlX3BvaW50X2F0dGVtcHRzPSBhcy5udW1lcmljKHRocmVlX3BvaW50X2F0dGVtcHRzICksIHRvdGFsX3JlYm91bmRzPSBhcy5udW1lcmljKHRvdGFsX3JlYm91bmRzKSwgdG90YWxfdHVybm92ZXJzID1hcy5udW1lcmljKHRvdGFsX3R1cm5vdmVycyksIHBvaW50c19pbl9wYWludD0gYXMubnVtZXJpYyhwb2ludHNfaW5fcGFpbnQpLCBhc3Npc3RzPSBhcy5udW1lcmljKGFzc2lzdHMpKVxuICBcblxuI0ZpbmQgY29ycmVsYXRpb25zIGJldHdlZW4gYSBmZXcga2V5cyBzdGF0cyB0byBkZXRlcm1pbmUgd2hpY2ggcmVsYXRlIHRoZSBtb3N0LiBUaGVuIHR1cm4gdGhhdCBkYXRhIGludG8gYSBncmFwaFxuICBcbk5CQTIwMjIgPC0gbmJhX3RlYW1fYm94X2JldHRlciAlPiUgXG4gIGZpbHRlcihzZWFzb24gPT0gXCIyMDIxXCIpICU+JSBcbiAgZ3JvdXBfYnkgKHRlYW1fbmFtZSkgJT4lIFxuc3VtbWFyaXplKGF2Z18zcHQgPSBzdW0odGhyZWVfcG9pbnRfbWFrZXMpL3N1bSh0aHJlZV9wb2ludF9hdHRlbXB0cykqMTAwKSAlPiUgXG4gIGFycmFuZ2UoZGVzYyhhdmdfM3B0KSlcbiAgXG5gYGAifQ== -->
+<pre class="r"><code>nba_team_box_better &lt;- nba_team_box %&gt;%
+  separate(three_point_field_goals_made_three_point_field_goals_attempted, c(&#39;three_point_makes&#39;, &#39;three_point_attempts&#39;),&quot;-&quot;) %&gt;% 
+  mutate(three_point_makes= as.numeric(three_point_makes), three_point_attempts= as.numeric(three_point_attempts ), total_rebounds= as.numeric(total_rebounds), total_turnovers =as.numeric(total_turnovers), points_in_paint= as.numeric(points_in_paint), assists= as.numeric(assists))
+  
+
+#Find correlations between a few keys stats to determine which relate the most. Then turn that data into a graph
+  
+NBA2022 &lt;- nba_team_box_better %&gt;% 
   filter(season == &quot;2021&quot;) %&gt;% 
   group_by (team_name) %&gt;% 
-summarize(avg_3pt = mean(three_point_field_goal_pct))</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BV2FybmluZzogYXJndW1lbnQgaXMgbm90IG51bWVyaWMgb3IgbG9naWNhbDogcmV0dXJuaW5nIE5BXG4ifQ== -->
-<pre><code>Warning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NAWarning: argument is not numeric or logical: returning NA</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICBcbmBgYCJ9 -->
-<pre class="r"><code>  </code></pre>
+summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %&gt;% 
+  arrange(desc(avg_3pt))
+  </code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmJhX3RlYW1fYm94ICU+JSBcbiAgbmJhX3RlYW1fYm94JGEgPC0gYXMubnVtZXJpYyhuYmFfdGVhbV9ib3gkYSlcbmBgYCJ9 -->
-<pre class="r"><code>nba_team_box %&gt;% 
-  nba_team_box$a &lt;- as.numeric(nba_team_box$a)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuVG90YWxzMjAyMSA8LSBuYmFfdGVhbV9ib3hfYmV0dGVyICU+JSBcbiAgZmlsdGVyKHNlYXNvbiA9PSBcIjIwMjFcIikgJT4lIFxuICBncm91cF9ieSAodGVhbV9uYW1lKSAlPiUgXG4gIHN1bW1hcmlzZShUb3RhbFJlYm91bmRzID0gc3VtKHRvdGFsX3JlYm91bmRzKSxUb3RhbFR1cm5vdmVycyA9IHN1bSh0b3RhbF90dXJub3ZlcnMpLFBvaW50c2luUGFpbnQgPSBzdW0ocG9pbnRzX2luX3BhaW50KSwgVGhyZWVQb2ludE1ha2VzID0gc3VtKHRocmVlX3BvaW50X21ha2VzKSwgQXNzaXN0cyA9IHN1bShhc3Npc3RzKSkgXG4gIFxuYGBgIn0= -->
+<pre class="r"><code>Totals2021 &lt;- nba_team_box_better %&gt;% 
+  filter(season == &quot;2021&quot;) %&gt;% 
+  group_by (team_name) %&gt;% 
+  summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
+  </code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogVW5rbm93biBvciB1bmluaXRpYWxpc2VkIGNvbHVtbjogYGFgLkVycm9yIGluIG5iYV90ZWFtX2JveCAlPiUgbmJhX3RlYW1fYm94JGEgPC0gYXMubnVtZXJpYyhuYmFfdGVhbV9ib3gkYSkgOiBcbiAgY291bGQgbm90IGZpbmQgZnVuY3Rpb24gXCIlPiU8LVwiXG4ifQ== -->
-<pre><code>Warning: Unknown or uninitialised column: `a`.Error in nba_team_box %&gt;% nba_team_box$a &lt;- as.numeric(nba_team_box$a) : 
-  could not find function &quot;%&gt;%&lt;-&quot;</code></pre>
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuVHVybm92ZXJzIDwtIG5iYV90ZWFtX2JveF9iZXR0ZXIgJT4lIFxuICBmaWx0ZXIoc2Vhc29uID09IFwiMjAyMVwiKSAlPiUgXG4gIGdyb3VwX2J5ICh0ZWFtX25hbWUpICU+JSBcbiAgc3VtbWFyaXNlKHN1bSh0b3RhbF90dXJub3ZlcnMpKVxuICBcbmBgYCJ9 -->
+<pre class="r"><code>Turnovers &lt;- nba_team_box_better %&gt;% 
+  filter(season == &quot;2021&quot;) %&gt;% 
+  group_by (team_name) %&gt;% 
+  summarise(sum(total_turnovers))
+  </code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuUElQIDwtIG5iYV90ZWFtX2JveF9iZXR0ZXIgJT4lIFxuICBmaWx0ZXIoc2Vhc29uID09IFwiMjAyMVwiKSAlPiUgXG4gIGdyb3VwX2J5ICh0ZWFtX25hbWUpICU+JSBcbiAgc3VtbWFyaXNlKHN1bShwb2ludHNfaW5fcGFpbnQpKVxuYGBgIn0= -->
+<pre class="r"><code>PIP &lt;- nba_team_box_better %&gt;% 
+  filter(season == &quot;2021&quot;) %&gt;% 
+  group_by (team_name) %&gt;% 
+  summarise(sum(points_in_paint))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuQXNzaXN0cyA8LSBuYmFfdGVhbV9ib3hfYmV0dGVyICU+JSBcbiAgZmlsdGVyKHNlYXNvbiA9PSBcIjIwMjFcIikgJT4lIFxuICBncm91cF9ieSAodGVhbV9uYW1lKSAlPiUgXG4gIHN1bW1hcmlzZShzdW0oYXNzaXN0cykpXG5gYGAifQ== -->
+<pre class="r"><code>Assists &lt;- nba_team_box_better %&gt;% 
+  filter(season == &quot;2021&quot;) %&gt;% 
+  group_by (team_name) %&gt;% 
+  summarise(sum(assists))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuVGhyZWVQb2ludE1ha2VzIDwtIG5iYV90ZWFtX2JveF9iZXR0ZXIgJT4lIFxuICBmaWx0ZXIoc2Vhc29uID09IFwiMjAyMVwiKSAlPiUgXG4gIGdyb3VwX2J5ICh0ZWFtX25hbWUpICU+JSBcbiAgc3VtbWFyaXNlKHN1bSh0aHJlZV9wb2ludF9tYWtlcykpXG5gYGAifQ== -->
+<pre class="r"><code>ThreePointMakes &lt;- nba_team_box_better %&gt;% 
+  filter(season == &quot;2021&quot;) %&gt;% 
+  group_by (team_name) %&gt;% 
+  summarise(sum(three_point_makes))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuVG90YWxTY2FsZSA8LSBUb3RhbHMyMDIxICU+JVxuICBzZWxlY3QoVG90YWxSZWJvdW5kcywgVG90YWxUdXJub3ZlcnMsIFBvaW50c2luUGFpbnQsIFRocmVlUG9pbnRNYWtlcywgQXNzaXN0cykgJT4lXG4gIG11dGF0ZV9hbGwoc2NhbGUpICU+JVxuICBuYS5vbWl0KClcbmBgYCJ9 -->
+<pre class="r"><code>TotalScale &lt;- Totals2021 %&gt;%
+  select(TotalRebounds, TotalTurnovers, PointsinPaint, ThreePointMakes, Assists) %&gt;%
+  mutate_all(scale) %&gt;%
+  na.omit()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxue2ttZWFucyhUb3RhbFNjYWxlLCA2LCBuc3RhcnQgPSAzICkkdG90LndpdGhpbnNzXG59XG5gYGAifQ== -->
+<pre class="r"><code>{kmeans(TotalScale, 6, nstart = 3 )$tot.withinss
+}</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDcuOTg0Mzc5XG4ifQ== -->
+<pre><code>[1] 7.984379</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1871,7 +1916,7 @@ run any R code chunks. Instead, the output of the chunk when it was last
 run in the editor is displayed.</p>
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKVGhpcyBpcyBhbiBbUiBNYXJrZG93bl0oaHR0cDovL3JtYXJrZG93bi5yc3R1ZGlvLmNvbSkgTm90ZWJvb2suIFdoZW4geW91IGV4ZWN1dGUgY29kZSB3aXRoaW4gdGhlIG5vdGVib29rLCB0aGUgcmVzdWx0cyBhcHBlYXIgYmVuZWF0aCB0aGUgY29kZS4gCgpUcnkgZXhlY3V0aW5nIHRoaXMgY2h1bmsgYnkgY2xpY2tpbmcgdGhlICpSdW4qIGJ1dHRvbiB3aXRoaW4gdGhlIGNodW5rIG9yIGJ5IHBsYWNpbmcgeW91ciBjdXJzb3IgaW5zaWRlIGl0IGFuZCBwcmVzc2luZyAqQ21kK1NoaWZ0K0VudGVyKi4gCgpgYGB7cn0KbGlicmFyeSh0aWR5dmVyc2UpCmxpYnJhcnkod2FmZmxlKQppbnN0YWxsLnBhY2thZ2VzKCJob29wUiIpCiMgWW91IGNhbiBpbnN0YWxsIHVzaW5nIHRoZSBwYWNtYW4gcGFja2FnZSB1c2luZyB0aGUgZm9sbG93aW5nIGNvZGU6CmlmICghcmVxdWlyZU5hbWVzcGFjZSgncGFjbWFuJywgcXVpZXRseSA9IFRSVUUpKXsKICBpbnN0YWxsLnBhY2thZ2VzKCdwYWNtYW4nKQp9CmxpYnJhcnkoZHBseXIpCmBgYApgYGB7cn0KdGljdG9jOjp0aWMoKQpwcm9ncmVzc3I6OndpdGhfcHJvZ3Jlc3MoewogIG5iYV90ZWFtX2JveCA8LSBob29wUjo6bG9hZF9uYmFfdGVhbV9ib3goMjAxNjoyMDIxKQp9KQoKdGljdG9jOjp0b2MoKQpgYGAKCmBgYHtyfQpOQkEyMDIyIDwtIG5iYV90ZWFtX2JveCAlPiUgCiAgZmlsdGVyKHNlYXNvbiA9PSAiMjAyMSIpICU+JSAKICBncm91cF9ieSAodGVhbV9uYW1lKSAlPiUgCnN1bW1hcml6ZShhdmdfM3B0ID0gbWVhbih0aHJlZV9wb2ludF9maWVsZF9nb2FsX3BjdCkpCgogIApgYGAKYGBge3J9Cm5iYV90ZWFtX2JveCAlPiUgCiAgCmBgYAoKCgoKQWRkIGEgbmV3IGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqSW5zZXJ0IENodW5rKiBidXR0b24gb24gdGhlIHRvb2xiYXIgb3IgYnkgcHJlc3NpbmcgKkNtZCtPcHRpb24rSSouCgpXaGVuIHlvdSBzYXZlIHRoZSBub3RlYm9vaywgYW4gSFRNTCBmaWxlIGNvbnRhaW5pbmcgdGhlIGNvZGUgYW5kIG91dHB1dCB3aWxsIGJlIHNhdmVkIGFsb25nc2lkZSBpdCAoY2xpY2sgdGhlICpQcmV2aWV3KiBidXR0b24gb3IgcHJlc3MgKkNtZCtTaGlmdCtLKiB0byBwcmV2aWV3IHRoZSBIVE1MIGZpbGUpLiAKClRoZSBwcmV2aWV3IHNob3dzIHlvdSBhIHJlbmRlcmVkIEhUTUwgY29weSBvZiB0aGUgY29udGVudHMgb2YgdGhlIGVkaXRvci4gQ29uc2VxdWVudGx5LCB1bmxpa2UgKktuaXQqLCAqUHJldmlldyogZG9lcyBub3QgcnVuIGFueSBSIGNvZGUgY2h1bmtzLiBJbnN0ZWFkLCB0aGUgb3V0cHV0IG9mIHRoZSBjaHVuayB3aGVuIGl0IHdhcyBsYXN0IHJ1biBpbiB0aGUgZWRpdG9yIGlzIGRpc3BsYXllZC4KCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKVGhpcyBpcyBhbiBbUiBNYXJrZG93bl0oaHR0cDovL3JtYXJrZG93bi5yc3R1ZGlvLmNvbSkgTm90ZWJvb2suIFdoZW4geW91IGV4ZWN1dGUgY29kZSB3aXRoaW4gdGhlIG5vdGVib29rLCB0aGUgcmVzdWx0cyBhcHBlYXIgYmVuZWF0aCB0aGUgY29kZS4gCgpUcnkgZXhlY3V0aW5nIHRoaXMgY2h1bmsgYnkgY2xpY2tpbmcgdGhlICpSdW4qIGJ1dHRvbiB3aXRoaW4gdGhlIGNodW5rIG9yIGJ5IHBsYWNpbmcgeW91ciBjdXJzb3IgaW5zaWRlIGl0IGFuZCBwcmVzc2luZyAqQ21kK1NoaWZ0K0VudGVyKi4gCgpgYGB7cn0KbGlicmFyeSh0aWR5dmVyc2UpCmxpYnJhcnkod2FmZmxlKQppbnN0YWxsLnBhY2thZ2VzKCJob29wUiIpCiMgWW91IGNhbiBpbnN0YWxsIHVzaW5nIHRoZSBwYWNtYW4gcGFja2FnZSB1c2luZyB0aGUgZm9sbG93aW5nIGNvZGU6CmlmICghcmVxdWlyZU5hbWVzcGFjZSgncGFjbWFuJywgcXVpZXRseSA9IFRSVUUpKXsKICBpbnN0YWxsLnBhY2thZ2VzKCdwYWNtYW4nKQp9CmxpYnJhcnkoaG9vcFIpCmxpYnJhcnkoZHBseXIpCmxpYnJhcnkodGlkeXZlcnNlKQpsaWJyYXJ5KGNsdXN0ZXIpCgpzZXQuc2VlZCgxMjM0KQpgYGAKYGBge3J9CnRpY3RvYzo6dGljKCkKcHJvZ3Jlc3NyOjp3aXRoX3Byb2dyZXNzKHsKICBuYmFfdGVhbV9ib3ggPC0gaG9vcFI6OmxvYWRfbmJhX3RlYW1fYm94KDIwMTY6MjAyMSkKfSkKCnRpY3RvYzo6dG9jKCkKYGBgCgpgYGB7cn0KbmJhX3RlYW1fYm94X2JldHRlciA8LSBuYmFfdGVhbV9ib3ggJT4lCiAgc2VwYXJhdGUodGhyZWVfcG9pbnRfZmllbGRfZ29hbHNfbWFkZV90aHJlZV9wb2ludF9maWVsZF9nb2Fsc19hdHRlbXB0ZWQsIGMoJ3RocmVlX3BvaW50X21ha2VzJywgJ3RocmVlX3BvaW50X2F0dGVtcHRzJyksIi0iKSAlPiUgCiAgbXV0YXRlKHRocmVlX3BvaW50X21ha2VzPSBhcy5udW1lcmljKHRocmVlX3BvaW50X21ha2VzKSwgdGhyZWVfcG9pbnRfYXR0ZW1wdHM9IGFzLm51bWVyaWModGhyZWVfcG9pbnRfYXR0ZW1wdHMgKSwgdG90YWxfcmVib3VuZHM9IGFzLm51bWVyaWModG90YWxfcmVib3VuZHMpLCB0b3RhbF90dXJub3ZlcnMgPWFzLm51bWVyaWModG90YWxfdHVybm92ZXJzKSwgcG9pbnRzX2luX3BhaW50PSBhcy5udW1lcmljKHBvaW50c19pbl9wYWludCksIGFzc2lzdHM9IGFzLm51bWVyaWMoYXNzaXN0cykpCiAgCgojRmluZCBjb3JyZWxhdGlvbnMgYmV0d2VlbiBhIGZldyBrZXlzIHN0YXRzIHRvIGRldGVybWluZSB3aGljaCByZWxhdGUgdGhlIG1vc3QuIFRoZW4gdHVybiB0aGF0IGRhdGEgaW50byBhIGdyYXBoCiAgCk5CQTIwMjIgPC0gbmJhX3RlYW1fYm94X2JldHRlciAlPiUgCiAgZmlsdGVyKHNlYXNvbiA9PSAiMjAyMSIpICU+JSAKICBncm91cF9ieSAodGVhbV9uYW1lKSAlPiUgCnN1bW1hcml6ZShhdmdfM3B0ID0gc3VtKHRocmVlX3BvaW50X21ha2VzKS9zdW0odGhyZWVfcG9pbnRfYXR0ZW1wdHMpKjEwMCkgJT4lIAogIGFycmFuZ2UoZGVzYyhhdmdfM3B0KSkKICAKYGBgCmBgYHtyfQpUb3RhbHMyMDIxIDwtIG5iYV90ZWFtX2JveF9iZXR0ZXIgJT4lIAogIGZpbHRlcihzZWFzb24gPT0gIjIwMjEiKSAlPiUgCiAgZ3JvdXBfYnkgKHRlYW1fbmFtZSkgJT4lIAogIHN1bW1hcmlzZShUb3RhbFJlYm91bmRzID0gc3VtKHRvdGFsX3JlYm91bmRzKSxUb3RhbFR1cm5vdmVycyA9IHN1bSh0b3RhbF90dXJub3ZlcnMpLFBvaW50c2luUGFpbnQgPSBzdW0ocG9pbnRzX2luX3BhaW50KSwgVGhyZWVQb2ludE1ha2VzID0gc3VtKHRocmVlX3BvaW50X21ha2VzKSwgQXNzaXN0cyA9IHN1bShhc3Npc3RzKSkgCiAgCmBgYAoKCgpgYGB7cn0KVHVybm92ZXJzIDwtIG5iYV90ZWFtX2JveF9iZXR0ZXIgJT4lIAogIGZpbHRlcihzZWFzb24gPT0gIjIwMjEiKSAlPiUgCiAgZ3JvdXBfYnkgKHRlYW1fbmFtZSkgJT4lIAogIHN1bW1hcmlzZShzdW0odG90YWxfdHVybm92ZXJzKSkKICAKYGBgCmBgYHtyfQpQSVAgPC0gbmJhX3RlYW1fYm94X2JldHRlciAlPiUgCiAgZmlsdGVyKHNlYXNvbiA9PSAiMjAyMSIpICU+JSAKICBncm91cF9ieSAodGVhbV9uYW1lKSAlPiUgCiAgc3VtbWFyaXNlKHN1bShwb2ludHNfaW5fcGFpbnQpKQpgYGAKYGBge3J9CkFzc2lzdHMgPC0gbmJhX3RlYW1fYm94X2JldHRlciAlPiUgCiAgZmlsdGVyKHNlYXNvbiA9PSAiMjAyMSIpICU+JSAKICBncm91cF9ieSAodGVhbV9uYW1lKSAlPiUgCiAgc3VtbWFyaXNlKHN1bShhc3Npc3RzKSkKYGBgCmBgYHtyfQpUaHJlZVBvaW50TWFrZXMgPC0gbmJhX3RlYW1fYm94X2JldHRlciAlPiUgCiAgZmlsdGVyKHNlYXNvbiA9PSAiMjAyMSIpICU+JSAKICBncm91cF9ieSAodGVhbV9uYW1lKSAlPiUgCiAgc3VtbWFyaXNlKHN1bSh0aHJlZV9wb2ludF9tYWtlcykpCmBgYAoKCmBgYHtyfQpUb3RhbFNjYWxlIDwtIFRvdGFsczIwMjEgJT4lCiAgc2VsZWN0KFRvdGFsUmVib3VuZHMsIFRvdGFsVHVybm92ZXJzLCBQb2ludHNpblBhaW50LCBUaHJlZVBvaW50TWFrZXMsIEFzc2lzdHMpICU+JQogIG11dGF0ZV9hbGwoc2NhbGUpICU+JQogIG5hLm9taXQoKQpgYGAKYGBge3J9CntrbWVhbnMoVG90YWxTY2FsZSwgNiwgbnN0YXJ0ID0gMyApJHRvdC53aXRoaW5zcwp9CmBgYAoKQWRkIGEgbmV3IGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqSW5zZXJ0IENodW5rKiBidXR0b24gb24gdGhlIHRvb2xiYXIgb3IgYnkgcHJlc3NpbmcgKkNtZCtPcHRpb24rSSouCgpXaGVuIHlvdSBzYXZlIHRoZSBub3RlYm9vaywgYW4gSFRNTCBmaWxlIGNvbnRhaW5pbmcgdGhlIGNvZGUgYW5kIG91dHB1dCB3aWxsIGJlIHNhdmVkIGFsb25nc2lkZSBpdCAoY2xpY2sgdGhlICpQcmV2aWV3KiBidXR0b24gb3IgcHJlc3MgKkNtZCtTaGlmdCtLKiB0byBwcmV2aWV3IHRoZSBIVE1MIGZpbGUpLiAKClRoZSBwcmV2aWV3IHNob3dzIHlvdSBhIHJlbmRlcmVkIEhUTUwgY29weSBvZiB0aGUgY29udGVudHMgb2YgdGhlIGVkaXRvci4gQ29uc2VxdWVudGx5LCB1bmxpa2UgKktuaXQqLCAqUHJldmlldyogZG9lcyBub3QgcnVuIGFueSBSIGNvZGUgY2h1bmtzLiBJbnN0ZWFkLCB0aGUgb3V0cHV0IG9mIHRoZSBjaHVuayB3aGVuIGl0IHdhcyBsYXN0IHJ1biBpbiB0aGUgZWRpdG9yIGlzIGRpc3BsYXllZC4KCg==</div>
 
 
 
