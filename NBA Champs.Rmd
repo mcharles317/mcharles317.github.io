@@ -137,7 +137,12 @@ ggplot() +
 knicks <- teamcluster %>% filter(team_name == "Knicks")
 ```
 Conclusions:
+Before figuring out cluster:
 I chose these specific statistics because I feel that they are key indicators of potential success, especially over an 82 game season. While turnovers are not ideal, they are also a bi-product of high efficiency, quick moving offenses. Therefore, it would be interesting to further determine how this stat factors into crowning an NBA champion. Points in the paint and three point makes are specifically relevant because in the modern NBA, during the regular season, teams are looking for open three or open layups consistently. The best teams are able to live in these areas and therefore become strong indicators of winning. Assists again highlight the strength of a high powered offense, with worse teams tending to generate less assists. Rebounding works in a similar manner, giving insight into potentially the quality of a team's defense or their effectiveness cleaning up their own misses.
+
+After figuring out cluster:
+After narrowing down my main statistical determinants to three point makes, points in the paint and assists, the strongest cluster also happened to contain the most elite teams in the NBA during the 2021 season. As I mentioned in my previous analysis, I believe that all good NBA teams are attempting to get a lot of open threes and a lot of layups, both off of assists. This set of clusters supports this analysis thus far. Moving forward, my plan is to do this exact same clustering processs for the four seasons prior to determine whether or not this trend remains true. 
+
 
 
 
