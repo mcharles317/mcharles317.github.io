@@ -105,6 +105,16 @@ TotalScale %>%
 ggplot() +
   geom_point(aes(x=ThreePointMakes, y=TotalTurnovers, color="red")) 
 ```
+```{r}
+teamcluster <- data.frame(TotalScale, k8$cluster)
+```
+```{r}
+ggplot() +
+  geom_point(data=teamcluster, aes(x=ThreePointMakes, y=TotalTurnovers, color=k8.cluster))
+```
+```{r}
+knicks <- teamcluster %>% filter(team_name == "Knicks")
+```
 
 
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
