@@ -60,8 +60,7 @@ Totals2021 <- nba_team_box_better %>%
 Turnovers <- nba_team_box_better %>% 
   filter(season == "2021") %>% 
   group_by (team_name) %>% 
-  summarise(sum(total_turnovers))
-  
+  summarise(all_turnovers = sum(total_turnovers))
 ```
 ```{r}
 PIP <- nba_team_box_better %>% 
@@ -85,17 +84,29 @@ ThreePointMakes <- nba_team_box_better %>%
 
 ```{r}
 TotalScale <- Totals2021 %>%
-  select(TotalRebounds, TotalTurnovers, PointsinPaint, ThreePointMakes, Assists) %>%
+  select(PointsinPaint, ThreePointMakes, Assists) %>%
   mutate_all(scale) %>%
   na.omit()
 ```
 ```{r}
- {kmeans(TotalScale, 5, nstart = 10 )$tot.withinss
+ # function to compute total within-cluster sum of square
+wss <- function(k) {
+  kmeans(TotalScale, k, nstart = 10 )$tot.withinss
 }
+
+# Compute and plot wss for k = 1 to k = 15
+k.values <- 1:15
+
+# extract wss for 2-15 clusters
+wss_values <- map_dbl(k.values, wss)
+
+plot(k.values, wss_values,
+       type="b", pch = 19, frame = FALSE,
+       xlab="Number of clusters K",
+       ylab="Total within-clusters sum of squares")
 
 
 ```
-I chose these specific statistics because I feel that they are key indicators of potential success, especially over an 82 game season. While turnovers are not ideal, they are also a bi-product of high efficiency, quick moving offenses. Therefore, it would be interesting to further determine how this stat factors into crowning an NBA champion. Points in the paint and three point makes are specifically relevant because in the modern NBA, during the regular season, teams are looking for open three or open layups consistently. The best teams are able to live in these areas and therefore become strong indicators of winning. Assists again highlight the strength of a high powered offense, with worse teams tending to generate less assists. Rebounding works in a similar manner, giving insight into potentially the quality of a team's defense or their effectiveness cleaning up their own misses. 
 ```{r}
 k6 <- kmeans(TotalScale, centers = 5, nstart = 10)
 
@@ -103,18 +114,31 @@ k6 <- kmeans(TotalScale, centers = 5, nstart = 10)
 ```{r}
 TotalScale %>% 
 ggplot() +
-  geom_point(aes(x=ThreePointMakes, y=TotalTurnovers, color="red")) 
+  geom_point(aes(x=ThreePointMakes, y=Assists, color="red")) 
 ```
 ```{r}
-teamcluster <- data.frame(TotalScale, k8$cluster)
+k6 
+teamcluster <- data.frame(Totals2021, k6$cluster)
 ```
+```{r}
+knicks <- teamcluster %>% filter(team_name == "Knicks")
+
+cluster5<- teamcluster %>% filter(k6.cluster == 5)
+
+cluster2<- teamcluster %>% filter(k6.cluster == 2)
+
+```
+
 ```{r}
 ggplot() +
-  geom_point(data=teamcluster, aes(x=ThreePointMakes, y=TotalTurnovers, color=k8.cluster))
+  geom_point(data=teamcluster, aes(x=ThreePointMakes, y=TotalTurnovers, color=k6.cluster))
 ```
 ```{r}
 knicks <- teamcluster %>% filter(team_name == "Knicks")
 ```
+Conclusions:
+I chose these specific statistics because I feel that they are key indicators of potential success, especially over an 82 game season. While turnovers are not ideal, they are also a bi-product of high efficiency, quick moving offenses. Therefore, it would be interesting to further determine how this stat factors into crowning an NBA champion. Points in the paint and three point makes are specifically relevant because in the modern NBA, during the regular season, teams are looking for open three or open layups consistently. The best teams are able to live in these areas and therefore become strong indicators of winning. Assists again highlight the strength of a high powered offense, with worse teams tending to generate less assists. Rebounding works in a similar manner, giving insight into potentially the quality of a team's defense or their effectiveness cleaning up their own misses.
+
 
 
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
