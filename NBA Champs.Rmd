@@ -90,13 +90,22 @@ TotalScale <- Totals2021 %>%
   na.omit()
 ```
 ```{r}
-{kmeans(TotalScale, 6, nstart = 3 )$tot.withinss
+ {kmeans(TotalScale, 5, nstart = 10 )$tot.withinss
 }
+
+
 ```
 I chose these specific statistics because I feel that they are key indicators of potential success, especially over an 82 game season. While turnovers are not ideal, they are also a bi-product of high efficiency, quick moving offenses. Therefore, it would be interesting to further determine how this stat factors into crowning an NBA champion. Points in the paint and three point makes are specifically relevant because in the modern NBA, during the regular season, teams are looking for open three or open layups consistently. The best teams are able to live in these areas and therefore become strong indicators of winning. Assists again highlight the strength of a high powered offense, with worse teams tending to generate less assists. Rebounding works in a similar manner, giving insight into potentially the quality of a team's defense or their effectiveness cleaning up their own misses. 
 ```{r}
+k6 <- kmeans(TotalScale, centers = 5, nstart = 10)
 
 ```
+```{r}
+TotalScale %>% 
+ggplot() +
+  geom_point(aes(x=ThreePointMakes, y=TotalTurnovers, color="red")) 
+```
+
 
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
 
