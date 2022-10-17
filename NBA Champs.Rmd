@@ -30,7 +30,7 @@ tictoc::toc()
 NBA2022 <- nba_team_box %>% 
   filter(season == "2021") %>% 
   group_by (team_name) %>% 
-summarize(avg_3pt = mean(three_point_field_goals_made_three_point_field_goals_attempted)/mean(three) *100)
+summarize(avg_3pt = mean(three_point_field_goal_pct))
 
   
 ```
