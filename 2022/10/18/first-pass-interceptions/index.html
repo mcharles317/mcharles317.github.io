@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.104.3" />
+
+
+<title>First Pass Interceptions - A Hugo website</title>
+<meta property="og:title" content="First Pass Interceptions - A Hugo website">
+
+
+  <link href='https://mcharles317.github.io/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://github.com/mcharles317">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/rstudio">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">2 min read</span>
+    
+
+    <h1 class="article-title">First Pass Interceptions</h1>
+
+    
+    <span class="article-date">2022-10-18</span>
+    
+
+    <div class="article-content">
+      
+
+
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
+## ✔ ggplot2 3.3.6      ✔ purrr   0.3.5 
+## ✔ tibble  3.1.8      ✔ dplyr   1.0.10
+## ✔ tidyr   1.2.1      ✔ stringr 1.4.1 
+## ✔ readr   2.1.3      ✔ forcats 0.5.2 
+## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(cfbfastR)</code></pre>
+<pre class="r"><code>tictoc::tic()
+pbp &lt;- data.frame()
+seasons &lt;- 2014:cfbfastR:::most_recent_cfb_season()
+progressr::with_progress({
+
+  pbp &lt;- cfbfastR::load_cfb_pbp(seasons)
+})</code></pre>
+<pre class="r"><code>first_plays_game &lt;- pbp %&gt;% filter(firstD_by_poss == 1, lag_kickoff_play == 1, drive_number == 1, play_type != &#39;Penalty&#39;)</code></pre>
+<p>6,899 plays</p>
+<pre class="r"><code>playtype &lt;- first_plays_game %&gt;%  group_by(play_type) %&gt;% summarise(count=n())</code></pre>
+<pre class="r"><code>passing &lt;- playtype %&gt;%  filter (str_detect(play_type, &quot;Pass&quot;))  </code></pre>
+<p>2,063 pass receptions
+809 pass incompletion</p>
+<pre class="r"><code>Inter &lt;- playtype %&gt;%  filter (str_detect(play_type, &quot;Inter&quot;))  </code></pre>
+<p>52 interceptions, 7 for touchdowns</p>
+<pre class="r"><code>sacks &lt;- playtype %&gt;%  filter (str_detect(play_type, &quot;Sack&quot;))  </code></pre>
+<p>85 sacks</p>
+<pre class="r"><code>int_play_types &lt;- c(&#39;Interception Return&#39;, &#39;Interception Return Touchdown&#39;)
+
+int_play &lt;-first_plays_game %&gt;% 
+  filter(play_type %in% int_play_types) </code></pre>
+<p>#How many times has this happened each year we have data for?</p>
+<pre class="r"><code>intyear &lt;- int_play  %&gt;%
+  group_by(year) %&gt;%
+  summarise(count = n())</code></pre>
+<pre class="r"><code>play_types &lt;- c(&#39;Incompletion&#39;, &#39;Pass Reception&#39;, &#39;Passing Touchdown&#39;, &#39;Sack&#39;, &#39;Interception Return&#39;, &#39;Interception Return Touchdown&#39;, &#39;Fumble Recovery (Opponent)&#39;, &#39;Fumble Recovery (Opponent) Touchdown&#39;, &#39;Fumble Recovery (Own)&#39;)</code></pre>
+<pre class="r"><code>passingyear &lt;- first_plays_game %&gt;%
+  filter(play_type %in% play_types) %&gt;% 
+  group_by(year) %&gt;%
+  summarise(count = n())</code></pre>
+<pre class="r"><code>percentage_int_plays &lt;- intyear%&gt;%
+  left_join(passingyear, by = &quot;year&quot;) %&gt;%
+  rename(int = count.x, pass_plays = count.y) %&gt;%
+  mutate(percentage = int/pass_plays*100)</code></pre>
+<pre class="r"><code>int_play %&gt;%
+  group_by(pos_team) %&gt;%
+  summarise(count = n()) %&gt;%
+  arrange(desc(count))</code></pre>
+<pre><code>## # A tibble: 45 × 2
+##    pos_team        count
+##    &lt;chr&gt;           &lt;int&gt;
+##  1 Purdue              3
+##  2 Ball State          2
+##  3 BYU                 2
+##  4 Indiana             2
+##  5 Tulsa               2
+##  6 UAB                 2
+##  7 Alabama             1
+##  8 Bethune-Cookman     1
+##  9 Boston College      1
+## 10 Bowling Green       1
+## # … with 35 more rows</code></pre>
+<p>Purdue has thrown an interception to start a half three times since 2014. Ball State, BYU, Indiana, Tulsa, and AUB have all done it twice. This is interesting because the percentage of interceptions has continued to rise overall since 2014, reaching almost 5% this year. This can likely be attributed to an increase in passing volume from 2014, allowing the opportunity for first play of half interceptions. It is also possible that teams are reading certain tendencies in this situation as many drives to open halves are scripted. Defense could be reading cues and taking advantage to increase this percentage also.</p>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+  </body>
+</html>
+
