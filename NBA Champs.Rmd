@@ -108,7 +108,7 @@ plot(k.values, wss_values,
 
 ```
 ```{r}
-k6 <- kmeans(TotalScale, centers = 5, nstart = 10)
+k6_2021 <- kmeans(TotalScale, centers = 5, nstart = 10)
 
 ```
 ```{r}
@@ -117,25 +117,340 @@ ggplot() +
   geom_point(aes(x=ThreePointMakes, y=Assists, color="red")) 
 ```
 ```{r}
-k6 
-teamcluster <- data.frame(Totals2021, k6$cluster)
+k6_2021
+teamcluster <- data.frame(Totals2021, k6_2021$cluster)
 ```
 ```{r}
 knicks <- teamcluster %>% filter(team_name == "Knicks")
 
-cluster5<- teamcluster %>% filter(k6.cluster == 5)
+cluster5<- teamcluster %>% filter(k6_2021.cluster == 5)
 
-cluster2<- teamcluster %>% filter(k6.cluster == 2)
+cluster2<- teamcluster %>% filter(k6_2021.cluster == 2)
 
 ```
 
 ```{r}
 ggplot() +
-  geom_point(data=teamcluster, aes(x=ThreePointMakes, y=TotalTurnovers, color=k6.cluster))
+  geom_point(data=teamcluster, aes(x=ThreePointMakes, y=TotalTurnovers, color=k6_2021.cluster))
+
+```
+#2020 Season below
+```{r}
+NBA2020 <- nba_team_box_better %>% 
+  filter(season == "2020") %>% 
+  group_by (team_name) %>% 
+summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
+  arrange(desc(avg_3pt))
 ```
 ```{r}
-knicks <- teamcluster %>% filter(team_name == "Knicks")
+Totals2020 <- nba_team_box_better %>% 
+  filter(season == "2020") %>% 
+  group_by (team_name) %>% 
+  summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
 ```
+
+```{r}
+TotalScale2020 <- Totals2020 %>%
+  select(PointsinPaint, ThreePointMakes, Assists) %>%
+  mutate_all(scale) %>%
+  na.omit()
+```
+```{r}
+ # function to compute total within-cluster sum of square
+wss <- function(k) {
+  kmeans(TotalScale2020, k, nstart = 10 )$tot.withinss
+}
+
+# Compute and plot wss for k = 1 to k = 15
+k.values <- 1:15
+
+# extract wss for 2-15 clusters
+wss_values <- map_dbl(k.values, wss)
+
+plot(k.values, wss_values,
+       type="b", pch = 19, frame = FALSE,
+       xlab="Number of clusters K",
+       ylab="Total within-clusters sum of squares")
+
+
+```
+
+
+When I attempt to make another cluster, it overwrites the previous one. How do I fix that?
+```{r}
+k6_2020 <- kmeans(TotalScale2020, centers = 5, nstart = 10)
+```
+
+```{r}
+k6_2020
+teamcluster <- data.frame(Totals2020, k6_2020$cluster)
+```
+
+#2019 season
+```{r}
+NBA2019 <- nba_team_box_better %>% 
+  filter(season == "2019") %>% 
+  group_by (team_name) %>% 
+summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
+  arrange(desc(avg_3pt))
+```
+```{r}
+Totals2019 <- nba_team_box_better %>% 
+  filter(season == "2019") %>% 
+  group_by (team_name) %>% 
+  summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
+```
+
+
+```{r}
+NBA2019 <- nba_team_box_better %>% 
+  filter(season == "2019") %>% 
+  group_by (team_name) %>% 
+summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
+  arrange(desc(avg_3pt))
+```
+```{r}
+Totals2019 <- nba_team_box_better %>% 
+  filter(season == "2019") %>% 
+  group_by (team_name) %>% 
+  summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
+```
+
+```{r}
+TotalScale2019 <- Totals2019 %>%
+  select(PointsinPaint, ThreePointMakes, Assists) %>%
+  mutate_all(scale) %>%
+  na.omit()
+```
+```{r}
+ # function to compute total within-cluster sum of square
+wss <- function(k) {
+  kmeans(TotalScale2019, k, nstart = 10 )$tot.withinss
+}
+
+# Compute and plot wss for k = 1 to k = 15
+k.values <- 1:15
+
+# extract wss for 2-15 clusters
+wss_values <- map_dbl(k.values, wss)
+
+plot(k.values, wss_values,
+       type="b", pch = 19, frame = FALSE,
+       xlab="Number of clusters K",
+       ylab="Total within-clusters sum of squares")
+
+
+```
+
+```{r}
+k6_2019 <- kmeans(TotalScale2019, centers = 5, nstart = 10)
+```
+
+```{r}
+k6_2019
+teamcluster <- data.frame(Totals2019, k6_2019$cluster)
+```
+
+
+
+#2018
+```{r}
+NBA2018 <- nba_team_box_better %>% 
+  filter(season == "2018") %>% 
+  group_by (team_name) %>% 
+summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
+  arrange(desc(avg_3pt))
+```
+```{r}
+Totals2018 <- nba_team_box_better %>% 
+  filter(season == "2018") %>% 
+  group_by (team_name) %>% 
+  summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
+```
+
+
+```{r}
+NBA2018 <- nba_team_box_better %>% 
+  filter(season == "2018") %>% 
+  group_by (team_name) %>% 
+summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
+  arrange(desc(avg_3pt))
+```
+```{r}
+Totals2018 <- nba_team_box_better %>% 
+  filter(season == "2018") %>% 
+  group_by (team_name) %>% 
+  summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
+```
+
+```{r}
+TotalScale2018 <- Totals2018 %>%
+  select(PointsinPaint, ThreePointMakes, Assists) %>%
+  mutate_all(scale) %>%
+  na.omit()
+```
+```{r}
+ # function to compute total within-cluster sum of square
+wss <- function(k) {
+  kmeans(TotalScale2018, k, nstart = 10 )$tot.withinss
+}
+
+# Compute and plot wss for k = 1 to k = 15
+k.values <- 1:15
+
+# extract wss for 2-15 clusters
+wss_values <- map_dbl(k.values, wss)
+
+plot(k.values, wss_values,
+       type="b", pch = 19, frame = FALSE,
+       xlab="Number of clusters K",
+       ylab="Total within-clusters sum of squares")
+
+
+```
+```{r}
+k6_2018 <- kmeans(TotalScale2018, centers = 5, nstart = 10)
+```
+
+```{r}
+k6_2018
+teamcluster <- data.frame(Totals2018, k6_2018$cluster)
+```
+#2017
+```{r}
+NBA2017 <- nba_team_box_better %>% 
+  filter(season == "2017") %>% 
+  group_by (team_name) %>% 
+summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
+  arrange(desc(avg_3pt))
+```
+```{r}
+Totals2017 <- nba_team_box_better %>% 
+  filter(season == "2017") %>% 
+  group_by (team_name) %>% 
+  summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
+```
+
+
+```{r}
+NBA2017 <- nba_team_box_better %>% 
+  filter(season == "2017") %>% 
+  group_by (team_name) %>% 
+summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
+  arrange(desc(avg_3pt))
+```
+```{r}
+Totals2017 <- nba_team_box_better %>% 
+  filter(season == "2017") %>% 
+  group_by (team_name) %>% 
+  summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
+```
+
+```{r}
+TotalScale2017 <- Totals2017 %>%
+  select(PointsinPaint, ThreePointMakes, Assists) %>%
+  mutate_all(scale) %>%
+  na.omit()
+```
+```{r}
+ # function to compute total within-cluster sum of square
+wss <- function(k) {
+  kmeans(TotalScale2017, k, nstart = 10 )$tot.withinss
+}
+
+# Compute and plot wss for k = 1 to k = 15
+k.values <- 1:15
+
+# extract wss for 2-15 clusters
+wss_values <- map_dbl(k.values, wss)
+
+plot(k.values, wss_values,
+       type="b", pch = 19, frame = FALSE,
+       xlab="Number of clusters K",
+       ylab="Total within-clusters sum of squares")
+
+
+```
+
+
+```{r}
+k6_2017 <- kmeans(TotalScale2017, centers = 5, nstart = 10)
+```
+
+```{r}
+k6_2017
+teamcluster <- data.frame(Totals2017, k6_2017$cluster)
+```
+```
+
+#2016
+
+```{r}
+NBA2016 <- nba_team_box_better %>% 
+  filter(season == "2016") %>% 
+  group_by (team_name) %>% 
+summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
+  arrange(desc(avg_3pt))
+```
+```{r}
+Totals2016 <- nba_team_box_better %>% 
+  filter(season == "2016") %>% 
+  group_by (team_name) %>% 
+  summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
+```
+
+
+```{r}
+NBA2016 <- nba_team_box_better %>% 
+  filter(season == "2016") %>% 
+  group_by (team_name) %>% 
+summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
+  arrange(desc(avg_3pt))
+```
+```{r}
+Totals2016 <- nba_team_box_better %>% 
+  filter(season == "2016") %>% 
+  group_by (team_name) %>% 
+  summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
+```
+
+```{r}
+TotalScale2016 <- Totals2016 %>%
+  select(PointsinPaint, ThreePointMakes, Assists) %>%
+  mutate_all(scale) %>%
+  na.omit()
+```
+```{r}
+ # function to compute total within-cluster sum of square
+wss <- function(k) {
+  kmeans(TotalScale2016, k, nstart = 10 )$tot.withinss
+}
+
+# Compute and plot wss for k = 1 to k = 15
+k.values <- 1:15
+
+# extract wss for 2-15 clusters
+wss_values <- map_dbl(k.values, wss)
+
+plot(k.values, wss_values,
+       type="b", pch = 19, frame = FALSE,
+       xlab="Number of clusters K",
+       ylab="Total within-clusters sum of squares")
+
+
+```
+
+
+```{r}
+k6_2016 <- kmeans(TotalScale2016, centers = 5, nstart = 10)
+```
+
+```{r}
+k6_2016
+teamcluster <- data.frame(Totals2016, k6_2016$cluster)
+```
+
+
 Conclusions:
 Before figuring out cluster:
 I chose these specific statistics because I feel that they are key indicators of potential success, especially over an 82 game season. While turnovers are not ideal, they are also a bi-product of high efficiency, quick moving offenses. Therefore, it would be interesting to further determine how this stat factors into crowning an NBA champion. Points in the paint and three point makes are specifically relevant because in the modern NBA, during the regular season, teams are looking for open three or open layups consistently. The best teams are able to live in these areas and therefore become strong indicators of winning. Assists again highlight the strength of a high powered offense, with worse teams tending to generate less assists. Rebounding works in a similar manner, giving insight into potentially the quality of a team's defense or their effectiveness cleaning up their own misses.
