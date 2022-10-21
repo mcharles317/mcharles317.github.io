@@ -34,13 +34,14 @@ tictoc::toc()
 ```{r}
 nba_team_box_better <- nba_team_box %>%
   separate(three_point_field_goals_made_three_point_field_goals_attempted, c('three_point_makes', 'three_point_attempts'),"-") %>% 
-  mutate(three_point_makes= as.numeric(three_point_makes), three_point_attempts= as.numeric(three_point_attempts ), total_rebounds= as.numeric(total_rebounds), total_turnovers =as.numeric(total_turnovers), points_in_paint= as.numeric(points_in_paint), assists= as.numeric(assists))
+  mutate(three_point_makes= as.numeric(three_point_makes), three_point_attempts= as.numeric(three_point_attempts ), total_rebounds= as.numeric(total_rebounds), total_turnovers =as.numeric(total_turnovers), points_in_paint= as.numeric(points_in_paint), assists= as.numeric(assists), game_date = as.numeric(game_date))
   
+
 
 #Find correlations between a few keys stats to determine which relate the most. Then turn that data into a graph
   
 NBA2022 <- nba_team_box_better %>% 
-  filter(season == "2021") %>% 
+   filter(season == "2021") %>%
   group_by (team_name) %>% 
 summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
   arrange(desc(avg_3pt))
@@ -118,20 +119,20 @@ ggplot() +
 ```
 ```{r}
 k6_2021
-teamcluster <- data.frame(Totals2021, k6_2021$cluster)
+teamcluster_2021 <- data.frame(Totals2021, k6_2021$cluster)
 ```
 ```{r}
-knicks <- teamcluster %>% filter(team_name == "Knicks")
+Bucks <- teamcluster_2021 %>% filter(team_name == "Bucks")
 
-cluster5<- teamcluster %>% filter(k6_2021.cluster == 5)
+cluster4<- teamcluster_2021 %>% filter(k6_2021.cluster == 4)
 
-cluster2<- teamcluster %>% filter(k6_2021.cluster == 2)
+cluster2<- teamcluster_2021 %>% filter(k6_2021.cluster == 2)
 
 ```
 
 ```{r}
 ggplot() +
-  geom_point(data=teamcluster, aes(x=ThreePointMakes, y=TotalTurnovers, color=k6_2021.cluster))
+  geom_point(data=teamcluster_2021, aes(x=ThreePointMakes, y=TotalTurnovers, color=k6_2021.cluster))
 
 ```
 #2020 Season below
@@ -183,7 +184,11 @@ k6_2020 <- kmeans(TotalScale2020, centers = 5, nstart = 10)
 
 ```{r}
 k6_2020
-teamcluster <- data.frame(Totals2020, k6_2020$cluster)
+teamcluster_2020 <- data.frame(Totals2020, k6_2020$cluster)
+```
+```{r}
+Lakers <- teamcluster_2020 %>% filter(team_name == "Lakers")
+cluster2_2020<- teamcluster_2020 %>% filter(k6_2020.cluster == 2)
 ```
 
 #2019 season
@@ -248,9 +253,13 @@ k6_2019 <- kmeans(TotalScale2019, centers = 5, nstart = 10)
 
 ```{r}
 k6_2019
-teamcluster <- data.frame(Totals2019, k6_2019$cluster)
+teamcluster_2019 <- data.frame(Totals2019, k6_2019$cluster)
 ```
 
+```{r}
+Raptors <- teamcluster_2019 %>% filter(team_name == "Raptors")
+cluster2_2019<- teamcluster_2019 %>% filter(k6_2019.cluster == 2)
+```
 
 
 #2018
@@ -314,8 +323,13 @@ k6_2018 <- kmeans(TotalScale2018, centers = 5, nstart = 10)
 
 ```{r}
 k6_2018
-teamcluster <- data.frame(Totals2018, k6_2018$cluster)
+teamcluster_2018 <- data.frame(Totals2018, k6_2018$cluster)
 ```
+```{r}
+Warriors <- teamcluster_2018 %>% filter(team_name == "Warriors")
+cluster4_2018 <- teamcluster_2018 %>% filter(k6_2018.cluster == 4)
+```
+
 #2017
 ```{r}
 NBA2017 <- nba_team_box_better %>% 
@@ -379,9 +393,14 @@ k6_2017 <- kmeans(TotalScale2017, centers = 5, nstart = 10)
 
 ```{r}
 k6_2017
-teamcluster <- data.frame(Totals2017, k6_2017$cluster)
+teamcluster_2017 <- data.frame(Totals2017, k6_2017$cluster)
 ```
+```{r}
+Warriors2017 <- teamcluster_2017 %>% filter(team_name == "Warriors")
+cluster2_2017<- teamcluster_2017 %>% filter(k6_2017.cluster == 2)
+
 ```
+
 
 #2016
 
@@ -447,9 +466,13 @@ k6_2016 <- kmeans(TotalScale2016, centers = 5, nstart = 10)
 
 ```{r}
 k6_2016
-teamcluster <- data.frame(Totals2016, k6_2016$cluster)
+teamcluster_2016 <- data.frame(Totals2016, k6_2016$cluster)
 ```
 
+```{r}
+Cavs <- teamcluster_2016 %>% filter(team_name == "Cavaliers")
+cluster2_2016<- teamcluster_2016 %>% filter(k6_2016.cluster == 2)
+```
 
 Conclusions:
 Before figuring out cluster:
