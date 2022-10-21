@@ -34,23 +34,23 @@ tictoc::toc()
 ```{r}
 nba_team_box_better <- nba_team_box %>%
   separate(three_point_field_goals_made_three_point_field_goals_attempted, c('three_point_makes', 'three_point_attempts'),"-") %>% 
-  mutate(three_point_makes= as.numeric(three_point_makes), three_point_attempts= as.numeric(three_point_attempts ), total_rebounds= as.numeric(total_rebounds), total_turnovers =as.numeric(total_turnovers), points_in_paint= as.numeric(points_in_paint), assists= as.numeric(assists), game_date = as.numeric(game_date))
+  mutate(three_point_makes= as.numeric(three_point_makes), three_point_attempts= as.numeric(three_point_attempts ), total_rebounds= as.numeric(total_rebounds), total_turnovers =as.numeric(total_turnovers), points_in_paint= as.numeric(points_in_paint), assists= as.numeric(assists))
   
 
 
 #Find correlations between a few keys stats to determine which relate the most. Then turn that data into a graph
   
 NBA2022 <- nba_team_box_better %>% 
-   filter(season == "2021") %>%
-  group_by (team_name) %>% 
+filter(game_date >= '2020-12-20', game_date <= '2021-05-19') %>% 
+group_by (team_name) %>% 
 summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
   arrange(desc(avg_3pt))
   
 ```
 ```{r}
 Totals2021 <- nba_team_box_better %>% 
-filter(between(game_date, as.Date(2020-12-20), as.Date(2021-05-19))) %>% 
-  group_by (team_name) %>% 
+filter(game_date >= '2020-12-20', game_date <= '2021-05-19') %>% 
+group_by (team_name) %>% 
   summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
   
 ```
@@ -138,14 +138,14 @@ ggplot() +
 #2020 Season below
 ```{r}
 NBA2020 <- nba_team_box_better %>% 
-  filter(season == "2020") %>% 
-  group_by (team_name) %>% 
+filter(game_date >= '2019-10-21', game_date <= '2020-08-15') %>% 
+group_by (team_name) %>% 
 summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
   arrange(desc(avg_3pt))
 ```
 ```{r}
 Totals2020 <- nba_team_box_better %>% 
-  filter(season == "2020") %>% 
+filter(game_date >= '2019-10-21', game_date <= '2020-08-15') %>% 
   group_by (team_name) %>% 
   summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
 ```
@@ -188,20 +188,20 @@ teamcluster_2020 <- data.frame(Totals2020, k6_2020$cluster)
 ```
 ```{r}
 Lakers <- teamcluster_2020 %>% filter(team_name == "Lakers")
-cluster2_2020<- teamcluster_2020 %>% filter(k6_2020.cluster == 2)
+cluster1_2020<- teamcluster_2020 %>% filter(k6_2020.cluster == 1)
 ```
 
 #2019 season
 ```{r}
 NBA2019 <- nba_team_box_better %>% 
-  filter(season == "2019") %>% 
+filter(game_date >= '2018-10-16', game_date <= '2019-04-10') %>% 
   group_by (team_name) %>% 
 summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
   arrange(desc(avg_3pt))
 ```
 ```{r}
 Totals2019 <- nba_team_box_better %>% 
-  filter(season == "2019") %>% 
+filter(game_date >= '2018-10-16', game_date <= '2019-04-10') %>% 
   group_by (team_name) %>% 
   summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
 ```
@@ -209,14 +209,14 @@ Totals2019 <- nba_team_box_better %>%
 
 ```{r}
 NBA2019 <- nba_team_box_better %>% 
-  filter(season == "2019") %>% 
+filter(game_date >= '2018-10-16', game_date <= '2019-04-10') %>% 
   group_by (team_name) %>% 
 summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
   arrange(desc(avg_3pt))
 ```
 ```{r}
 Totals2019 <- nba_team_box_better %>% 
-  filter(season == "2019") %>% 
+filter(game_date >= '2018-10-16', game_date <= '2019-04-10') %>% 
   group_by (team_name) %>% 
   summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
 ```
@@ -258,21 +258,21 @@ teamcluster_2019 <- data.frame(Totals2019, k6_2019$cluster)
 
 ```{r}
 Raptors <- teamcluster_2019 %>% filter(team_name == "Raptors")
-cluster2_2019<- teamcluster_2019 %>% filter(k6_2019.cluster == 2)
+cluster5_2019<- teamcluster_2019 %>% filter(k6_2019.cluster == 5)
 ```
 
 
 #2018
 ```{r}
 NBA2018 <- nba_team_box_better %>% 
-  filter(season == "2018") %>% 
+filter(game_date >= '2017-10-17', game_date <= '2018-04-11') %>% 
   group_by (team_name) %>% 
 summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
   arrange(desc(avg_3pt))
 ```
 ```{r}
 Totals2018 <- nba_team_box_better %>% 
-  filter(season == "2018") %>% 
+filter(game_date >= '2017-10-17', game_date <= '2018-04-11') %>% 
   group_by (team_name) %>% 
   summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
 ```
@@ -280,14 +280,14 @@ Totals2018 <- nba_team_box_better %>%
 
 ```{r}
 NBA2018 <- nba_team_box_better %>% 
-  filter(season == "2018") %>% 
+filter(game_date >= '2017-10-17', game_date <= '2018-04-11') %>% 
   group_by (team_name) %>% 
 summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
   arrange(desc(avg_3pt))
 ```
 ```{r}
 Totals2018 <- nba_team_box_better %>% 
-  filter(season == "2018") %>% 
+filter(game_date >= '2017-10-17', game_date <= '2018-04-11') %>% 
   group_by (team_name) %>% 
   summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
 ```
@@ -327,20 +327,20 @@ teamcluster_2018 <- data.frame(Totals2018, k6_2018$cluster)
 ```
 ```{r}
 Warriors <- teamcluster_2018 %>% filter(team_name == "Warriors")
-cluster4_2018 <- teamcluster_2018 %>% filter(k6_2018.cluster == 4)
+cluster3_2018 <- teamcluster_2018 %>% filter(k6_2018.cluster == 3)
 ```
 
 #2017
 ```{r}
 NBA2017 <- nba_team_box_better %>% 
-  filter(season == "2017") %>% 
+filter(game_date >= '2016-10-25', game_date <= '2017-04-14') %>% 
   group_by (team_name) %>% 
 summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
   arrange(desc(avg_3pt))
 ```
 ```{r}
 Totals2017 <- nba_team_box_better %>% 
-  filter(season == "2017") %>% 
+filter(game_date >= '2017-10-17', game_date <= '2018-04-11') %>% 
   group_by (team_name) %>% 
   summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
 ```
@@ -348,14 +348,14 @@ Totals2017 <- nba_team_box_better %>%
 
 ```{r}
 NBA2017 <- nba_team_box_better %>% 
-  filter(season == "2017") %>% 
+filter(game_date >= '2017-10-17', game_date <= '2018-04-11') %>% 
   group_by (team_name) %>% 
 summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
   arrange(desc(avg_3pt))
 ```
 ```{r}
 Totals2017 <- nba_team_box_better %>% 
-  filter(season == "2017") %>% 
+filter(game_date >= '2017-10-17', game_date <= '2018-04-11') %>% 
   group_by (team_name) %>% 
   summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
 ```
@@ -397,7 +397,7 @@ teamcluster_2017 <- data.frame(Totals2017, k6_2017$cluster)
 ```
 ```{r}
 Warriors2017 <- teamcluster_2017 %>% filter(team_name == "Warriors")
-cluster2_2017<- teamcluster_2017 %>% filter(k6_2017.cluster == 2)
+cluster3_2017<- teamcluster_2017 %>% filter(k6_2017.cluster == 3)
 
 ```
 
@@ -406,14 +406,14 @@ cluster2_2017<- teamcluster_2017 %>% filter(k6_2017.cluster == 2)
 
 ```{r}
 NBA2016 <- nba_team_box_better %>% 
-  filter(season == "2016") %>% 
+filter(game_date >= '2015-10-27', game_date <= '2016-04-14') %>% 
   group_by (team_name) %>% 
 summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
   arrange(desc(avg_3pt))
 ```
 ```{r}
 Totals2016 <- nba_team_box_better %>% 
-  filter(season == "2016") %>% 
+filter(game_date >= '2015-10-27', game_date <= '2016-04-14') %>% 
   group_by (team_name) %>% 
   summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
 ```
@@ -421,14 +421,14 @@ Totals2016 <- nba_team_box_better %>%
 
 ```{r}
 NBA2016 <- nba_team_box_better %>% 
-  filter(season == "2016") %>% 
+filter(game_date >= '2015-10-27', game_date <= '2016-04-14') %>% 
   group_by (team_name) %>% 
 summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
   arrange(desc(avg_3pt))
 ```
 ```{r}
 Totals2016 <- nba_team_box_better %>% 
-  filter(season == "2016") %>% 
+filter(game_date >= '2015-10-27', game_date <= '2016-04-14') %>% 
   group_by (team_name) %>% 
   summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
 ```
