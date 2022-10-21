@@ -340,7 +340,7 @@ summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>%
 ```
 ```{r}
 Totals2017 <- nba_team_box_better %>% 
-filter(game_date >= '2017-10-17', game_date <= '2018-04-11') %>% 
+filter(game_date >= '2016-10-25', game_date <= '2017-04-14') %>% 
   group_by (team_name) %>% 
   summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
 ```
@@ -348,14 +348,14 @@ filter(game_date >= '2017-10-17', game_date <= '2018-04-11') %>%
 
 ```{r}
 NBA2017 <- nba_team_box_better %>% 
-filter(game_date >= '2017-10-17', game_date <= '2018-04-11') %>% 
+filter(game_date >= '2016-10-25', game_date <= '2017-04-14') %>% 
   group_by (team_name) %>% 
 summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
   arrange(desc(avg_3pt))
 ```
 ```{r}
 Totals2017 <- nba_team_box_better %>% 
-filter(game_date >= '2017-10-17', game_date <= '2018-04-11') %>% 
+filter(game_date >= '2016-10-25', game_date <= '2017-04-14') %>% 
   group_by (team_name) %>% 
   summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
 ```
@@ -397,7 +397,7 @@ teamcluster_2017 <- data.frame(Totals2017, k6_2017$cluster)
 ```
 ```{r}
 Warriors2017 <- teamcluster_2017 %>% filter(team_name == "Warriors")
-cluster3_2017<- teamcluster_2017 %>% filter(k6_2017.cluster == 3)
+cluster5_2017<- teamcluster_2017 %>% filter(k6_2017.cluster == 5)
 
 ```
 
