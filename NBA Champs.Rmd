@@ -131,7 +131,6 @@ cluster4<- teamcluster_2021 %>% filter(k6_2021.cluster == 4)
 ```{r}
 ggplot() +
   geom_point(data=teamcluster_2021, aes(x=ThreePointMakes, y=FTA, color=k6_2021.cluster))
-
 ```
 #2020 Season below
 ```{r}
@@ -479,7 +478,7 @@ Before figuring out cluster:
 I chose these specific statistics because I feel that they are key indicators of potential success, especially over an 82 game season. While turnovers are not ideal, they are also a bi-product of high efficiency, quick moving offenses. Therefore, it would be interesting to further determine how this stat factors into crowning an NBA champion. Points in the paint and three point makes are specifically relevant because in the modern NBA, during the regular season, teams are looking for open three or open layups consistently. The best teams are able to live in these areas and therefore become strong indicators of winning. Assists again highlight the strength of a high powered offense, with worse teams tending to generate less assists. Rebounding works in a similar manner, giving insight into potentially the quality of a team's defense or their effectiveness cleaning up their own misses.
 
 After figuring out cluster:
-After narrowing down my main statistical determinants to three point makes, assists,field goal percentage and free throws attempted, the team that won the championship ended up in the strongest cluster every time besides 2016.
+After narrowing down my main statistical determinants to three point makes, assists,field goal percentage and free throws attempted, the team that won the championship ended up in the strongest cluster every time besides 2016.I chose three point makes because some of the best offenses in basketball shoot the most threes therefore they are likely to make the most. Similarly with field goal percentage, efficiency is usually the mark of a good team. I chose free throw attempts because my thought is that the best players get to the line often. Therefore, a team with the best players are also likely to be the best teams. Finally, I chose assists because they signify easy offense which the best offenses tend to have. By clustering them together, I expected to find the best teams in the NBA in the most positive cluster, which came to fruition. 
 
 
 
