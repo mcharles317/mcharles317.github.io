@@ -49,7 +49,7 @@ summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>%
 ```
 ```{r}
 Totals2021 <- nba_team_box_better %>% 
-  filter(season == "2021") %>% 
+filter(between(game_date, as.Date(2020-12-20), as.Date(2021-05-19))) %>% 
   group_by (team_name) %>% 
   summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
   
