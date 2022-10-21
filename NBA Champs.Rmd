@@ -30,11 +30,13 @@ progressr::with_progress({
 
 tictoc::toc()
 ```
+#Split columns for free throws, add field goal %, remove points in the paint
 
 ```{r}
 nba_team_box_better <- nba_team_box %>%
   separate(three_point_field_goals_made_three_point_field_goals_attempted, c('three_point_makes', 'three_point_attempts'),"-") %>% 
-  mutate(three_point_makes= as.numeric(three_point_makes), three_point_attempts= as.numeric(three_point_attempts ), total_rebounds= as.numeric(total_rebounds), total_turnovers =as.numeric(total_turnovers), points_in_paint= as.numeric(points_in_paint), assists= as.numeric(assists))
+  separate(free_throws_made_free_throws_attempted, c('free_throw_makes', 'free_throw_attempts'),"-") %>% 
+  mutate(three_point_makes= as.numeric(three_point_makes), three_point_attempts= as.numeric(three_point_attempts ), total_rebounds= as.numeric(total_rebounds), total_turnovers =as.numeric(total_turnovers), points_in_paint= as.numeric(points_in_paint), assists= as.numeric(assists), free_throw_makes =as.numeric(free_throw_makes),free_throw_attempts= as.numeric(free_throw_attempts), field_goal_pct= as.numeric(field_goal_pct) )
   
 
 
@@ -51,48 +53,47 @@ summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>%
 Totals2021 <- nba_team_box_better %>% 
 filter(game_date >= '2020-12-20', game_date <= '2021-05-19') %>% 
 group_by (team_name) %>% 
-  summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
-  
+  summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts)) 
 ```
 
 
 
 ```{r}
 Turnovers <- nba_team_box_better %>% 
-  filter(season == "2021") %>% 
+filter(game_date >= '2020-12-20', game_date <= '2021-05-19') %>% 
   group_by (team_name) %>% 
   summarise(all_turnovers = sum(total_turnovers))
 ```
 ```{r}
 PIP <- nba_team_box_better %>% 
-  filter(season == "2021") %>% 
+filter(game_date >= '2020-12-20', game_date <= '2021-05-19') %>% 
   group_by (team_name) %>% 
   summarise(sum(points_in_paint))
 ```
 ```{r}
 Assists <- nba_team_box_better %>% 
-  filter(season == "2021") %>% 
+filter(game_date >= '2020-12-20', game_date <= '2021-05-19') %>% 
   group_by (team_name) %>% 
   summarise(sum(assists))
 ```
 ```{r}
 ThreePointMakes <- nba_team_box_better %>% 
-  filter(season == "2021") %>% 
+filter(game_date >= '2020-12-20', game_date <= '2021-05-19') %>% 
   group_by (team_name) %>% 
   summarise(sum(three_point_makes))
 ```
 
 
 ```{r}
-TotalScale <- Totals2021 %>%
-  select(PointsinPaint, ThreePointMakes, Assists) %>%
+TotalScale_2021 <- Totals2021 %>%
+  select(ThreePointMakes, Assists, FG, FTA) %>%
   mutate_all(scale) %>%
   na.omit()
 ```
 ```{r}
  # function to compute total within-cluster sum of square
 wss <- function(k) {
-  kmeans(TotalScale, k, nstart = 10 )$tot.withinss
+  kmeans(TotalScale_2021, k, nstart = 10 )$tot.withinss
 }
 
 # Compute and plot wss for k = 1 to k = 15
@@ -109,30 +110,27 @@ plot(k.values, wss_values,
 
 ```
 ```{r}
-k6_2021 <- kmeans(TotalScale, centers = 5, nstart = 10)
+k6_2021 <- kmeans(TotalScale_2021, centers = 5, nstart = 10)
 
 ```
-```{r}
-TotalScale %>% 
-ggplot() +
-  geom_point(aes(x=ThreePointMakes, y=Assists, color="red")) 
-```
+
 ```{r}
 k6_2021
 teamcluster_2021 <- data.frame(Totals2021, k6_2021$cluster)
+champ2021 <- teamcluster_2021 %>% 
+  filter(team_name == "Bucks")
 ```
 ```{r}
 Bucks <- teamcluster_2021 %>% filter(team_name == "Bucks")
 
 cluster4<- teamcluster_2021 %>% filter(k6_2021.cluster == 4)
 
-cluster2<- teamcluster_2021 %>% filter(k6_2021.cluster == 2)
 
 ```
 
 ```{r}
 ggplot() +
-  geom_point(data=teamcluster_2021, aes(x=ThreePointMakes, y=TotalTurnovers, color=k6_2021.cluster))
+  geom_point(data=teamcluster_2021, aes(x=ThreePointMakes, y=FTA, color=k6_2021.cluster))
 
 ```
 #2020 Season below
@@ -146,13 +144,13 @@ summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>%
 ```{r}
 Totals2020 <- nba_team_box_better %>% 
 filter(game_date >= '2019-10-21', game_date <= '2020-08-15') %>% 
-  group_by (team_name) %>% 
-  summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
+ group_by (team_name) %>% 
+  summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts)) 
 ```
 
 ```{r}
 TotalScale2020 <- Totals2020 %>%
-  select(PointsinPaint, ThreePointMakes, Assists) %>%
+select(ThreePointMakes, Assists, FG, FTA) %>%
   mutate_all(scale) %>%
   na.omit()
 ```
@@ -188,7 +186,7 @@ teamcluster_2020 <- data.frame(Totals2020, k6_2020$cluster)
 ```
 ```{r}
 Lakers <- teamcluster_2020 %>% filter(team_name == "Lakers")
-cluster1_2020<- teamcluster_2020 %>% filter(k6_2020.cluster == 1)
+cluster5_2020<- teamcluster_2020 %>% filter(k6_2020.cluster == 5)
 ```
 
 #2019 season
@@ -203,7 +201,7 @@ summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>%
 Totals2019 <- nba_team_box_better %>% 
 filter(game_date >= '2018-10-16', game_date <= '2019-04-10') %>% 
   group_by (team_name) %>% 
-  summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
+  summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts)) 
 ```
 
 
@@ -218,12 +216,13 @@ summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>%
 Totals2019 <- nba_team_box_better %>% 
 filter(game_date >= '2018-10-16', game_date <= '2019-04-10') %>% 
   group_by (team_name) %>% 
-  summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
+ group_by (team_name) %>% 
+  summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts)) 
 ```
 
 ```{r}
 TotalScale2019 <- Totals2019 %>%
-  select(PointsinPaint, ThreePointMakes, Assists) %>%
+select(ThreePointMakes, Assists, FG, FTA) %>%
   mutate_all(scale) %>%
   na.omit()
 ```
@@ -274,7 +273,7 @@ summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>%
 Totals2018 <- nba_team_box_better %>% 
 filter(game_date >= '2017-10-17', game_date <= '2018-04-11') %>% 
   group_by (team_name) %>% 
-  summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
+  summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts)) 
 ```
 
 
@@ -288,13 +287,13 @@ summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>%
 ```{r}
 Totals2018 <- nba_team_box_better %>% 
 filter(game_date >= '2017-10-17', game_date <= '2018-04-11') %>% 
-  group_by (team_name) %>% 
-  summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
+ group_by (team_name) %>% 
+  summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts)) 
 ```
 
 ```{r}
 TotalScale2018 <- Totals2018 %>%
-  select(PointsinPaint, ThreePointMakes, Assists) %>%
+select(ThreePointMakes, Assists, FG, FTA) %>%
   mutate_all(scale) %>%
   na.omit()
 ```
@@ -327,7 +326,7 @@ teamcluster_2018 <- data.frame(Totals2018, k6_2018$cluster)
 ```
 ```{r}
 Warriors <- teamcluster_2018 %>% filter(team_name == "Warriors")
-cluster3_2018 <- teamcluster_2018 %>% filter(k6_2018.cluster == 3)
+cluster2_2018 <- teamcluster_2018 %>% filter(k6_2018.cluster == 2)
 ```
 
 #2017
@@ -342,7 +341,8 @@ summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>%
 Totals2017 <- nba_team_box_better %>% 
 filter(game_date >= '2016-10-25', game_date <= '2017-04-14') %>% 
   group_by (team_name) %>% 
-  summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
+  summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts)) 
+
 ```
 
 
@@ -357,12 +357,12 @@ summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>%
 Totals2017 <- nba_team_box_better %>% 
 filter(game_date >= '2016-10-25', game_date <= '2017-04-14') %>% 
   group_by (team_name) %>% 
-  summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
+  summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts))
 ```
 
 ```{r}
 TotalScale2017 <- Totals2017 %>%
-  select(PointsinPaint, ThreePointMakes, Assists) %>%
+select(ThreePointMakes, Assists, FG, FTA) %>%
   mutate_all(scale) %>%
   na.omit()
 ```
@@ -415,7 +415,7 @@ summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>%
 Totals2016 <- nba_team_box_better %>% 
 filter(game_date >= '2015-10-27', game_date <= '2016-04-14') %>% 
   group_by (team_name) %>% 
-  summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
+  summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts)) 
 ```
 
 
@@ -430,12 +430,12 @@ summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>%
 Totals2016 <- nba_team_box_better %>% 
 filter(game_date >= '2015-10-27', game_date <= '2016-04-14') %>% 
   group_by (team_name) %>% 
-  summarise(TotalRebounds = sum(total_rebounds),TotalTurnovers = sum(total_turnovers),PointsinPaint = sum(points_in_paint), ThreePointMakes = sum(three_point_makes), Assists = sum(assists)) 
+  summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts)) 
 ```
 
 ```{r}
 TotalScale2016 <- Totals2016 %>%
-  select(PointsinPaint, ThreePointMakes, Assists) %>%
+select(ThreePointMakes, Assists, FG, FTA) %>%
   mutate_all(scale) %>%
   na.omit()
 ```
@@ -471,7 +471,7 @@ teamcluster_2016 <- data.frame(Totals2016, k6_2016$cluster)
 
 ```{r}
 Cavs <- teamcluster_2016 %>% filter(team_name == "Cavaliers")
-cluster2_2016<- teamcluster_2016 %>% filter(k6_2016.cluster == 2)
+cluster1_2016<- teamcluster_2016 %>% filter(k6_2016.cluster == 1)
 ```
 
 Conclusions:
@@ -479,7 +479,7 @@ Before figuring out cluster:
 I chose these specific statistics because I feel that they are key indicators of potential success, especially over an 82 game season. While turnovers are not ideal, they are also a bi-product of high efficiency, quick moving offenses. Therefore, it would be interesting to further determine how this stat factors into crowning an NBA champion. Points in the paint and three point makes are specifically relevant because in the modern NBA, during the regular season, teams are looking for open three or open layups consistently. The best teams are able to live in these areas and therefore become strong indicators of winning. Assists again highlight the strength of a high powered offense, with worse teams tending to generate less assists. Rebounding works in a similar manner, giving insight into potentially the quality of a team's defense or their effectiveness cleaning up their own misses.
 
 After figuring out cluster:
-After narrowing down my main statistical determinants to three point makes, points in the paint and assists, the strongest cluster also happened to contain the most elite teams in the NBA during the 2021 season. As I mentioned in my previous analysis, I believe that all good NBA teams are attempting to get a lot of open threes and a lot of layups, both off of assists. This set of clusters supports this analysis thus far. Moving forward, my plan is to do this exact same clustering processs for the four seasons prior to determine whether or not this trend remains true. 
+After narrowing down my main statistical determinants to three point makes, assists,field goal percentage and free throws attempted, the team that won the championship ended up in the strongest cluster every time besides 2016.
 
 
 
