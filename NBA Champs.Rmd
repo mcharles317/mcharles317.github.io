@@ -480,7 +480,7 @@ I chose these specific statistics because I feel that they are key indicators of
 After figuring out cluster:
 After narrowing down my main statistical determinants to three point makes, assists,field goal percentage and free throws attempted, the team that won the championship ended up in the strongest cluster every time besides 2016.I chose three point makes because some of the best offenses in basketball shoot the most threes therefore they are likely to make the most. Similarly with field goal percentage, efficiency is usually the mark of a good team. I chose free throw attempts because my thought is that the best players get to the line often. Therefore, a team with the best players are also likely to be the best teams. Finally, I chose assists because they signify easy offense which the best offenses tend to have. By clustering them together, I expected to find the best teams in the NBA in the most positive cluster, which came to fruition. 
 
-
+From here, i am attempting to make cluster charts for each team. I specifically want to highlight a certain selection of teams on each chart if possible. I attempted code for that but it wasn't working out properly so I scraped it. I feel like highlighting these specific points will help depict my findings well. 
 
 
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
