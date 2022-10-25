@@ -540,3 +540,13 @@ When you save the notebook, an HTML file containing the code and output will be 
 
 The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
 
+
+```{r}
+standings2021 <- espn_nba_standings(2021) %>% mutate(season = 2021)
+
+teamcluster_2021 <- teamcluster_2021 %>% inner_join(standings2021, by=c("team_display_name"="team"))
+
+```
+
+#Add team display name in group by's where it says team name
+Re-update standings and attach wins to clusters.
