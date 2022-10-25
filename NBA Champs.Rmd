@@ -41,7 +41,7 @@ nba_team_box_better <- nba_team_box %>%
 
 ```{r}
 nba_team_box_better <- nba_team_box_better %>% 
-  filter(team_name!= "All-Stars", team_name!= "Team LeBron", team_name!= "World", team_name!= "USA", team_name!= "Team Stephen", team_name!= "Team Giannis", team_name!= "Team Durant")
+  filter(team_display_name!= "All-Stars", team_display_name!= "Team LeBron", team_display_name!= "World", team_display_name!= "USA", team_display_name!= "Team Stephen", team_display_name!= "Team Giannis", team_display_name!= "Team Durant")
 ```
 
 
@@ -51,14 +51,14 @@ nba_team_box_better <- nba_team_box_better %>%
 ```{r}
 NBA2022 <- nba_team_box_better %>% 
 filter(game_date >= '2020-12-20', game_date <= '2021-05-19') %>% 
-group_by (team_name) %>% 
+group_by (team_display_name) %>% 
 summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
   arrange(desc(avg_3pt))
 ```
 ```{r}
 Totals2021 <- nba_team_box_better %>% 
 filter(game_date >= '2020-12-20', game_date <= '2021-05-19') %>% 
-group_by (team_name) %>% 
+group_by (team_display_name) %>% 
   summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct)) 
 ```
 
@@ -67,25 +67,25 @@ group_by (team_name) %>%
 ```{r}
 Turnovers <- nba_team_box_better %>% 
 filter(game_date >= '2020-12-20', game_date <= '2021-05-19') %>% 
-  group_by (team_name) %>% 
+  group_by (team_display_name) %>% 
   summarise(all_turnovers = sum(total_turnovers))
 ```
 ```{r}
 PIP <- nba_team_box_better %>% 
 filter(game_date >= '2020-12-20', game_date <= '2021-05-19') %>% 
-  group_by (team_name) %>% 
+  group_by (team_display_name) %>% 
   summarise(sum(points_in_paint))
 ```
 ```{r}
 Assists <- nba_team_box_better %>% 
 filter(game_date >= '2020-12-20', game_date <= '2021-05-19') %>% 
-  group_by (team_name) %>% 
+  group_by (team_display_name) %>% 
   summarise(sum(assists))
 ```
 ```{r}
 ThreePointMakes <- nba_team_box_better %>% 
 filter(game_date >= '2020-12-20', game_date <= '2021-05-19') %>% 
-  group_by (team_name) %>% 
+  group_by (team_display_name) %>% 
   summarise(sum(three_point_makes))
 ```
 
@@ -124,33 +124,41 @@ k6_2021 <- kmeans(TotalScale_2021, centers = 8, nstart = 10)
 k6_2021
 teamcluster_2021 <- data.frame(Totals2021, k6_2021$cluster)
 champ2021 <- teamcluster_2021 %>% 
-  filter(team_name == "Bucks")
+  filter(team_display_name == "Milwaukee Bucks")
 ```
 ```{r}
-Bucks <- teamcluster_2021 %>% filter(team_name == "Bucks")
+standings2021 <- espn_nba_standings(2021) %>% mutate(season = 2021)
 
-cluster4<- teamcluster_2021 %>% filter(k6_2021.cluster == 4)
+teamcluster_2021 <- teamcluster_2021 %>% inner_join(standings2021, by=c("team_display_name"="team"))
+
+```
+
+
+```{r}
+Bucks <- teamcluster_2021 %>% filter(team_display_name == "Milwaukee Bucks")
+
+cluster5<- teamcluster_2021 %>% filter(k6_2021.cluster == 5)
 
 
 ```
 
 ```{r}
 ggplot() +
-  geom_point(data=teamcluster_2021, aes(x=ThreePointMakes, y=Assists, color=k6_2021.cluster))
-geom_point(data=Bucks, aes(x=ThreePointMakes, y=Assists, color= red))
+  geom_point(data=teamcluster_2021, aes(x=fg_3pt, y=Assists, color=k6_2021.cluster))
+geom_point(data=Bucks, aes(x=fg_3pt, y=Assists, color= "red"))
 ```
 #2020 Season below
 ```{r}
 NBA2020 <- nba_team_box_better %>% 
 filter(game_date >= '2019-10-21', game_date <= '2020-08-15') %>% 
-group_by (team_name) %>% 
+group_by (team_display_name) %>% 
 summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
   arrange(desc(avg_3pt))
 ```
 ```{r}
 Totals2020 <- nba_team_box_better %>% 
 filter(game_date >= '2019-10-21', game_date <= '2020-08-15') %>% 
- group_by (team_name) %>% 
+ group_by (team_display_name) %>% 
   summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct)) 
 ```
 
@@ -191,14 +199,21 @@ k6_2020
 teamcluster_2020 <- data.frame(Totals2020, k6_2020$cluster)
 ```
 ```{r}
-Lakers <- teamcluster_2020 %>% filter(team_name == "Lakers")
-cluster7_2020<- teamcluster_2020 %>% filter(k6_2020.cluster == 7)
+standings2020 <- espn_nba_standings(2020) %>% mutate(season = 2020)
+
+teamcluster_2020 <- teamcluster_2020 %>% inner_join(standings2020, by=c("team_display_name"="team"))
+
+```
+
+```{r}
+Lakers <- teamcluster_2020 %>% filter(team_display_name == "Los Angeles Lakers")
+cluster1_2020<- teamcluster_2020 %>% filter(k6_2020.cluster == 1)
 ```
 
 ```{r}
 ggplot() +
-  geom_point(data=teamcluster_2020, aes(x=ThreePointMakes, y=Assists, color=k6_2020.cluster)) +
-  geom_point(data=Lakers, aes(x=ThreePointMakes, y=Assists), color="red")
+  geom_point(data=teamcluster_2020, aes(x=fg_3pt, y=Assists, color=k6_2020.cluster)) +
+  geom_point(data=Lakers, aes(x=fg_3pt, y=Assists), color="red")
 ```
 
 
@@ -206,14 +221,14 @@ ggplot() +
 ```{r}
 NBA2019 <- nba_team_box_better %>% 
 filter(game_date >= '2018-10-16', game_date <= '2019-04-10') %>% 
-  group_by (team_name) %>% 
+  group_by (team_display_name) %>% 
 summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
   arrange(desc(avg_3pt))
 ```
 ```{r}
 Totals2019 <- nba_team_box_better %>% 
 filter(game_date >= '2018-10-16', game_date <= '2019-04-10') %>% 
-  group_by (team_name) %>% 
+  group_by (team_display_name) %>% 
   summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct)) 
 ```
 
@@ -221,15 +236,15 @@ filter(game_date >= '2018-10-16', game_date <= '2019-04-10') %>%
 ```{r}
 NBA2019 <- nba_team_box_better %>% 
 filter(game_date >= '2018-10-16', game_date <= '2019-04-10') %>% 
-  group_by (team_name) %>% 
+  group_by (team_display_name) %>% 
 summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
   arrange(desc(avg_3pt))
 ```
 ```{r}
 Totals2019 <- nba_team_box_better %>% 
 filter(game_date >= '2018-10-16', game_date <= '2019-04-10') %>% 
-  group_by (team_name) %>% 
- group_by (team_name) %>% 
+  group_by (team_display_name) %>% 
+ group_by (team_display_name) %>% 
   summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct)) 
 ```
 
@@ -269,14 +284,21 @@ teamcluster_2019 <- data.frame(Totals2019, k6_2019$cluster)
 ```
 
 ```{r}
-Raptors <- teamcluster_2019 %>% filter(team_name == "Raptors")
-cluster5_2019<- teamcluster_2019 %>% filter(k6_2019.cluster == 5)
+standings2019 <- espn_nba_standings(2019) %>% mutate(season = 2019)
+
+teamcluster_2019 <- teamcluster_2019 %>% inner_join(standings2019, by=c("team_display_name"="team"))
+
+```
+
+```{r}
+Raptors <- teamcluster_2019 %>% filter(team_display_name == "Toronto Raptors")
+cluster6_2019<- teamcluster_2019 %>% filter(k6_2019.cluster == 6)
 ```
 
 ```{r}
 ggplot() +
-  geom_point(data=teamcluster_2019, aes(x=ThreePointMakes, y=Assists, color=k6_2019.cluster)) +
-  geom_point(data=Raptors, aes(x=ThreePointMakes, y=Assists), color="red")
+  geom_point(data=teamcluster_2019, aes(x=fg_3pt, y=Assists, color=k6_2019.cluster)) +
+  geom_point(data=Raptors, aes(x=fg_3pt, y=Assists), color="red")
 ```
 
 
@@ -284,14 +306,14 @@ ggplot() +
 ```{r}
 NBA2018 <- nba_team_box_better %>% 
 filter(game_date >= '2017-10-17', game_date <= '2018-04-11') %>% 
-  group_by (team_name) %>% 
+  group_by (team_display_name) %>% 
 summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
   arrange(desc(avg_3pt))
 ```
 ```{r}
 Totals2018 <- nba_team_box_better %>% 
 filter(game_date >= '2017-10-17', game_date <= '2018-04-11') %>% 
-  group_by (team_name) %>% 
+  group_by (team_display_name) %>% 
   summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct)) 
 ```
 
@@ -299,14 +321,14 @@ filter(game_date >= '2017-10-17', game_date <= '2018-04-11') %>%
 ```{r}
 NBA2018 <- nba_team_box_better %>% 
 filter(game_date >= '2017-10-17', game_date <= '2018-04-11') %>% 
-  group_by (team_name) %>% 
+  group_by (team_display_name) %>% 
 summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
   arrange(desc(avg_3pt))
 ```
 ```{r}
 Totals2018 <- nba_team_box_better %>% 
 filter(game_date >= '2017-10-17', game_date <= '2018-04-11') %>% 
- group_by (team_name) %>% 
+ group_by (team_display_name) %>% 
   summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct)) 
 ```
 
@@ -344,14 +366,21 @@ k6_2018
 teamcluster_2018 <- data.frame(Totals2018, k6_2018$cluster)
 ```
 ```{r}
-Warriors <- teamcluster_2018 %>% filter(team_name == "Warriors")
-cluster6_2018 <- teamcluster_2018 %>% filter(k6_2018.cluster == 6)
+standings2018 <- espn_nba_standings(2018) %>% mutate(season = 2018)
+
+teamcluster_2018 <- teamcluster_2018 %>% inner_join(standings2018, by=c("team_display_name"="team"))
+
+```
+
+```{r}
+Warriors <- teamcluster_2018 %>% filter(team_display_name == "Golden State Warriors")
+cluster5_2018 <- teamcluster_2018 %>% filter(k6_2018.cluster == 5)
 ```
 
 ```{r}
 ggplot() +
-  geom_point(data=teamcluster_2018, aes(x=ThreePointMakes, y=Assists, color=k6_2018.cluster)) +
-  geom_point(data=Warriors, aes(x=ThreePointMakes, y=Assists), color="red")
+  geom_point(data=teamcluster_2018, aes(x=fg_3pt, y=Assists, color=k6_2018.cluster)) +
+  geom_point(data=Warriors, aes(x=fg_3pt, y=Assists), color="red")
 ```
 
 
@@ -359,14 +388,14 @@ ggplot() +
 ```{r}
 NBA2017 <- nba_team_box_better %>% 
 filter(game_date >= '2016-10-25', game_date <= '2017-04-14') %>% 
-  group_by (team_name) %>% 
+  group_by (team_display_name) %>% 
 summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
   arrange(desc(avg_3pt))
 ```
 ```{r}
 Totals2017 <- nba_team_box_better %>% 
 filter(game_date >= '2016-10-25', game_date <= '2017-04-14') %>% 
-  group_by (team_name) %>% 
+  group_by (team_display_name) %>% 
   summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct)) 
 
 ```
@@ -375,14 +404,14 @@ filter(game_date >= '2016-10-25', game_date <= '2017-04-14') %>%
 ```{r}
 NBA2017 <- nba_team_box_better %>% 
 filter(game_date >= '2016-10-25', game_date <= '2017-04-14') %>% 
-  group_by (team_name) %>% 
+  group_by (team_display_name) %>% 
 summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
   arrange(desc(avg_3pt))
 ```
 ```{r}
 Totals2017 <- nba_team_box_better %>% 
 filter(game_date >= '2016-10-25', game_date <= '2017-04-14') %>% 
-  group_by (team_name) %>% 
+  group_by (team_display_name) %>% 
   summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct))
 ```
 
@@ -421,15 +450,23 @@ k6_2017 <- kmeans(TotalScale2017, centers = 8, nstart = 10)
 k6_2017
 teamcluster_2017 <- data.frame(Totals2017, k6_2017$cluster)
 ```
+
 ```{r}
-Warriors2017 <- teamcluster_2017 %>% filter(team_name == "Warriors")
-cluster7_2017<- teamcluster_2017 %>% filter(k6_2017.cluster == 7)
+standings2017 <- espn_nba_standings(2017) %>% mutate(season = 2017)
+
+teamcluster_2017 <- teamcluster_2017 %>% inner_join(standings2017, by=c("team_display_name"="team"))
+
+```
+
+```{r}
+Warriors2017 <- teamcluster_2017 %>% filter(team_display_name == "Golden State Warriors")
+cluster1_2017<- teamcluster_2017 %>% filter(k6_2017.cluster == 1)
 ```
 
 ```{r}
 ggplot() +
-  geom_point(data=teamcluster_2017, aes(x=ThreePointMakes, y=Assists, color=k6_2017.cluster)) +
-  geom_point(data=Warriors2017, aes(x=ThreePointMakes, y=Assists), color="red")
+  geom_point(data=teamcluster_2017, aes(x=fg_3pt, y=Assists, color=k6_2017.cluster)) +
+  geom_point(data=Warriors2017, aes(x=fg_3pt, y=Assists), color="red")
 ```
 
 
@@ -438,14 +475,14 @@ ggplot() +
 ```{r}
 NBA2016 <- nba_team_box_better %>% 
 filter(game_date >= '2015-10-27', game_date <= '2016-04-14') %>% 
-  group_by (team_name) %>% 
+  group_by (team_display_name) %>% 
 summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
   arrange(desc(avg_3pt))
 ```
 ```{r}
 Totals2016 <- nba_team_box_better %>% 
 filter(game_date >= '2015-10-27', game_date <= '2016-04-14') %>% 
-  group_by (team_name) %>% 
+  group_by (team_display_name) %>% 
   summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct)) 
 ```
 
@@ -453,14 +490,14 @@ filter(game_date >= '2015-10-27', game_date <= '2016-04-14') %>%
 ```{r}
 NBA2016 <- nba_team_box_better %>% 
 filter(game_date >= '2015-10-27', game_date <= '2016-04-14') %>% 
-  group_by (team_name) %>% 
+  group_by (team_display_name) %>% 
 summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>% 
   arrange(desc(avg_3pt))
 ```
 ```{r}
 Totals2016 <- nba_team_box_better %>% 
 filter(game_date >= '2015-10-27', game_date <= '2016-04-14') %>% 
-  group_by (team_name) %>% 
+  group_by (team_display_name) %>% 
   summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct)) 
 ```
 
@@ -501,13 +538,20 @@ teamcluster_2016 <- data.frame(Totals2016, k6_2016$cluster)
 ```
 
 ```{r}
-Cavs <- teamcluster_2016 %>% filter(team_name == "Cavaliers")
-cluster6_2016<- teamcluster_2016 %>% filter(k6_2016.cluster == 6)
+standings2016 <- espn_nba_standings(2016) %>% mutate(season = 2016)
+
+teamcluster_2016 <- teamcluster_2016 %>% inner_join(standings2016, by=c("team_display_name"="team"))
+
+```
+
+```{r}
+Cavs <- teamcluster_2016 %>% filter(team_display_name == "Cleveland Cavaliers")
+cluster2_2016<- teamcluster_2016 %>% filter(k6_2016.cluster == 2)
 ```
 ```{r}
 ggplot() +
-  geom_point(data=teamcluster_2016, aes(x=ThreePointMakes, y=Assists, color=k6_2016.cluster)) +
-  geom_point(data=Cavs, aes(x=ThreePointMakes, y=Assists), color="red")
+  geom_point(data=teamcluster_2016, aes(x=fg_3pt, y=Assists, color=k6_2016.cluster)) +
+  geom_point(data=Cavs, aes(x=fg_3pt, y=Assists), color="red")
 ```
 
 
@@ -530,7 +574,7 @@ From here, i am attempting to make cluster charts for each team. I specifically 
 
 ```{r}
 nba_team_box_better <- nba_team_box_better %>% 
-  filter(team_name!= "All-Stars", team_name!= "Team LeBron", team_name!= "World", team_name!= "USA", team_name!= "Team Stephen", team_name!= "Team Giannis", team_name!= "Team Durant")
+  filter(team_display_name!= "All-Stars", team_display_name!= "Team LeBron", team_display_name!= "World", team_display_name!= "USA", team_display_name!= "Team Stephen", team_display_name!= "Team Giannis", team_display_name!= "Team Durant")
 ```
 
 
