@@ -144,7 +144,7 @@ cluster5<- teamcluster_2021 %>% filter(k6_2021.cluster == 5)
 
 ```{r}
 ggplot() +
-  geom_point(data=teamcluster_2021, aes(x=fg_3pt, y=Assists, color=k6_2021.cluster))
+  geom_point(data=teamcluster_2021, aes(x=fg_3pt, y=Assists, size = wins, color=k6_2021.cluster))
 geom_point(data=Bucks, aes(x=fg_3pt, y=Assists, color= "red"))
 ```
 #2020 Season below
