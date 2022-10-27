@@ -59,7 +59,7 @@ summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>%
 Totals2021 <- nba_team_box_better %>% 
 filter(game_date >= '2020-12-20', game_date <= '2021-05-19') %>% 
 group_by (team_display_name) %>% 
-  summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct)) 
+  summarise(three_point_attempts = sum(three_point_attempts), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct)) 
 ```
 
 
@@ -83,16 +83,16 @@ filter(game_date >= '2020-12-20', game_date <= '2021-05-19') %>%
   summarise(sum(assists))
 ```
 ```{r}
-ThreePointMakes <- nba_team_box_better %>% 
+ThreePointAttempts <- nba_team_box_better %>% 
 filter(game_date >= '2020-12-20', game_date <= '2021-05-19') %>% 
   group_by (team_display_name) %>% 
-  summarise(sum(three_point_makes))
+  summarise(sum(three_point_attempts))
 ```
 
 
 ```{r}
 TotalScale_2021 <- Totals2021 %>%
-  select(ThreePointMakes, Assists, FG, FTA, fg_3pt) %>%
+  select(three_point_attempts, Assists, FG,fg_3pt) %>%
   mutate_all(scale) %>%
   na.omit()
 ```
@@ -116,7 +116,7 @@ plot(k.values, wss_values,
 
 ```
 ```{r}
-k6_2021 <- kmeans(TotalScale_2021, centers = 8, nstart = 10)
+k6_2021 <- kmeans(TotalScale_2021, centers = 6, nstart = 10)
 
 ```
 
@@ -137,15 +137,15 @@ teamcluster_2021 <- teamcluster_2021 %>% inner_join(standings2021, by=c("team_di
 ```{r}
 Bucks <- teamcluster_2021 %>% filter(team_display_name == "Milwaukee Bucks")
 
-cluster5<- teamcluster_2021 %>% filter(k6_2021.cluster == 5)
+cluster4<- teamcluster_2021 %>% filter(k6_2021.cluster == 4)
 
 
 ```
 
 ```{r}
 ggplot() +
-  geom_point(data=teamcluster_2021, aes(x=fg_3pt, y=Assists, size = wins, color=k6_2021.cluster))
-geom_point(data=Bucks, aes(x=fg_3pt, y=Assists, color= "red"))
+  geom_point(data=teamcluster_2021, aes(x=fg_3pt, y=three_point_attempts, size = wins, color=k6_2021.cluster))
+geom_point(data=Bucks, aes(x=fg_3pt, y=three_point_attempts, color= "red"))
 ```
 #2020 Season below
 ```{r}
@@ -159,12 +159,12 @@ summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>%
 Totals2020 <- nba_team_box_better %>% 
 filter(game_date >= '2019-10-21', game_date <= '2020-08-15') %>% 
  group_by (team_display_name) %>% 
-  summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct)) 
+  summarise(ThreePointAttempts = sum(three_point_attempts), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct)) 
 ```
 
 ```{r}
 TotalScale2020 <- Totals2020 %>%
-select(ThreePointMakes, Assists, FG, FTA, fg_3pt) %>%
+select(ThreePointAttempts, Assists, FG, fg_3pt) %>%
   mutate_all(scale) %>%
   na.omit()
 ```
@@ -191,7 +191,7 @@ plot(k.values, wss_values,
 
 When I attempt to make another cluster, it overwrites the previous one. How do I fix that?
 ```{r}
-k6_2020 <- kmeans(TotalScale2020, centers = 8, nstart = 10)
+k6_2020 <- kmeans(TotalScale2020, centers = 6, nstart = 10)
 ```
 
 ```{r}
@@ -207,13 +207,13 @@ teamcluster_2020 <- teamcluster_2020 %>% inner_join(standings2020, by=c("team_di
 
 ```{r}
 Lakers <- teamcluster_2020 %>% filter(team_display_name == "Los Angeles Lakers")
-cluster1_2020<- teamcluster_2020 %>% filter(k6_2020.cluster == 1)
+cluster5_2020<- teamcluster_2020 %>% filter(k6_2020.cluster == 5)
 ```
 
 ```{r}
 ggplot() +
-  geom_point(data=teamcluster_2020, aes(x=fg_3pt, y=Assists, color=k6_2020.cluster)) +
-  geom_point(data=Lakers, aes(x=fg_3pt, y=Assists), color="red")
+  geom_point(data=teamcluster_2020, aes(x=fg_3pt, y=ThreePointAttempts, size = wins, color=k6_2020.cluster)) +
+  geom_point(data=Lakers, aes(x=fg_3pt, y=ThreePointAttempts), color="red")
 ```
 
 
@@ -229,7 +229,7 @@ summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>%
 Totals2019 <- nba_team_box_better %>% 
 filter(game_date >= '2018-10-16', game_date <= '2019-04-10') %>% 
   group_by (team_display_name) %>% 
-  summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct)) 
+  summarise(ThreePointAttempts = sum(three_point_attempts), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct)) 
 ```
 
 
@@ -245,12 +245,12 @@ Totals2019 <- nba_team_box_better %>%
 filter(game_date >= '2018-10-16', game_date <= '2019-04-10') %>% 
   group_by (team_display_name) %>% 
  group_by (team_display_name) %>% 
-  summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct)) 
+  summarise(ThreePointAttempts = sum(three_point_attempts), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct)) 
 ```
 
 ```{r}
 TotalScale2019 <- Totals2019 %>%
-select(ThreePointMakes, Assists, FG, FTA, fg_3pt) %>%
+select(ThreePointAttempts, Assists, FG, fg_3pt) %>%
   mutate_all(scale) %>%
   na.omit()
 ```
@@ -275,7 +275,7 @@ plot(k.values, wss_values,
 ```
 
 ```{r}
-k6_2019 <- kmeans(TotalScale2019, centers = 8, nstart = 10)
+k6_2019 <- kmeans(TotalScale2019, centers = 6, nstart = 10)
 ```
 
 ```{r}
@@ -292,13 +292,13 @@ teamcluster_2019 <- teamcluster_2019 %>% inner_join(standings2019, by=c("team_di
 
 ```{r}
 Raptors <- teamcluster_2019 %>% filter(team_display_name == "Toronto Raptors")
-cluster6_2019<- teamcluster_2019 %>% filter(k6_2019.cluster == 6)
+cluster4_2019<- teamcluster_2019 %>% filter(k6_2019.cluster == 4)
 ```
 
 ```{r}
 ggplot() +
-  geom_point(data=teamcluster_2019, aes(x=fg_3pt, y=Assists, color=k6_2019.cluster)) +
-  geom_point(data=Raptors, aes(x=fg_3pt, y=Assists), color="red")
+  geom_point(data=teamcluster_2019, aes(x=fg_3pt, y=ThreePointAttempts, size = wins, color=k6_2019.cluster)) +
+  geom_point(data=Raptors, aes(x=fg_3pt, y=ThreePointAttempts), color="red")
 ```
 
 
@@ -314,7 +314,7 @@ summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>%
 Totals2018 <- nba_team_box_better %>% 
 filter(game_date >= '2017-10-17', game_date <= '2018-04-11') %>% 
   group_by (team_display_name) %>% 
-  summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct)) 
+  summarise(ThreePointAttempts = sum(three_point_attempts), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct)) 
 ```
 
 
@@ -329,12 +329,12 @@ summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>%
 Totals2018 <- nba_team_box_better %>% 
 filter(game_date >= '2017-10-17', game_date <= '2018-04-11') %>% 
  group_by (team_display_name) %>% 
-  summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct)) 
+  summarise(ThreePointAttempts = sum(three_point_attempts), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct)) 
 ```
 
 ```{r}
 TotalScale2018 <- Totals2018 %>%
-select(ThreePointMakes, Assists, FG, FTA, fg_3pt) %>%
+select(ThreePointAttempts, Assists, FG, fg_3pt) %>%
   mutate_all(scale) %>%
   na.omit()
 ```
@@ -358,7 +358,7 @@ plot(k.values, wss_values,
 
 ```
 ```{r}
-k6_2018 <- kmeans(TotalScale2018, centers = 8, nstart = 10)
+k6_2018 <- kmeans(TotalScale2018, centers = 6, nstart = 10)
 ```
 
 ```{r}
@@ -379,8 +379,8 @@ cluster5_2018 <- teamcluster_2018 %>% filter(k6_2018.cluster == 5)
 
 ```{r}
 ggplot() +
-  geom_point(data=teamcluster_2018, aes(x=fg_3pt, y=Assists, color=k6_2018.cluster)) +
-  geom_point(data=Warriors, aes(x=fg_3pt, y=Assists), color="red")
+  geom_point(data=teamcluster_2018, aes(x=fg_3pt, y=ThreePointAttempts, size = wins, color=k6_2018.cluster)) +
+  geom_point(data=Warriors, aes(x=fg_3pt, y=ThreePointAttempts), color="red")
 ```
 
 
@@ -396,7 +396,7 @@ summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>%
 Totals2017 <- nba_team_box_better %>% 
 filter(game_date >= '2016-10-25', game_date <= '2017-04-14') %>% 
   group_by (team_display_name) %>% 
-  summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct)) 
+  summarise(ThreePointAttempts = sum(three_point_attempts), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct)) 
 
 ```
 
@@ -412,12 +412,12 @@ summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>%
 Totals2017 <- nba_team_box_better %>% 
 filter(game_date >= '2016-10-25', game_date <= '2017-04-14') %>% 
   group_by (team_display_name) %>% 
-  summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct))
+  summarise(ThreePointAttempts = sum(three_point_attempts), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct))
 ```
 
 ```{r}
 TotalScale2017 <- Totals2017 %>%
-select(ThreePointMakes, Assists, FG, FTA, fg_3pt) %>%
+select(ThreePointAttempts, Assists, FG, fg_3pt) %>%
   mutate_all(scale) %>%
   na.omit()
 ```
@@ -443,7 +443,7 @@ plot(k.values, wss_values,
 
 
 ```{r}
-k6_2017 <- kmeans(TotalScale2017, centers = 8, nstart = 10)
+k6_2017 <- kmeans(TotalScale2017, centers = 6, nstart = 10)
 ```
 
 ```{r}
@@ -460,13 +460,13 @@ teamcluster_2017 <- teamcluster_2017 %>% inner_join(standings2017, by=c("team_di
 
 ```{r}
 Warriors2017 <- teamcluster_2017 %>% filter(team_display_name == "Golden State Warriors")
-cluster1_2017<- teamcluster_2017 %>% filter(k6_2017.cluster == 1)
+cluster3_2017<- teamcluster_2017 %>% filter(k6_2017.cluster == 3)
 ```
 
 ```{r}
 ggplot() +
-  geom_point(data=teamcluster_2017, aes(x=fg_3pt, y=Assists, color=k6_2017.cluster)) +
-  geom_point(data=Warriors2017, aes(x=fg_3pt, y=Assists), color="red")
+  geom_point(data=teamcluster_2017, aes(x=fg_3pt, y=ThreePointAttempts, size = wins, color=k6_2017.cluster)) +
+  geom_point(data=Warriors2017, aes(x=fg_3pt, y=ThreePointAttempts), color="red")
 ```
 
 
@@ -483,7 +483,7 @@ summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>%
 Totals2016 <- nba_team_box_better %>% 
 filter(game_date >= '2015-10-27', game_date <= '2016-04-14') %>% 
   group_by (team_display_name) %>% 
-  summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct)) 
+  summarise(ThreePointAttempts = sum(three_point_attempts), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct)) 
 ```
 
 
@@ -498,12 +498,12 @@ summarize(avg_3pt = sum(three_point_makes)/sum(three_point_attempts)*100) %>%
 Totals2016 <- nba_team_box_better %>% 
 filter(game_date >= '2015-10-27', game_date <= '2016-04-14') %>% 
   group_by (team_display_name) %>% 
-  summarise(ThreePointMakes = sum(three_point_makes), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct)) 
+  summarise(ThreePointAttempts = sum(three_point_attempts), Assists = sum(assists), FG = mean(field_goal_pct), FTA = sum(free_throw_attempts), fg_3pt= mean(three_point_field_goal_pct)) 
 ```
 
 ```{r}
 TotalScale2016 <- Totals2016 %>%
-select(ThreePointMakes, Assists, FG, FTA, fg_3pt) %>%
+select(ThreePointAttempts, Assists, FG, fg_3pt) %>%
   mutate_all(scale) %>%
   na.omit()
 ```
@@ -529,7 +529,7 @@ plot(k.values, wss_values,
 
 
 ```{r}
-k6_2016 <- kmeans(TotalScale2016, centers = 8, nstart = 10)
+k6_2016 <- kmeans(TotalScale2016, centers = 6, nstart = 10)
 ```
 
 ```{r}
@@ -550,8 +550,8 @@ cluster2_2016<- teamcluster_2016 %>% filter(k6_2016.cluster == 2)
 ```
 ```{r}
 ggplot() +
-  geom_point(data=teamcluster_2016, aes(x=fg_3pt, y=Assists, color=k6_2016.cluster)) +
-  geom_point(data=Cavs, aes(x=fg_3pt, y=Assists), color="red")
+  geom_point(data=teamcluster_2016, aes(x=fg_3pt, y=ThreePointAttempts, size = wins, color=k6_2016.cluster)) +
+  geom_point(data=Cavs, aes(x=fg_3pt, y=ThreePointAttempts), color="red")
 ```
 
 
