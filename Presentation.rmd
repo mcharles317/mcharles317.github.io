@@ -143,7 +143,7 @@ Now, I can graph specifically based on three point attempts and corresponding pe
 ```{r}
 ggplot() +
   geom_point(data=teamcluster_2021, aes(x=fg_3pt, y=three_point_attempts, size = wins, color=k6_2021.cluster))
-geom_point(data=Bucks, aes(x=fg_3pt, y=three_point_attempts, color= "red"))
+geom_point(data=Bucks, aes(x=fg_3pt, y=three_point_attempts, color= "red",))
 ```
 Based on the Bucks' cluster and their position in this graphic, it's clear to see why the Bucks were champions. Their cluster was also made up of the Nets, Nuggets, Clippers and Suns, all of whom made it to at least the conference semifinals. The Bucks beat the Nets and Suns in route to a championship.
 
@@ -214,7 +214,7 @@ cluster5_2020<- teamcluster_2020 %>% filter(k6_2020.cluster == 5)
 ```{r}
 ggplot() +
   geom_point(data=teamcluster_2020, aes(x=fg_3pt, y=ThreePointAttempts, size = wins, color=k6_2020.cluster)) +
-  geom_point(data=Lakers, aes(x=fg_3pt, y=ThreePointAttempts), color="red")
+  geom_point(data=Lakers, aes(x=fg_3pt, y=ThreePointAttempts, color="red")
 ```
 Analyzing this chart and the corresponding clustering, the Lakers are acutally an outlier among the champions. However, they fall in the same cluster as the Denver Nuggets who they faced in the Western Conference Finals. 
 
