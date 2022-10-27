@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.104.3" />
+
+
+<title>Volleyball Aces - A Hugo website</title>
+<meta property="og:title" content="Volleyball Aces - A Hugo website">
+
+
+  <link href='https://mcharles317.github.io/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://github.com/mcharles317">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/rstudio">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">3 min read</span>
+    
+
+    <h1 class="article-title">Volleyball Aces</h1>
+
+    
+    <span class="article-date">2022-10-27</span>
+    
+
+    <div class="article-content">
+      
+
+
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
+## ✔ ggplot2 3.3.6      ✔ purrr   0.3.5 
+## ✔ tibble  3.1.8      ✔ dplyr   1.0.10
+## ✔ tidyr   1.2.1      ✔ stringr 1.4.1 
+## ✔ readr   2.1.3      ✔ forcats 0.5.2 
+## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(ggbeeswarm)
+library(ggrepel)
+set.seed(1234)</code></pre>
+<pre class="r"><code>Volleyball &lt;- read_csv(&quot;https://raw.githubusercontent.com/dwillis/NCAAWomensVolleyballData/main/data/ncaa_womens_volleyball_playerstats_2022.csv&quot;)</code></pre>
+<pre><code>## Rows: 5379 Columns: 32
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (7): team, full_name, roster_name, last_name, first_name, yr, pos
+## dbl (23): season, jersey, feet, inches, gp, gs, mp, s, kills, errors, total_...
+## lgl  (2): ms, total_blocks
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<p>Maryland has three of the best servers in the nation at their respective position in Laila Ricks, Sydney Dowler and Milan Gomillion, ranking well against the rest of the nation.</p>
+<p>Here, I narrowed down the data to players who have played at least 20 matches and had at least 1 ace.</p>
+<pre class="r"><code>Volleyball2 &lt;- Volleyball %&gt;% 
+  filter(!is.na(aces)) %&gt;%
+  filter(!is.na(pos)) %&gt;% 
+  filter(mp &gt;= 20) %&gt;% 
+  filter(aces &gt; 0 ) </code></pre>
+<p>Next, I calculated aces per match played to narrow it down even further.</p>
+<pre class="r"><code>AcesPerMatch &lt;- Volleyball2 %&gt;% 
+  group_by(team, full_name, pos, aces, mp) %&gt;% 
+  summarise(acespermatch = sum(aces)/sum(mp))</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;team&#39;, &#39;full_name&#39;, &#39;pos&#39;, &#39;aces&#39;. You can
+## override using the `.groups` argument.</code></pre>
+<p>Here, I found the quartile breakdown of the data, using the the third quarter and greater to create my bee swarm.</p>
+<pre class="r"><code>summary(AcesPerMatch$acespermatch)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  0.0400  0.4199  0.7000  0.7197  1.0000  3.1200</code></pre>
+<pre class="r"><code>acespermatch2 &lt;- AcesPerMatch %&gt;% filter(acespermatch &gt; 1.0)</code></pre>
+<pre class="r"><code>ggplot() + geom_beeswarm(data=acespermatch2, aes(x=pos, y=acespermatch), color=&quot;grey&quot;)</code></pre>
+<p><img src="https://mcharles317.github.io/2022/10/27/volleyball-aces/index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<pre class="r"><code>Maryland &lt;-AcesPerMatch %&gt;% 
+  filter(team == &quot;Maryland Terrapins, Terps&quot;) %&gt;% 
+  filter(acespermatch &gt; 0.9091) %&gt;% 
+  arrange(desc(acespermatch))</code></pre>
+<pre class="r"><code>ggplot() + 
+  geom_beeswarm(
+    data=AcesPerMatch, 
+    groupOnX=TRUE, 
+    aes(x=pos, y=acespermatch), color=&quot;grey&quot;) + 
+  geom_beeswarm(
+    data=Maryland, 
+    groupOnX=TRUE, 
+    aes(x=pos, y=acespermatch), color=&quot;red&quot;)</code></pre>
+<p><img src="https://mcharles317.github.io/2022/10/27/volleyball-aces/index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>ggplot() + 
+  geom_beeswarm(
+    data=AcesPerMatch, 
+    groupOnX=TRUE, 
+    aes(x=pos, y=acespermatch), color=&quot;grey&quot;) + 
+  geom_beeswarm(
+    data=Maryland, 
+    groupOnX=TRUE, 
+    aes(x=pos, y=acespermatch), color=&quot;red&quot;) +
+  geom_text_repel(
+    data=Maryland, 
+    aes(x=pos, y=acespermatch, label=full_name)) +
+labs(title=&quot;Maryland Serving in the Big Ten&quot;, subtitle=&quot;Where do Maryland&#39;s best servers rank in the NCAA?&quot;, caption=&quot;Source: NCAA | By Michael Charles&quot;)</code></pre>
+<p><img src="https://mcharles317.github.io/2022/10/27/volleyball-aces/index_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+Based on this data, Laila Ricks, Milan Gomillion and Syndey Dowler are all elite servers for their position. Specifically, Dowler leads the team in aces per match played from the setter position. Ricks is second on the team in aces per match from the MB/OH position. Gomillion ranks highly for L/DS but is not much higher than the 4th place Terp, Engel who is middle of the pack for setters. Overall, it appears to be impressive that they have four players falling into this criteria.
+Make the post less of a code narrative and more of a story - write a lede based on your results, not on the work you’ve yet to do. You should provide some code narration throughout, but add the beginning and end after you’ve displayed your data and considered what it’s saying.</p>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+

@@ -30,23 +30,20 @@ progressr::with_progress({
 
 tictoc::toc()
 ```
-#Split columns for free throws, add field goal %, remove points in the paint
-
+In this column, I had to seperate columns in half in order to have two seperate data inputs. This will become more helpful later on. Also, this data came as characters not numbers, so I also adjusted that here. 
 ```{r}
 nba_team_box_better <- nba_team_box %>%
   separate(three_point_field_goals_made_three_point_field_goals_attempted, c('three_point_makes', 'three_point_attempts'),"-") %>% 
   separate(free_throws_made_free_throws_attempted, c('free_throw_makes', 'free_throw_attempts'),"-") %>% 
   mutate(three_point_makes= as.numeric(three_point_makes), three_point_attempts= as.numeric(three_point_attempts ), total_rebounds= as.numeric(total_rebounds), total_turnovers =as.numeric(total_turnovers), points_in_paint= as.numeric(points_in_paint), assists= as.numeric(assists), free_throw_makes =as.numeric(free_throw_makes),free_throw_attempts= as.numeric(free_throw_attempts), field_goal_pct= as.numeric(field_goal_pct), three_point_field_goal_pct= as.numeric(three_point_field_goal_pct))
 ```
-
+Here I filtered out teams that aren't actual NBA teams.
 ```{r}
 nba_team_box_better <- nba_team_box_better %>% 
   filter(team_display_name!= "All-Stars", team_display_name!= "Team LeBron", team_display_name!= "World", team_display_name!= "USA", team_display_name!= "Team Stephen", team_display_name!= "Team Giannis", team_display_name!= "Team Durant")
 ```
 
 
-
-#Find correlations between a few keys stats to determine which relate the most. Then turn that data into a graph
   
 ```{r}
 NBA2022 <- nba_team_box_better %>% 
@@ -468,7 +465,7 @@ ggplot() +
   geom_point(data=teamcluster_2017, aes(x=fg_3pt, y=ThreePointAttempts, size = wins, color=k6_2017.cluster)) +
   geom_point(data=Warriors2017, aes(x=fg_3pt, y=ThreePointAttempts), color="red")
 ```
-Again, the Warriors find themselves in a league of their own in their first year with Kevin Durant on the roster. The only team in their cluster, the Cleveland Caviliers who they defeated in the NBA Finals. Our hypothesis survives again. 
+
 
 #2016
 
@@ -553,7 +550,6 @@ ggplot() +
   geom_point(data=teamcluster_2016, aes(x=fg_3pt, y=ThreePointAttempts, size = wins, color=k6_2016.cluster)) +
   geom_point(data=Cavs, aes(x=fg_3pt, y=ThreePointAttempts), color="red")
 ```
-This is another interesting case. In terms of wins and attempts, the Cavilers were one of the best teams in the NBA during the regular season. However, made clear by the clusters and charts, they kind of profiled as a middle of the pack team.
 
 
 Conclusions:
@@ -565,19 +561,6 @@ After narrowing down my main statistical determinants to three point makes, assi
 
 From here, i am attempting to make cluster charts for each team. I specifically want to highlight a certain selection of teams on each chart if possible. I attempted code for that but it wasn't working out properly so I scraped it. I feel like highlighting these specific points will help depict my findings well. 
 
-#What to remove
-2021: Team Durant, Team LeBron
-2020: Team Giannis, Team LeBron, World, USA
-2019: Team Giannis, Team LeBron, World, USA
-2018: Team Stephen, Team LeBron, World, USA
-2017: All-Stars
-2016: All-Stars
-
-```{r}
-nba_team_box_better <- nba_team_box_better %>% 
-  filter(team_display_name!= "All-Stars", team_display_name!= "Team LeBron", team_display_name!= "World", team_display_name!= "USA", team_display_name!= "Team Stephen", team_display_name!= "Team Giannis", team_display_name!= "Team Durant")
-```
-
 
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
 
@@ -585,13 +568,3 @@ When you save the notebook, an HTML file containing the code and output will be 
 
 The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
 
-
-```{r}
-standings2021 <- espn_nba_standings(2021) %>% mutate(season = 2021)
-
-teamcluster_2021 <- teamcluster_2021 %>% inner_join(standings2021, by=c("team_display_name"="team"))
-
-```
-
-#Add team display name in group by's where it says team name
-Re-update standings and attach wins to clusters.
