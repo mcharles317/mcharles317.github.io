@@ -17,6 +17,9 @@ library(hoopR)
 library(dplyr)
 library(tidyverse)
 library(cluster)
+library(tidyverse)
+library(ggbeeswarm)
+library(ggrepel)
 
 set.seed(1234)
 ```
@@ -127,11 +130,19 @@ standings2021 <- espn_nba_standings(2021) %>% mutate(season = 2021)
 
 teamcluster_2021 <- teamcluster_2021 %>% inner_join(standings2021, by=c("team_display_name"="team"))
 
-teamcluster_2021 <- teamcluster_2021 %>% mutate(wins.x = as.numeric(wins.x))
+teamcluster_2021 <- teamcluster_2021 %>% mutate(wins = as.numeric(wins))
+```
+This block of code was helpful to allow me label wins on my charts. I basically filtered the top 5 to 6, sometimes 7 best records in the NBA each year to be able to contexualize my data. 
+```{r}
+wins_2021 <- teamcluster_2021%>% 
+  filter(wins >= 46) %>% 
+  group_by(team_display_name, fg_3pt, three_point_attempts) %>% 
+  summarise(wins = wins, fg_3pt =fg_3pt, three_point_attempts = three_point_attempts) %>% 
+  arrange(desc(wins))
 
 ```
 
-This is used to isolate the Bucks (in this case) in order to plot them inidivually on the chart. It also allows me to compare the Bucks to other team's in their cluster. 
+This is used to isolate the Bucks (in this case) in order to plot them individually on the chart. It also allows me to compare the Bucks to other team's in their cluster. 
 ```{r}
 Bucks <- teamcluster_2021 %>% filter(team_display_name == "Milwaukee Bucks")
 
@@ -142,8 +153,11 @@ cluster4<- teamcluster_2021 %>% filter(k6_2021.cluster == 4)
 Now, I can graph specifically based on three point attempts and corresponding percentage, also factoring wins.
 ```{r}
 ggplot() +
-  geom_point(data=teamcluster_2021, aes(x=fg_3pt, y=three_point_attempts, size = wins.x, color=k6_2021.cluster)) +
-geom_point(data=Bucks, aes(x=fg_3pt, y=three_point_attempts, size = wins.x), colour = 'red')
+  geom_point(data=teamcluster_2021, aes(x=fg_3pt, y=three_point_attempts, size = wins, color=k6_2021.cluster)) +
+geom_point(data=Bucks, aes(x=fg_3pt, y=three_point_attempts, size = wins), colour = 'red')+
+  geom_text_repel(
+    data=wins_2021,
+    aes(x=fg_3pt, y=three_point_attempts, label=team_display_name))
 ```
 Based on the Bucks' cluster and their position in this graphic, it's clear to see why the Bucks were champions. Their cluster was also made up of the Nets, Nuggets, Clippers and Suns, all of whom made it to at least the conference semifinals. The Bucks beat the Nets and Suns in route to a championship.
 
@@ -208,6 +222,15 @@ teamcluster_2020 <- teamcluster_2020 %>% mutate(wins = as.numeric(wins))
 ```
 
 ```{r}
+wins_2020 <- teamcluster_2020 %>% 
+  filter(wins >= 46) %>% 
+  group_by(team_display_name, fg_3pt, ThreePointAttempts) %>% 
+  summarise(wins = wins, fg_3pt =fg_3pt, ThreePointAttempts = ThreePointAttempts) %>% 
+  arrange(desc(wins))
+```
+
+
+```{r}
 Lakers <- teamcluster_2020 %>% filter(team_display_name == "Los Angeles Lakers")
 cluster5_2020<- teamcluster_2020 %>% filter(k6_2020.cluster == 5)
 ```
@@ -215,7 +238,10 @@ cluster5_2020<- teamcluster_2020 %>% filter(k6_2020.cluster == 5)
 ```{r}
 ggplot() +
   geom_point(data=teamcluster_2020, aes(x=fg_3pt, y=ThreePointAttempts, color=k6_2020$cluster, size=wins)) +
-  geom_point(data=Lakers, aes(x=fg_3pt, y=ThreePointAttempts, size=wins), colour= "red")
+  geom_point(data=Lakers, aes(x=fg_3pt, y=ThreePointAttempts, size=wins), colour= "red")+
+  geom_text_repel(
+    data=wins_2020,
+    aes(x=fg_3pt, y=ThreePointAttempts, label=team_display_name))
 ```
 Analyzing this chart and the corresponding clustering, the Lakers are actually an outlier among the champions. However, they fall in the same cluster as the Denver Nuggets who they faced in the Western Conference Finals. 
 
@@ -291,6 +317,12 @@ standings2019 <- espn_nba_standings(2019) %>% mutate(season = 2019)
 teamcluster_2019 <- teamcluster_2019 %>% inner_join(standings2019, by=c("team_display_name"="team"))
 
 teamcluster_2019 <- teamcluster_2019 %>% mutate(wins = as.numeric(wins))
+
+wins_2019 <- teamcluster_2019 %>% 
+  filter(wins >= 51) %>% 
+  group_by(team_display_name, fg_3pt, ThreePointAttempts) %>% 
+  summarise(wins = wins, fg_3pt =fg_3pt, ThreePointAttempts = ThreePointAttempts) %>% 
+  arrange(desc(wins))
 ```
 
 ```{r}
@@ -301,7 +333,10 @@ cluster4_2019<- teamcluster_2019 %>% filter(k6_2019.cluster == 4)
 ```{r}
 ggplot() +
   geom_point(data=teamcluster_2019, aes(x=fg_3pt, y=ThreePointAttempts, color=k6_2019$cluster, size=wins)) +
-  geom_point(data=Raptors, aes(x=fg_3pt, y=ThreePointAttempts, size=wins), colour= "red")
+  geom_point(data=Raptors, aes(x=fg_3pt, y=ThreePointAttempts, size=wins), colour= "red")+
+  geom_text_repel(
+    data=wins_2019,
+    aes(x=fg_3pt, y=ThreePointAttempts, label=team_display_name))
 ```
 Similar to the Bucks in 2021, the Raptors find themselves in elite company in their cluster. They are joined by the Bucks, Warriors and Celtics. Toronto defeated Milwaukee in the conference finals before beating the Warriors in six games. Milwaukee eliminated Boston in the first round. Again, this shows that the elite teams can be grouped together and projected by a few specific statistical categories. 
 
@@ -375,6 +410,12 @@ standings2018 <- espn_nba_standings(2018) %>% mutate(season = 2018)
 teamcluster_2018 <- teamcluster_2018 %>% inner_join(standings2018, by=c("team_display_name"="team"))
 
 teamcluster_2018 <- teamcluster_2018%>% mutate(wins = as.numeric(wins))
+
+wins_2018 <- teamcluster_2018 %>% 
+  filter(wins >= 49) %>% 
+  group_by(team_display_name, fg_3pt, ThreePointAttempts) %>% 
+  summarise(wins = wins, fg_3pt =fg_3pt, ThreePointAttempts = ThreePointAttempts) %>% 
+  arrange(desc(wins))
 ```
 
 ```{r}
@@ -385,7 +426,10 @@ cluster5_2018 <- teamcluster_2018 %>% filter(k6_2018.cluster == 5)
 ```{r}
 ggplot() +
   geom_point(data=teamcluster_2018, aes(x=fg_3pt, y=ThreePointAttempts, color=k6_2018$cluster, size=wins)) +
-  geom_point(data=Warriors, aes(x=fg_3pt, y=ThreePointAttempts, size=wins), colour= "red")
+  geom_point(data=Warriors, aes(x=fg_3pt, y=ThreePointAttempts, size=wins), colour= "red")+
+  geom_text_repel(
+    data=wins_2018,
+    aes(x=fg_3pt, y=ThreePointAttempts, label=team_display_name))
 ```
 Based on the clustering and the chart, the Warriors were unquestionably the best shooting team in basketball. They marched to an easy title in 2018 and are thought to be one of the greatest team's in NBA history. Again, the data supports our hypothesis. 
 
@@ -462,6 +506,15 @@ standings2017 <- espn_nba_standings(2017) %>% mutate(season = 2017)
 teamcluster_2017 <- teamcluster_2017 %>% inner_join(standings2017, by=c("team_display_name"="team"))
 
 teamcluster_2017 <- teamcluster_2017 %>% mutate(wins = as.numeric(wins))
+
+
+wins_2017 <- teamcluster_2017 %>% 
+  filter(wins >= 51) %>% 
+  group_by(team_display_name, fg_3pt, ThreePointAttempts) %>% 
+  summarise(wins = wins, fg_3pt =fg_3pt, ThreePointAttempts = ThreePointAttempts) %>% 
+  arrange(desc(wins))
+          
+
 ```
 
 ```{r}
@@ -472,11 +525,12 @@ cluster3_2017<- teamcluster_2017 %>% filter(k6_2017.cluster == 3)
 
 ```{r}
 ggplot() +
-  geom_point(data=teamcluster_2017, aes(x=fg_3pt, y=ThreePointAttempts, color=k6_2017$cluster, size=wins.x)) +
-  geom_point(data=Warriors2017, aes(x=fg_3pt, y=ThreePointAttempts, size=wins.x), colour= "red")
+  geom_point(data=teamcluster_2017, aes(x=fg_3pt, y=ThreePointAttempts, size = wins, color=k6_2017.cluster)) +
+geom_point(data=Warriors2017, aes(x=fg_3pt, y=ThreePointAttempts, size = wins), colour = 'red') +
+  geom_text_repel(
+    data=wins_2017,
+    aes(x=fg_3pt, y=ThreePointAttempts, label=team_display_name))
 ```
-
-
 #2016
 
 ```{r}
@@ -551,6 +605,12 @@ teamcluster_2016 <- teamcluster_2016 %>% inner_join(standings2016, by=c("team_di
 
 teamcluster_2016 <- teamcluster_2016 %>% mutate(wins = as.numeric(wins))
 
+wins_2016 <- teamcluster_2016 %>% 
+  filter(wins >= 48) %>% 
+  group_by(team_display_name, fg_3pt, ThreePointAttempts) %>% 
+  summarise(wins = wins, fg_3pt =fg_3pt, ThreePointAttempts = ThreePointAttempts) %>% 
+  arrange(desc(wins))
+
 ```
 
 ```{r}
@@ -559,8 +619,11 @@ cluster2_2016<- teamcluster_2016 %>% filter(k6_2016.cluster == 2)
 ```
 ```{r}
 ggplot() +
-  geom_point(data=teamcluster_2016, aes(x=fg_3pt, y=ThreePointAttempts, color=k6_2016$cluster, size=wins)) +
-  geom_point(data=Cavs, aes(x=fg_3pt, y=ThreePointAttempts, size=wins.x), colour= "red")
+  geom_point(data=teamcluster_2016, aes(x=fg_3pt, y=ThreePointAttempts, size = wins, color=k6_2016.cluster)) +
+geom_point(data=Cavs, aes(x=fg_3pt, y=ThreePointAttempts, size = wins), colour = 'red') +
+  geom_text_repel(
+    data=wins_2016,
+    aes(x=fg_3pt, y=ThreePointAttempts, label=team_display_name))
 ```
 
 
