@@ -2,15 +2,13 @@
 title: "R Notebook"
 output: html_notebook
 ---
+Initially, I began this presentation attempting to determine which stats I could filter from the regular season that is most correlated to wins and championships. Initially having three point makes, rebounds and points in the paint which I quickly had to change for several reasons. Circling back, I decided to analyze cluster the team's based on four categories, Three Point Attempts, Assists, FG, fg_3pt. 
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
-
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
-
+I chose these specific stats because I feel like they encapsulate the main characteristics of the modern NBA and offenses. The best offenses tend to lead successful teams and after testing this hypothesis, the data reflected that, for the most part.
 ```{r}
 library(tidyverse)
 library(waffle)
-install.packages("hoopR")
+#install.packages("hoopR")
 # You can install using the pacman package using the following code:
 if (!requireNamespace('pacman', quietly = TRUE)){
   install.packages('pacman')
@@ -129,6 +127,8 @@ standings2021 <- espn_nba_standings(2021) %>% mutate(season = 2021)
 
 teamcluster_2021 <- teamcluster_2021 %>% inner_join(standings2021, by=c("team_display_name"="team"))
 
+teamcluster_2021 <- teamcluster_2021 %>% mutate(wins.x = as.numeric(wins.x))
+
 ```
 
 This is used to isolate the Bucks (in this case) in order to plot them inidivually on the chart. It also allows me to compare the Bucks to other team's in their cluster. 
@@ -142,8 +142,8 @@ cluster4<- teamcluster_2021 %>% filter(k6_2021.cluster == 4)
 Now, I can graph specifically based on three point attempts and corresponding percentage, also factoring wins.
 ```{r}
 ggplot() +
-  geom_point(data=teamcluster_2021, aes(x=fg_3pt, y=three_point_attempts, size = wins, color=k6_2021.cluster))
-geom_point(data=Bucks, aes(x=fg_3pt, y=three_point_attempts, color= "red",))
+  geom_point(data=teamcluster_2021, aes(x=fg_3pt, y=three_point_attempts, size = wins.x, color=k6_2021.cluster)) +
+geom_point(data=Bucks, aes(x=fg_3pt, y=three_point_attempts, size = wins.x), colour = 'red')
 ```
 Based on the Bucks' cluster and their position in this graphic, it's clear to see why the Bucks were champions. Their cluster was also made up of the Nets, Nuggets, Clippers and Suns, all of whom made it to at least the conference semifinals. The Bucks beat the Nets and Suns in route to a championship.
 
@@ -204,6 +204,7 @@ standings2020 <- espn_nba_standings(2020) %>% mutate(season = 2020)
 
 teamcluster_2020 <- teamcluster_2020 %>% inner_join(standings2020, by=c("team_display_name"="team"))
 
+teamcluster_2020 <- teamcluster_2020 %>% mutate(wins = as.numeric(wins))
 ```
 
 ```{r}
@@ -213,10 +214,10 @@ cluster5_2020<- teamcluster_2020 %>% filter(k6_2020.cluster == 5)
 
 ```{r}
 ggplot() +
-  geom_point(data=teamcluster_2020, aes(x=fg_3pt, y=ThreePointAttempts, size = wins, color=k6_2020.cluster)) +
-  geom_point(data=Lakers, aes(x=fg_3pt, y=ThreePointAttempts, color="red")
+  geom_point(data=teamcluster_2020, aes(x=fg_3pt, y=ThreePointAttempts, color=k6_2020$cluster, size=wins)) +
+  geom_point(data=Lakers, aes(x=fg_3pt, y=ThreePointAttempts, size=wins), colour= "red")
 ```
-Analyzing this chart and the corresponding clustering, the Lakers are acutally an outlier among the champions. However, they fall in the same cluster as the Denver Nuggets who they faced in the Western Conference Finals. 
+Analyzing this chart and the corresponding clustering, the Lakers are actually an outlier among the champions. However, they fall in the same cluster as the Denver Nuggets who they faced in the Western Conference Finals. 
 
 #2019 season
 ```{r}
@@ -289,6 +290,7 @@ standings2019 <- espn_nba_standings(2019) %>% mutate(season = 2019)
 
 teamcluster_2019 <- teamcluster_2019 %>% inner_join(standings2019, by=c("team_display_name"="team"))
 
+teamcluster_2019 <- teamcluster_2019 %>% mutate(wins = as.numeric(wins))
 ```
 
 ```{r}
@@ -298,8 +300,8 @@ cluster4_2019<- teamcluster_2019 %>% filter(k6_2019.cluster == 4)
 
 ```{r}
 ggplot() +
-  geom_point(data=teamcluster_2019, aes(x=fg_3pt, y=ThreePointAttempts, size = wins, color=k6_2019.cluster)) +
-  geom_point(data=Raptors, aes(x=fg_3pt, y=ThreePointAttempts), color="red")
+  geom_point(data=teamcluster_2019, aes(x=fg_3pt, y=ThreePointAttempts, color=k6_2019$cluster, size=wins)) +
+  geom_point(data=Raptors, aes(x=fg_3pt, y=ThreePointAttempts, size=wins), colour= "red")
 ```
 Similar to the Bucks in 2021, the Raptors find themselves in elite company in their cluster. They are joined by the Bucks, Warriors and Celtics. Toronto defeated Milwaukee in the conference finals before beating the Warriors in six games. Milwaukee eliminated Boston in the first round. Again, this shows that the elite teams can be grouped together and projected by a few specific statistical categories. 
 
@@ -372,6 +374,7 @@ standings2018 <- espn_nba_standings(2018) %>% mutate(season = 2018)
 
 teamcluster_2018 <- teamcluster_2018 %>% inner_join(standings2018, by=c("team_display_name"="team"))
 
+teamcluster_2018 <- teamcluster_2018%>% mutate(wins = as.numeric(wins))
 ```
 
 ```{r}
@@ -381,8 +384,8 @@ cluster5_2018 <- teamcluster_2018 %>% filter(k6_2018.cluster == 5)
 
 ```{r}
 ggplot() +
-  geom_point(data=teamcluster_2018, aes(x=fg_3pt, y=ThreePointAttempts, size = wins, color=k6_2018.cluster)) +
-  geom_point(data=Warriors, aes(x=fg_3pt, y=ThreePointAttempts), color="red")
+  geom_point(data=teamcluster_2018, aes(x=fg_3pt, y=ThreePointAttempts, color=k6_2018$cluster, size=wins)) +
+  geom_point(data=Warriors, aes(x=fg_3pt, y=ThreePointAttempts, size=wins), colour= "red")
 ```
 Based on the clustering and the chart, the Warriors were unquestionably the best shooting team in basketball. They marched to an easy title in 2018 and are thought to be one of the greatest team's in NBA history. Again, the data supports our hypothesis. 
 
@@ -458,17 +461,19 @@ standings2017 <- espn_nba_standings(2017) %>% mutate(season = 2017)
 
 teamcluster_2017 <- teamcluster_2017 %>% inner_join(standings2017, by=c("team_display_name"="team"))
 
+teamcluster_2017 <- teamcluster_2017 %>% mutate(wins = as.numeric(wins))
 ```
 
 ```{r}
 Warriors2017 <- teamcluster_2017 %>% filter(team_display_name == "Golden State Warriors")
+
 cluster3_2017<- teamcluster_2017 %>% filter(k6_2017.cluster == 3)
 ```
 
 ```{r}
 ggplot() +
-  geom_point(data=teamcluster_2017, aes(x=fg_3pt, y=ThreePointAttempts, size = wins, color=k6_2017.cluster)) +
-  geom_point(data=Warriors2017, aes(x=fg_3pt, y=ThreePointAttempts), color="red")
+  geom_point(data=teamcluster_2017, aes(x=fg_3pt, y=ThreePointAttempts, color=k6_2017$cluster, size=wins.x)) +
+  geom_point(data=Warriors2017, aes(x=fg_3pt, y=ThreePointAttempts, size=wins.x), colour= "red")
 ```
 
 
@@ -544,6 +549,8 @@ standings2016 <- espn_nba_standings(2016) %>% mutate(season = 2016)
 
 teamcluster_2016 <- teamcluster_2016 %>% inner_join(standings2016, by=c("team_display_name"="team"))
 
+teamcluster_2016 <- teamcluster_2016 %>% mutate(wins = as.numeric(wins))
+
 ```
 
 ```{r}
@@ -552,8 +559,8 @@ cluster2_2016<- teamcluster_2016 %>% filter(k6_2016.cluster == 2)
 ```
 ```{r}
 ggplot() +
-  geom_point(data=teamcluster_2016, aes(x=fg_3pt, y=ThreePointAttempts, size = wins, color=k6_2016.cluster)) +
-  geom_point(data=Cavs, aes(x=fg_3pt, y=ThreePointAttempts), color="red")
+  geom_point(data=teamcluster_2016, aes(x=fg_3pt, y=ThreePointAttempts, color=k6_2016$cluster, size=wins)) +
+  geom_point(data=Cavs, aes(x=fg_3pt, y=ThreePointAttempts, size=wins.x), colour= "red")
 ```
 
 
@@ -565,11 +572,4 @@ After figuring out cluster:
 After narrowing down my main statistical determinants to three point makes, assists,field goal percentage and free throws attempted, the team that won the championship ended up in the strongest cluster every time besides 2016.I chose three point makes because some of the best offenses in basketball shoot the most threes therefore they are likely to make the most. Similarly with field goal percentage, efficiency is usually the mark of a good team. I chose free throw attempts because my thought is that the best players get to the line often. Therefore, a team with the best players are also likely to be the best teams. Finally, I chose assists because they signify easy offense which the best offenses tend to have. By clustering them together, I expected to find the best teams in the NBA in the most positive cluster, which came to fruition. 
 
 From here, i am attempting to make cluster charts for each team. I specifically want to highlight a certain selection of teams on each chart if possible. I attempted code for that but it wasn't working out properly so I scraped it. I feel like highlighting these specific points will help depict my findings well. 
-
-
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
-
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
-
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
 
