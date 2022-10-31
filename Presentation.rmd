@@ -531,6 +531,7 @@ geom_point(data=Warriors2017, aes(x=fg_3pt, y=ThreePointAttempts, size = wins), 
     data=wins_2017,
     aes(x=fg_3pt, y=ThreePointAttempts, label=team_display_name))
 ```
+Based on the clustering and the chart, the Warriors were again unquestionably one the best shooting team in basketball. After battling off a scare from the Rockets, the Warriors would go on to defeat the Cavs and win their first title with Kevin Durant.
 #2016
 
 ```{r}
@@ -625,7 +626,7 @@ geom_point(data=Cavs, aes(x=fg_3pt, y=ThreePointAttempts, size = wins), colour =
     data=wins_2016,
     aes(x=fg_3pt, y=ThreePointAttempts, label=team_display_name))
 ```
-
+Cavs defeat Warriors in Finals. Cleveland defeated the Hawks in the ECF, who had defeated the Celtics in the first run. They went on to beat a Warriors team that also defeated Portland in the playoffs, who beat the Clippers. They also beat OKC in the WCF, who had beaten the Spurs in the round prior.
 
 Conclusions:
 Before figuring out cluster:
