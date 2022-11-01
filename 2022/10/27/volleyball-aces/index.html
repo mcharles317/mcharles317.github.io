@@ -116,7 +116,7 @@ set.seed(1234)</code></pre>
 ##  0.0400  0.4199  0.7000  0.7197  1.0000  3.1200</code></pre>
 <pre class="r"><code>acespermatch2 &lt;- AcesPerMatch %&gt;% filter(acespermatch &gt; 1.0)</code></pre>
 <pre class="r"><code>ggplot() + geom_beeswarm(data=acespermatch2, aes(x=pos, y=acespermatch), color=&quot;grey&quot;)</code></pre>
-<p><img src="https://mcharles317.github.io/2022/10/27/volleyball-aces/index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="/2022/10/27/volleyball-aces/index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <pre class="r"><code>Maryland &lt;-AcesPerMatch %&gt;% 
   filter(team == &quot;Maryland Terrapins, Terps&quot;) %&gt;% 
   filter(acespermatch &gt; 0.9091) %&gt;% 
@@ -130,7 +130,7 @@ set.seed(1234)</code></pre>
     data=Maryland, 
     groupOnX=TRUE, 
     aes(x=pos, y=acespermatch), color=&quot;red&quot;)</code></pre>
-<p><img src="https://mcharles317.github.io/2022/10/27/volleyball-aces/index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="/2022/10/27/volleyball-aces/index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <pre class="r"><code>ggplot() + 
   geom_beeswarm(
     data=AcesPerMatch, 
@@ -144,9 +144,9 @@ set.seed(1234)</code></pre>
     data=Maryland, 
     aes(x=pos, y=acespermatch, label=full_name)) +
 labs(title=&quot;Maryland Serving in the Big Ten&quot;, subtitle=&quot;Where do Maryland&#39;s best servers rank in the NCAA?&quot;, caption=&quot;Source: NCAA | By Michael Charles&quot;)</code></pre>
-<p><img src="https://mcharles317.github.io/2022/10/27/volleyball-aces/index_files/figure-html/unnamed-chunk-10-1.png" width="672" />
-Based on this data, Laila Ricks, Milan Gomillion and Syndey Dowler are all elite servers for their position. Specifically, Dowler leads the team in aces per match played from the setter position. Ricks is second on the team in aces per match from the MB/OH position. Gomillion ranks highly for L/DS but is not much higher than the 4th place Terp, Engel who is middle of the pack for setters. Overall, it appears to be impressive that they have four players falling into this criteria.
-Make the post less of a code narrative and more of a story - write a lede based on your results, not on the work you’ve yet to do. You should provide some code narration throughout, but add the beginning and end after you’ve displayed your data and considered what it’s saying.</p>
+<p><img src="/2022/10/27/volleyball-aces/index_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+Based on this data, Laila Ricks, Milan Gomillion and Syndey Dowler are all elite servers for their position. Specifically, Dowler leads the team in aces per match played from the setter position. Ricks is second on the team in aces per match from the MB/OH position. Gomillion ranks highly for L/DS but is not much higher than the 4th place Terp, Engel who is middle of the pack for setters. Overall, it appears to be impressive that they have four players falling into this criteria.</p>
+<p>Make the post less of a code narrative and more of a story - write a lede based on your results, not on the work you’ve yet to do. You should provide some code narration throughout, but add the beginning and end after you’ve displayed your data and considered what it’s saying.</p>
 
     </div>
   </article>

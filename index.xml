@@ -6,7 +6,17 @@
     <description>Recent content on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 27 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://mcharles317.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 01 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://mcharles317.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>NFL Redzone EPA Reverse Enigneering</title>
+      <link>https://mcharles317.github.io/2022/11/01/nfl-redzone-epa-reverse-enigneering/</link>
+      <pubDate>Tue, 01 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://mcharles317.github.io/2022/11/01/nfl-redzone-epa-reverse-enigneering/</guid>
+      <description>In this post, the goal is reverse engineer a story regarding Redzone EPA through the first three weeks of the NFL story. In this case, we created a dumbbell chart that depicts how teams faired in the Redzone through the first three weeks compared to the season as a whole.
+library(tidyverse) ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ── ## ✔ ggplot2 3.3.6 ✔ purrr 0.3.5 ## ✔ tibble 3.</description>
+    </item>
+    
     <item>
       <title>Volleyball Aces</title>
       <link>https://mcharles317.github.io/2022/10/27/volleyball-aces/</link>

@@ -104,19 +104,19 @@
 ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>recordsANDrankings &lt;- inner_join(recruitingrank, recordsbyyear, by =c (&quot;team&quot;, &quot;year&quot;))</code></pre>
 <pre class="r"><code>ggplot() + geom_point(data=recordsANDrankings, aes(x=rating, y=total_wins))</code></pre>
-<p><img src="https://mcharles317.github.io/2022/10/20/cfb-recruiting-ratings-and-wins/index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="/2022/10/20/cfb-recruiting-ratings-and-wins/index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <pre class="r"><code>ggplot() + 
   geom_point(data=recordsANDrankings, aes(x=rating, y=total_wins)) +
   geom_smooth(data=recordsANDrankings, aes(x=rating, y=total_wins), method=&quot;lm&quot;)</code></pre>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
-<p><img src="https://mcharles317.github.io/2022/10/20/cfb-recruiting-ratings-and-wins/index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="/2022/10/20/cfb-recruiting-ratings-and-wins/index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <pre class="r"><code>umd &lt;- recordsANDrankings %&gt;% filter(team == &quot;Maryland&quot;)</code></pre>
 <pre class="r"><code>ggplot() + 
   geom_point(data=recordsANDrankings, aes(x=rating, y=total_wins)) +
   geom_smooth(data=recordsANDrankings, aes(x=rating, y=total_wins), method=&quot;lm&quot;) +
   geom_point(data=umd, aes(x=rating, y=total_wins), color=&quot;red&quot;)</code></pre>
 <pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
-<p><img src="https://mcharles317.github.io/2022/10/20/cfb-recruiting-ratings-and-wins/index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="/2022/10/20/cfb-recruiting-ratings-and-wins/index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <pre class="r"><code>recordsANDrankings_2 &lt;- lm(total_wins ~ rating, data = recordsANDrankings)
 summary(recordsANDrankings_2)</code></pre>
 <pre><code>## 
