@@ -1,0 +1,124 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+library(tidyverse)
+library(nflreadr)
+library(tidyverse)
+library(ggalt)
+```
+```{r}
+NFL<- load_pbp(
+  seasons = most_recent_season(),
+  file_type = getOption("nflreadr.prefer", default = "rds")
+)
+```
+```{r}
+NFL <- NFL %>% drop_na(comp_air_epa)
+
+NFL2 <- NFL %>% drop_na(pass_oe)
+
+NFL <- NFL %>% drop_na(fantasy_player_id)
+
+NFL <- NFL %>% drop_na(air_yards)
+
+NFL <- NFL %>% drop_na(yards_after_catch)
+
+
+```
+
+
+
+```{r}
+TE <- NFL %>% 
+   filter(fantasy_player_name == "K.Pitts")
+```
+```{r}
+Pitts <- NFL %>% 
+filter(fantasy_player_id == "00-0036970") %>% 
+group_by(fantasy_player_id, fantasy_player_name) %>% 
+  summarise(TotalReceivingYds = sum(receiving_yards), Avg_ReceivingYds = mean(receiving_yards), Total_AirYards= sum(air_yards), Avg_AirYards= mean(air_yards), Avg__YAC = mean (yards_after_catch), Total_YAC = sum (yards_after_catch), Avg_AirEPA = mean (air_epa), Total_AirEPA = sum(air_epa), Avg_YACEPA =mean (yac_epa), Total_YacEPA = sum(yac_epa), Avg_comp_air_epa = mean(comp_air_epa), Total_comp_air_epa = sum (comp_air_epa), Total_YAC_Comp = sum(comp_yac_epa), Avg_YAC_Comp = mean(comp_yac_epa), Total_YAC_WPA = sum(yac_wpa), Avg_YAC_WPA = mean(yac_wpa))
+```
+
+
+```{r}
+QB <- NFL2 %>% 
+  filter(passer_player_id == "00-0033077" | passer_player_id == "00-0029604")%>% 
+  group_by(passer_player_id, name)%>% 
+summarise(Avg_comp_air_epa = mean(comp_air_epa), Total_comp_air_epa = sum (comp_air_epa), Total_pass_touchdown = sum (pass_touchdown), Total_complete_pass = sum(complete_pass), Total_Pass_attempt = sum(pass_attempt), Interceptions = sum(interception), TotalQBEPA =sum(qb_epa), Avg_QBEPA = mean(qb_epa), Avg_pass_oe = mean(pass_oe), Avg_comp_air_epa = mean(comp_air_epa), Total_comp_air_epa = sum(comp_air_epa), TotalDropbacks= sum (qb_dropback))
+```
+
+
+```{r}
+QB_by_Week<- NFL2%>% 
+  filter(passer_player_id == "00-0033077" | passer_player_id == "00-0029604")%>% 
+  group_by(passer_player_id, week, name)%>% 
+summarise(Avg_comp_air_epa = mean(comp_air_epa), Total_comp_air_epa = sum (comp_air_epa), Total_pass_touchdown = sum (pass_touchdown), Total_complete_pass = sum(complete_pass), Total_Pass_attempt = sum(pass_attempt), TotalQBEPA =sum(qb_epa), Avg_QBEPA = mean(qb_epa), Avg_pass_oe = mean(pass_oe), Avg_comp_air_epa = mean(comp_air_epa), Total_comp_air_epa = sum(comp_air_epa), TotalDropbacks= sum (qb_dropback), Interceptions = sum(interception))
+```
+```{r}
+QB_Rushing <- NFL2 %>% 
+  filter(fantasy_id == "00-0033077" | fantasy_id == "00-0029604") %>% 
+  group_by(fantasy_id, name) %>% 
+  summarise(TotalRushAttempts = sum(rush_attempt), TotalRushYards = sum(rushing_yards))
+```
+```{r}
+QBOverall <- QB %>% 
+  inner_join(QB_Rushing, by= "name")
+```
+
+```{r}
+QB_Rushing_Weekly<- NFL2 %>% 
+  filter(rusher == "D.Prescott" | rusher == "K.Cousins") %>% 
+  group_by(rusher, name, week) %>% 
+  summarise(TotalRushAttempts = sum(rush_attempt), TotalRushYards = sum(rushing_yards))
+```
+```{r}
+QB_Overall_Weekly <- QB_by_Week %>% 
+  inner_join(QB_Rushing_Weekly, by= "name")
+```
+
+```{r}
+WR <- NFL %>% 
+   filter(fantasy_player_id == "00-0033921" | fantasy_player_id == "00-0034764" | fantasy_player_id == "00-0036913" | fantasy_player_id == "00-0036963" | fantasy_player_id == "00-0036252") %>% 
+  group_by(fantasy_player_id, fantasy_player_name) %>% 
+  summarise (Total_AirYards= sum(air_yards), Avg_AirYards= mean(air_yards), Avg__YAC = mean (yards_after_catch), Total_YAC = sum (yards_after_catch), Avg_AirEPA = mean (air_epa), Total_AirEPA = sum(air_epa), Avg_YACEPA =mean (yac_epa), Total_YacEPA = sum(yac_epa), Avg_comp_air_epa = mean(comp_air_epa), Total_comp_air_epa = sum (comp_air_epa), Total_YAC_Comp = sum(comp_yac_epa), Avg_YAC_Comp = mean(comp_yac_epa), Total_YAC_WPA = sum(yac_wpa), Avg_YAC_WPA = mean(yac_wpa),TotalReceivingYds = sum(receiving_yards), Avg_ReceivingYds = mean(receiving_yards))
+```
+
+
+
+```{r}
+WR_Weekly <- NFL %>% 
+   filter(fantasy_player_id == "00-0033921" | fantasy_player_id == "00-0034764" | fantasy_player_id == "00-0036913" | fantasy_player_id == "00-0036963" | fantasy_player_id == "00-0036252") %>% 
+  group_by(fantasy_player_id, fantasy_player_name, week) %>% 
+  summarise (Total_AirYards= sum(air_yards), Avg_AirYards= mean(air_yards), Avg__YAC = mean (yards_after_catch), Total_YAC = sum (yards_after_catch), Avg_AirEPA = mean (air_epa), Total_AirEPA = sum(air_epa), Avg_YACEPA =mean (yac_epa), Total_YacEPA = sum(yac_epa), Avg_comp_air_epa = mean(comp_air_epa), Total_comp_air_epa = sum (comp_air_epa), Total_YAC_Comp = sum(comp_yac_epa), Avg_YAC_Comp = mean(comp_yac_epa), Total_YAC_WPA = sum(yac_wpa), Avg_YAC_WPA = mean(yac_wpa))
+```
+
+
+
+```{r}
+RB_receiving<- NFL %>% 
+  filter(fantasy_player_id == "00-0035685" | fantasy_player_id == "00-0036924" | fantasy_player_id == "00-0032144" | fantasy_player_id == "00-0037746" | fantasy_player_id == "00-0035831")%>% 
+  group_by(fantasy_player_id, fantasy_player_name) %>% 
+  summarise(TotalReceivingYds = sum(receiving_yards), Avg_ReceivingYds = mean(receiving_yards), Total_AirYards= sum(air_yards), Avg_AirYards= mean(air_yards), Avg__YAC = mean (yards_after_catch), Total_YAC = sum (yards_after_catch), Avg_AirEPA = mean (air_epa), Total_AirEPA = sum(air_epa), Avg_YACEPA =mean (yac_epa), Total_YacEPA = sum(yac_epa), Avg_comp_air_epa = mean(comp_air_epa), Total_comp_air_epa = sum (comp_air_epa), Total_YAC_Comp = sum(comp_yac_epa), Avg_YAC_Comp = mean(comp_yac_epa), Total_YAC_WPA = sum(yac_wpa), Avg_YAC_WPA = mean(yac_wpa))
+```
+
+```{r}
+RB<- NFL %>% 
+  filter(fantasy_player_id == "00-0035685" | fantasy_player_id == "00-0036924" | fantasy_player_id == "00-0032144" | fantasy_player_id == "00-0037746" | fantasy_player_id == "00-0035831")%>% 
+  group_by(fantasy_player_id, fantasy_player_name) %>% 
+   summarise(TotalRushAttempts = sum(rush_attempt), TotalRushYards = sum(rushing_yards))
+```
+
+#Question:
+Figure out why running stats don't work sometimes, especially with rb's
+Figure out most efficient way to sort weeks.
+
+
+
+
