@@ -213,6 +213,12 @@ All_WR <- All_WR %>%
   rename(fantasy_player_id = fantasy_id) %>% 
   summarise(Total_AirYards= sum(air_yards), Avg_AirYards= mean(air_yards), Avg__YAC = mean (yards_after_catch), Total_YAC = sum (yards_after_catch), Avg_AirEPA = mean (air_epa), Total_AirEPA = sum(air_epa), Avg_YACEPA =mean (yac_epa), Total_YacEPA = sum(yac_epa), Avg_comp_air_epa = mean(comp_air_epa), Total_comp_air_epa = sum (comp_air_epa), Total_YAC_Comp = sum(comp_yac_epa), Avg_YAC_Comp = mean(comp_yac_epa), Total_YAC_WPA = sum(yac_wpa), Avg_YAC_WPA = mean(yac_wpa),TotalReceivingYds = sum(receiving_yards), Avg_ReceivingYds = mean(receiving_yards), TotalEPA = sum(epa), TotalExpectedYAC_EPA = sum (xyac_epa),AvgExpectedYAC_EPA = mean (xyac_epa), TotalYardsGained = sum(yards_gained))
 ```
+
+```{r}
+All_WR <-All_WR %>% 
+  filter(full_name != "Josh Ali")
+```
+
 ```{r}
 ggplot() + geom_point(data=All_WR, aes(x=Avg_AirEPA, y=Avg_YAC_Comp))
 ```
@@ -256,13 +262,15 @@ ggplot() +
 
 ```
 
-
 ```{r}
 ggplot() + 
-  geom_point(data=All_TE, aes(x=Avg_AirEPA, y=Avg_YAC_Comp)) +
-  geom_smooth(data=All_TE, aes(x=Avg_AirEPA, y=Avg_YAC_Comp), method="lm") +
-  geom_point(data=MyTEs, aes(x=Avg_AirEPA, y=Avg_YAC_Comp), color="red") 
+  geom_point(data=All_WR, aes(x=Total_AirEPA, y=TotalEPA)) +
+  geom_smooth(data=All_WR, aes(x=Total_AirEPA, y=TotalEPA), method="lm") +
+  geom_point(data=MyWR, aes(x=Total_AirEPA, y=TotalEPA), color="red") 
+
 ```
+
+
 
 
 ```{r}
