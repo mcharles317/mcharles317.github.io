@@ -347,13 +347,7 @@ Jeudy <- All_WR %>%
   filter(full_name == "Jerry Jeudy")
 ```
 
-```{r}
-ggplot() + 
-  geom_point(data=All_WR, aes(x=Avg_YACEPA, y=Avg_AirEPA)) +
-  geom_smooth(data=All_WR, aes(x=Avg_YACEPA, y=Avg_AirEPA), method="lm") +
-  geom_point(data=Jeudy, aes(x=Avg_YACEPA, y=Avg_AirEPA), color="red") 
 
-```
 
 ```{r}
 ggplot() + 
