@@ -6,7 +6,18 @@
     <description>Recent content on A Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 01 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://mcharles317.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 10 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://mcharles317.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Are college teams passing more on first down?</title>
+      <link>https://mcharles317.github.io/2022/11/10/are-college-teams-passing-more-on-first-down/</link>
+      <pubDate>Thu, 10 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://mcharles317.github.io/2022/11/10/are-college-teams-passing-more-on-first-down/</guid>
+      <description>library(tidyverse) library(cfbfastR) library(ggalt) In this blog post, I will be analyzing how first down pass rates have changed over recent years. Later, I will compare the entirety of college football with simply the Big Ten conference to see how they fair against the masses.
+First I called in the data.
+tictoc::tic() pbp &amp;lt;- data.frame() seasons &amp;lt;- 2014:cfbfastR:::most_recent_cfb_season() progressr::with_progress({ pbp &amp;lt;- cfbfastR::load_cfb_pbp(seasons) }) Next, I made filters for all first plays in general as well as only passing plays.</description>
+    </item>
+    
     <item>
       <title>NFL Redzone EPA Reverse Enigneering</title>
       <link>https://mcharles317.github.io/2022/11/01/nfl-redzone-epa-reverse-enigneering/</link>

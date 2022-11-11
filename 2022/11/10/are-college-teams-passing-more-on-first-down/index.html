@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.104.3" />
+
+
+<title>Are college teams passing more on first down? - A Hugo website</title>
+<meta property="og:title" content="Are college teams passing more on first down? - A Hugo website">
+
+
+  <link href='https://mcharles317.github.io/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://github.com/mcharles317">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/rstudio">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">3 min read</span>
+    
+
+    <h1 class="article-title">Are college teams passing more on first down?</h1>
+
+    
+    <span class="article-date">2022-11-10</span>
+    
+
+    <div class="article-content">
+      
+
+
+<pre class="r"><code>library(tidyverse)
+library(cfbfastR)
+library(ggalt)</code></pre>
+<p>In this blog post, I will be analyzing how first down pass rates have changed over recent years. Later, I will compare the entirety of college football with simply the Big Ten conference to see how they fair against the masses.</p>
+<p>First I called in the data.</p>
+<pre class="r"><code>tictoc::tic()
+pbp &lt;- data.frame()
+seasons &lt;- 2014:cfbfastR:::most_recent_cfb_season()
+progressr::with_progress({
+
+  pbp &lt;- cfbfastR::load_cfb_pbp(seasons)
+})</code></pre>
+<p>Next, I made filters for all first plays in general as well as only passing plays.</p>
+<pre class="r"><code>First_plays &lt;- pbp %&gt;% 
+  filter(down == 1) %&gt;% 
+  group_by(pos_team, season) %&gt;% 
+  summarise(count = n())</code></pre>
+<pre class="r"><code>First_Play_Pass&lt;- pbp %&gt;% 
+  filter(pass == 1, down == 1) %&gt;% 
+   group_by(pos_team, season) %&gt;% 
+  summarise(count = n())</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;pos_team&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<pre class="r"><code>First_Play_Pass &lt;- First_Play_Pass %&gt;% 
+    filter(!is.na(season))</code></pre>
+<p>This allowed me to group the data by team and season.</p>
+<pre class="r"><code>TotalFirstPlays &lt;- pbp %&gt;% 
+   filter(down == 1) %&gt;% 
+   group_by(pos_team, season) %&gt;% 
+  summarise(total = n())</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;pos_team&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<pre class="r"><code>TotalFirstPlays &lt;- TotalFirstPlays %&gt;% 
+   filter(!is.na(season))</code></pre>
+<p>Here, I combined the two data sets with the goal of calculating % of passes on first down per season.</p>
+<pre class="r"><code>combined_first_down_plays &lt;- inner_join(First_Play_Pass, TotalFirstPlays, by = c(&#39;pos_team&#39;, &#39;season&#39;)) %&gt;%
+  filter(count &gt; 10) %&gt;%
+  mutate(percent = (count/total)*100)</code></pre>
+<p>These are all the teams in the NCAA.</p>
+<pre class="r"><code>ggplot() + geom_line(data=combined_first_down_plays, aes(x=season, y=percent, group=pos_team))</code></pre>
+<p><img src="/2022/11/10/are-college-teams-passing-more-on-first-down/index_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+Here is filtering just the Big Ten</p>
+<pre class="r"><code>pass_firstbig10 &lt;- pbp %&gt;%
+  filter(pass == 1, down == 1, offense_conference == &#39;Big Ten&#39;) %&gt;%
+  group_by(year, pos_team) %&gt;%
+  summarise(count = n())</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<pre class="r"><code>#get all first down plays
+all_playsbig10 &lt;- pbp %&gt;%
+  filter(down == 1, offense_conference == &#39;Big Ten&#39;) %&gt;%
+  group_by(year, pos_team) %&gt;%
+  summarise(total = n())</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;year&#39;. You can override using the
+## `.groups` argument.</code></pre>
+<p>Another combination</p>
+<pre class="r"><code>combined_first_down_playsbig10 &lt;- inner_join(pass_firstbig10, all_playsbig10, by = c(&#39;pos_team&#39;, &#39;year&#39;)) %&gt;%
+  mutate(percent = (count/total)*100)</code></pre>
+<p>Here are the averages by season for the entire conference.</p>
+<pre class="r"><code>combined_first_down_playsbig10 %&gt;% summarise(mean(percent))</code></pre>
+<pre><code>## # A tibble: 9 × 2
+##    year `mean(percent)`
+##   &lt;dbl&gt;           &lt;dbl&gt;
+## 1  2014            32.7
+## 2  2015            32.8
+## 3  2016            31.3
+## 4  2017            33.8
+## 5  2018            33.4
+## 6  2019            32.9
+## 7  2020            33.4
+## 8  2021            34.0
+## 9  2022            34.2</code></pre>
+<pre class="r"><code>ggplot() +
+  geom_hline(yintercept=33.78883, color=&quot;blue&quot;) +
+  geom_line(data=combined_first_down_playsbig10, aes(x=year, y=percent, group=pos_team)) +
+  scale_y_continuous(limits = c(15, 70)) +
+  facet_wrap(~pos_team)</code></pre>
+<p><img src="/2022/11/10/are-college-teams-passing-more-on-first-down/index_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>Overall, I concluded that generally speaking, passing on first down has increased slightly each season in the Big Ten over the last 8 seasons. While most teams seem to be random with their distribution or percentage of passes on first down, Michigan State is throwing the ball a lot on first down year. Adversely, While Wisconsin is still throwing the ball a good amount of time on first down, they are throwing less than in the same situation last year. Meanwhile, a team like Ohio State, Minnesota or Rutgers does has not shown any real variation over the last couple of years. In totality, 9 teams throw than the median over the last 8 years.</p>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+  </body>
+</html>
+
