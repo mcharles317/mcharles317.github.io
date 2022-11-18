@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.104.3" />
+
+
+<title>Analyzing Kevin Willard&#39;s time at Seton Hall - A Hugo website</title>
+<meta property="og:title" content="Analyzing Kevin Willard&#39;s time at Seton Hall - A Hugo website">
+
+
+  <link href='https://mcharles317.github.io/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://github.com/mcharles317">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/rstudio">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">7 min read</span>
+    
+
+    <h1 class="article-title">Analyzing Kevin Willard&#39;s time at Seton Hall</h1>
+
+    
+    <span class="article-date">2022-11-15</span>
+    
+
+    <div class="article-content">
+      
+
+
+<p>In this blog post, I will be attempting to determine what statistical characetrics a Kevin Willard team posses. By creating graphics for a variety of different stats, paired with analysis, the goal is to define the play style of a Willard team. This begins with loading and sorting the data.</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
+## ✔ ggplot2 3.3.6      ✔ purrr   0.3.5 
+## ✔ tibble  3.1.8      ✔ dplyr   1.0.10
+## ✔ tidyr   1.2.1      ✔ stringr 1.4.1 
+## ✔ readr   2.1.3      ✔ forcats 0.5.2 
+## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(ggplot2)</code></pre>
+<p>Here is where I read in the data.</p>
+<pre class="r"><code>PBP &lt;- read_csv(&quot;https://dwillis.github.io/sports-data-files/logs1222.csv&quot;)</code></pre>
+<pre><code>## Rows: 122275 Columns: 48
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr   (8): Season, TeamFull, Opponent, HomeAway, W_L, URL, Conference, Team
+## dbl  (39): Game, TeamScore, OpponentScore, TeamFG, TeamFGA, TeamFGPCT, Team3...
+## date  (1): Date
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<p>Next, I made a specific filter for Seton Hall, the institution Willard previously coached at.</p>
+<pre class="r"><code>SH &lt;- PBP %&gt;% 
+  filter(Team == &quot;Seton Hall&quot;)</code></pre>
+<p>I filtered out all the specific stats I was interested in. A majority focus on defense because Willard describes himself as a defensive-minded coach.</p>
+<pre class="r"><code>SH_D_O &lt;- SH %&gt;% 
+  filter(Team == &quot;Seton Hall&quot;) %&gt;% 
+  group_by(Season, Team) %&gt;% 
+  summarise(Avg_3A = mean(Team3PA), OAvg_3PA = mean(Opponent3PA), FG = mean(TeamFGPCT), O_FG = mean(OpponentFGPCT), O_TO = mean(OpponentTurnovers), TO = mean(TeamTurnovers), O_PF = mean(OpponentPersonalFouls), PF = mean(TeamPersonalFouls), Steals = mean(TeamSteals), O_Steals = mean(OpponentSteals), Rebounds = mean(TeamTotalRebounds), O_Rebounds = mean(OpponentTotalRebounds), Fouls = mean(TeamPersonalFouls), OFouls = mean(OpponentPersonalFouls), Blocks = mean(TeamBlocks), OBlocks = mean(OpponentBlocks), PointDifferential = (TeamScore - OpponentScore))</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;Season&#39;, &#39;Team&#39;. You can override using
+## the `.groups` argument.</code></pre>
+<p>I seperated these exact stats for the entire NCAA.</p>
+<pre class="r"><code>NCAA &lt;- PBP %&gt;% 
+  group_by(Season, Team) %&gt;% 
+  summarise(Avg_3A = mean(Team3PA), OAvg_3PA = mean(Opponent3PA), FG = mean(TeamFGPCT), O_FG = mean(OpponentFGPCT), O_TO = mean(OpponentTurnovers), TO = mean(TeamTurnovers), O_PF = mean(OpponentPersonalFouls), PF = mean(TeamPersonalFouls), Steals = mean(TeamSteals), O_Steals = mean(OpponentSteals), Rebounds = mean(TeamTotalRebounds), O_Rebounds = mean(OpponentTotalRebounds), Fouls = mean(TeamPersonalFouls), OFouls = mean(OpponentPersonalFouls), Blocks = mean(TeamBlocks), OBlocks = mean(OpponentBlocks), PointDifferential = (TeamScore - OpponentScore))</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;Season&#39;, &#39;Team&#39;. You can override using
+## the `.groups` argument.</code></pre>
+<pre class="r"><code>UMD &lt;- PBP %&gt;% 
+   filter(Team == &quot;Maryland&quot;)</code></pre>
+<p>Now I filtered out Maryland, Willard’s new home.</p>
+<pre class="r"><code>UMD_D_O &lt;- UMD %&gt;% 
+  filter(Team == &quot;Maryland&quot;) %&gt;% 
+  group_by(Season, Team) %&gt;% 
+  summarise(Avg_3A = mean(Team3PA), OAvg_3PA = mean(Opponent3PA), FG = mean(TeamFGPCT), O_FG = mean(OpponentFGPCT), O_TO = mean(OpponentTurnovers), TO = mean(TeamTurnovers), O_PF = mean(OpponentPersonalFouls), PF = mean(TeamPersonalFouls), Steals = mean(TeamSteals), O_Steals = mean(OpponentSteals), Rebounds = mean(TeamTotalRebounds), O_Rebounds = mean(OpponentTotalRebounds), Fouls = mean(TeamPersonalFouls), OFouls = mean(OpponentPersonalFouls), Blocks = mean(TeamBlocks), OBlocks = mean(OpponentBlocks), PointDifferential = (TeamScore - OpponentScore))</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;Season&#39;, &#39;Team&#39;. You can override using
+## the `.groups` argument.</code></pre>
+<p>Once the data is sorted, I graphed a variation of stats with each graphic providing infomration about Willard as a coach.</p>
+<pre class="r"><code>ggplot() + 
+  geom_line(data=NCAA, aes(x=Season, y=O_FG, group=Team), color=&quot;grey&quot;) + 
+  geom_line(data=SH_D_O, aes(x=Season, y=O_FG, group=1 ), color=&quot;blue&quot;) + 
+  geom_line(data=UMD_D_O, aes(x=Season, y=O_FG, group =1), color=&quot;red&quot;) </code></pre>
+<pre><code>## Warning: Removed 516 row(s) containing missing values (geom_path).</code></pre>
+<p><img src="https://mcharles317.github.io/2022/11/15/analyzing-kevin-willard-s-time-at-seton-hall/index_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>  scale_y_continuous(limits = c(0.5276667, 0.3601212))</code></pre>
+<pre><code>## &lt;ScaleContinuousPosition&gt;
+##  Range:  
+##  Limits: 0.528 -- 0.36</code></pre>
+<p>At several points in his time at Seton Hall, Willard’s team were one of the better team in the country at limiting opponent FG%.</p>
+<pre class="r"><code>ggplot() + 
+  geom_point(data=NCAA, aes(x=Avg_3A, y=OAvg_3PA)) +
+  geom_smooth(data=NCAA, aes(x=Avg_3A, y=OAvg_3PA), method=&quot;lm&quot;) +
+  geom_point(data=SH_D_O, aes(x=Avg_3A, y=OAvg_3PA), color=&quot;blue&quot;) +
+   geom_point(data=UMD_D_O, aes(x=Avg_3A, y=OAvg_3PA), color=&quot;red&quot;)</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 646 rows containing non-finite values (stat_smooth).</code></pre>
+<pre><code>## Warning: Removed 646 rows containing missing values (geom_point).</code></pre>
+<p><img src="https://mcharles317.github.io/2022/11/15/analyzing-kevin-willard-s-time-at-seton-hall/index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>ggplot() + 
+  geom_point(data=NCAA, aes(x=O_Steals, y=Steals)) +
+  geom_smooth(data=NCAA, aes(x=O_Steals, y=Steals), method=&quot;lm&quot;) +
+  geom_point(data=SH_D_O, aes(x=O_Steals, y=Steals), color=&quot;blue&quot;) +
+   geom_point(data=UMD_D_O, aes(x=O_Steals, y=Steals), color=&quot;red&quot;)</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 646 rows containing non-finite values (stat_smooth).
+## Removed 646 rows containing missing values (geom_point).</code></pre>
+<p><img src="https://mcharles317.github.io/2022/11/15/analyzing-kevin-willard-s-time-at-seton-hall/index_files/figure-html/unnamed-chunk-9-2.png" width="672" />
+These graphs highlight that Willard’s teams tend to generate more steals than the average team while they turn the ball over at a pretty average rate themselves.They also a good job limiting opponent attempts from three while shooting an average amount of them as a team.</p>
+<pre class="r"><code>ggplot() + 
+  geom_point(data=NCAA, aes(x=Fouls, y= OFouls)) +
+  geom_smooth(data=NCAA, aes(x=Fouls, y= OFouls), method=&quot;lm&quot;) +
+  geom_point(data=SH_D_O, aes(x=Fouls, y= OFouls), color=&quot;blue&quot;) +
+   geom_point(data=UMD_D_O, aes(x=Fouls, y= OFouls), color=&quot;red&quot;)</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 646 rows containing non-finite values (stat_smooth).</code></pre>
+<pre><code>## Warning: Removed 646 rows containing missing values (geom_point).</code></pre>
+<p><img src="https://mcharles317.github.io/2022/11/15/analyzing-kevin-willard-s-time-at-seton-hall/index_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+Willard’s teams are fouled more than average but also foul more than average which highlights aggresivness on both sides of the floor.</p>
+<pre class="r"><code>ggplot() + 
+  geom_point(data=NCAA, aes(x=TO, y= O_TO)) +
+  geom_smooth(data=NCAA, aes(x=TO, y= O_TO), method=&quot;lm&quot;) +
+  geom_point(data=SH_D_O, aes(x=TO, y= O_TO), color=&quot;blue&quot;) +
+   geom_point(data=UMD_D_O, aes(x=TO, y= O_TO), color=&quot;red&quot;)</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 646 rows containing non-finite values (stat_smooth).</code></pre>
+<pre><code>## Warning: Removed 646 rows containing missing values (geom_point).</code></pre>
+<p><img src="https://mcharles317.github.io/2022/11/15/analyzing-kevin-willard-s-time-at-seton-hall/index_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+In terms of forcing and commiting turnovers, Willard teams appear to fall in the middle of the pack.</p>
+<pre class="r"><code>ggplot() + 
+  geom_point(data=NCAA, aes(x=Blocks, y= OBlocks)) +
+  geom_smooth(data=NCAA, aes(x=Blocks, y= OBlocks), method=&quot;lm&quot;) +
+  geom_point(data=SH_D_O, aes(x=Blocks, y= OBlocks), color=&quot;blue&quot;) +
+   geom_point(data=UMD_D_O, aes(x=Blocks, y= OBlocks), color=&quot;red&quot;)</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<pre><code>## Warning: Removed 646 rows containing non-finite values (stat_smooth).</code></pre>
+<pre><code>## Warning: Removed 646 rows containing missing values (geom_point).</code></pre>
+<p><img src="https://mcharles317.github.io/2022/11/15/analyzing-kevin-willard-s-time-at-seton-hall/index_files/figure-html/unnamed-chunk-12-1.png" width="672" />
+Interesingly, Willard teams appear to get their shot blocked significantly more than average but have had a few seasons being among the best in college basketball in shotblocking. 22</p>
+<pre class="r"><code>ggplot() + 
+  geom_line(data=NCAA, aes(x=Season, y=Blocks, group=Team), color=&quot;grey&quot;) + 
+  geom_line(data=SH_D_O, aes(x=Season, y=Blocks, group=1 ), color=&quot;blue&quot;) + 
+  geom_line(data=UMD_D_O, aes(x=Season, y=Blocks, group =1), color=&quot;red&quot;) </code></pre>
+<pre><code>## Warning: Removed 484 row(s) containing missing values (geom_path).</code></pre>
+<p><img src="https://mcharles317.github.io/2022/11/15/analyzing-kevin-willard-s-time-at-seton-hall/index_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<pre class="r"><code>  scale_y_continuous(limits = c(0.9655172, 7.935484))</code></pre>
+<pre><code>## &lt;ScaleContinuousPosition&gt;
+##  Range:  
+##  Limits: 0.966 -- 7.94</code></pre>
+<p>In recent years, Willard’s teams were some of the best shot-blocking teams in college basketball.</p>
+<pre class="r"><code>ggplot() + 
+  geom_line(data=NCAA, aes(x=Season, y=Steals, group=Team), color=&quot;grey&quot;) + 
+  geom_line(data=SH_D_O, aes(x=Season, y=Steals, group=1 ), color=&quot;blue&quot;) + 
+  geom_line(data=UMD_D_O, aes(x=Season, y=Steals, group =1), color=&quot;red&quot;) </code></pre>
+<pre><code>## Warning: Removed 484 row(s) containing missing values (geom_path).</code></pre>
+<p><img src="https://mcharles317.github.io/2022/11/15/analyzing-kevin-willard-s-time-at-seton-hall/index_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<pre class="r"><code>  scale_y_continuous(limits = c(2.875000, 11.275862))</code></pre>
+<pre><code>## &lt;ScaleContinuousPosition&gt;
+##  Range:  
+##  Limits: 2.88 -- 11.3</code></pre>
+<p>They were also middle of the pack, if not higher, in steals.</p>
+<pre class="r"><code>ggplot() + 
+  geom_line(data=NCAA, aes(x=Season, y=Avg_3A, group=Team), color=&quot;grey&quot;) + 
+  geom_line(data=SH_D_O, aes(x=Season, y=Avg_3A, group=1 ), color=&quot;blue&quot;) + 
+  geom_line(data=UMD_D_O, aes(x=Season, y=Avg_3A, group =1), color=&quot;red&quot;) </code></pre>
+<pre><code>## Warning: Removed 484 row(s) containing missing values (geom_path).</code></pre>
+<p><img src="https://mcharles317.github.io/2022/11/15/analyzing-kevin-willard-s-time-at-seton-hall/index_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<pre class="r"><code>  scale_y_continuous(limits = c(10.21212, 40.75862))</code></pre>
+<pre><code>## &lt;ScaleContinuousPosition&gt;
+##  Range:  
+##  Limits: 10.2 -- 40.8</code></pre>
+<p>They also shoot an average number of threes.</p>
+<pre class="r"><code>ggplot() + 
+  geom_line(data=NCAA, aes(x=Season, y=OAvg_3PA, group=Team), color=&quot;grey&quot;) + 
+  geom_line(data=SH_D_O, aes(x=Season, y=OAvg_3PA, group=1 ), color=&quot;blue&quot;) + 
+  geom_line(data=UMD_D_O, aes(x=Season, y=OAvg_3PA, group =1), color=&quot;red&quot;) </code></pre>
+<pre><code>## Warning: Removed 516 row(s) containing missing values (geom_path).</code></pre>
+<p><img src="https://mcharles317.github.io/2022/11/15/analyzing-kevin-willard-s-time-at-seton-hall/index_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<pre class="r"><code>  scale_y_continuous(limits = c(11.75862, 31.93103))</code></pre>
+<pre><code>## &lt;ScaleContinuousPosition&gt;
+##  Range:  
+##  Limits: 11.8 -- 31.9</code></pre>
+<p>While allowing opponents less three point attempts per game than the average team.</p>
+<pre class="r"><code>ggplot() + 
+  geom_line(data=NCAA, aes(x=Season, y=Rebounds, group=Team), color=&quot;grey&quot;) + 
+  geom_line(data=SH_D_O, aes(x=Season, y=Rebounds, group=1 ), color=&quot;blue&quot;) + 
+  geom_line(data=UMD_D_O, aes(x=Season, y=Rebounds, group =1), color=&quot;red&quot;) </code></pre>
+<pre><code>## Warning: Removed 484 row(s) containing missing values (geom_path).</code></pre>
+<p><img src="https://mcharles317.github.io/2022/11/15/analyzing-kevin-willard-s-time-at-seton-hall/index_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<pre class="r"><code>  scale_y_continuous(limits = c(20.76000, 41.50000))</code></pre>
+<pre><code>## &lt;ScaleContinuousPosition&gt;
+##  Range:  
+##  Limits: 20.8 -- 41.5</code></pre>
+<pre class="r"><code>ggplot() + 
+  geom_line(data=NCAA, aes(x=Season, y=O_Rebounds, group=Team), color=&quot;grey&quot;) + 
+  geom_line(data=SH_D_O, aes(x=Season, y=O_Rebounds, group=1 ), color=&quot;blue&quot;) + 
+  geom_line(data=UMD_D_O, aes(x=Season, y=O_Rebounds, group =1), color=&quot;red&quot;) </code></pre>
+<pre><code>## Warning: Removed 516 row(s) containing missing values (geom_path).</code></pre>
+<p><img src="https://mcharles317.github.io/2022/11/15/analyzing-kevin-willard-s-time-at-seton-hall/index_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<pre class="r"><code>  scale_y_continuous(limits = c(24.68182, 45.03333))</code></pre>
+<pre><code>## &lt;ScaleContinuousPosition&gt;
+##  Range:  
+##  Limits: 24.7 --   45</code></pre>
+<p>At several points, Willard’s teams were amongst the better teams in college basketball in rebounding, but offensive rebounding specifically.</p>
+<pre class="r"><code>ggplot() + 
+  geom_line(data=NCAA, aes(x=Season, y=Fouls, group=Team), color=&quot;grey&quot;) + 
+  geom_line(data=SH_D_O, aes(x=Season, y=Fouls, group=1 ), color=&quot;blue&quot;) + 
+  geom_line(data=UMD_D_O, aes(x=Season, y=Fouls, group =1), color=&quot;red&quot;) </code></pre>
+<pre><code>## Warning: Removed 484 row(s) containing missing values (geom_path).</code></pre>
+<p><img src="https://mcharles317.github.io/2022/11/15/analyzing-kevin-willard-s-time-at-seton-hall/index_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<pre class="r"><code>  scale_y_continuous(limits = c(11.29032, 24.68750))</code></pre>
+<pre><code>## &lt;ScaleContinuousPosition&gt;
+##  Range:  
+##  Limits: 11.3 -- 24.7</code></pre>
+<p>It also appears that they tend to foul at a more frequent rate than their counterparts, again showing defensive tenacity and aggression.</p>
+<pre class="r"><code>ggplot() + 
+  geom_line(data=NCAA, aes(x=Season, y=PointDifferential, group=Team), color=&quot;grey&quot;) + 
+  geom_line(data=SH_D_O, aes(x=Season, y=PointDifferential, group=1 ), color=&quot;blue&quot;) + 
+  geom_line(data=UMD_D_O, aes(x=Season, y=PointDifferential, group =1), color=&quot;red&quot;) </code></pre>
+<pre><code>## Warning: Removed 1 row(s) containing missing values (geom_path).</code></pre>
+<p><img src="https://mcharles317.github.io/2022/11/15/analyzing-kevin-willard-s-time-at-seton-hall/index_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<pre class="r"><code>  scale_y_continuous(limits = c(-94, 103))</code></pre>
+<pre><code>## &lt;ScaleContinuousPosition&gt;
+##  Range:  
+##  Limits:  -94 --  103</code></pre>
+<p>Overall, a Kevin Willard team appears to be a team that plays hard defensively for sure. They are aggressive, attempting to turn teams over, and block shots. Their foul and steal numbers quantify this agression. Offensively, they shoot a decent amount of threes and struggle with shot blocking. However, as the data shows, Willard’s teams are built around effort and defense.</p>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+
+    
+  </body>
+</html>
+

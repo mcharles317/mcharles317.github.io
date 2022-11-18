@@ -115,7 +115,7 @@ progressr::with_progress({
   mutate(percent = (count/total)*100)</code></pre>
 <p>These are all the teams in the NCAA.</p>
 <pre class="r"><code>ggplot() + geom_line(data=combined_first_down_plays, aes(x=season, y=percent, group=pos_team))</code></pre>
-<p><img src="/2022/11/10/are-college-teams-passing-more-on-first-down/index_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+<p><img src="https://mcharles317.github.io/2022/11/10/are-college-teams-passing-more-on-first-down/index_files/figure-html/unnamed-chunk-9-1.png" width="672" />
 Here is filtering just the Big Ten</p>
 <pre class="r"><code>pass_firstbig10 &lt;- pbp %&gt;%
   filter(pass == 1, down == 1, offense_conference == &#39;Big Ten&#39;) %&gt;%
@@ -152,7 +152,7 @@ all_playsbig10 &lt;- pbp %&gt;%
   geom_line(data=combined_first_down_playsbig10, aes(x=year, y=percent, group=pos_team)) +
   scale_y_continuous(limits = c(15, 70)) +
   facet_wrap(~pos_team)</code></pre>
-<p><img src="/2022/11/10/are-college-teams-passing-more-on-first-down/index_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="https://mcharles317.github.io/2022/11/10/are-college-teams-passing-more-on-first-down/index_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <p>Overall, I concluded that generally speaking, passing on first down has increased slightly each season in the Big Ten over the last 8 seasons. While most teams seem to be random with their distribution or percentage of passes on first down, Michigan State is throwing the ball a lot on first down year. Adversely, While Wisconsin is still throwing the ball a good amount of time on first down, they are throwing less than in the same situation last year. Meanwhile, a team like Ohio State, Minnesota or Rutgers does has not shown any real variation over the last couple of years. In totality, 9 teams throw than the median over the last 8 years.</p>
 
     </div>
