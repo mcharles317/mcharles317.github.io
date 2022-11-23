@@ -3,9 +3,7 @@ title: "R Notebook"
 output: html_notebook
 ---
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
-
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+Now that all the data is loaded in for each position, including fantasy point values, I can officially dig in to determine which stats or areas are most predictive in determining fantasy football access. The answer may vary by position but I plan on digging in deeply, making a bunch of different visualizations to find some sort of consensus that can be used for drafting teams next season. After creating data sets, joining them by position and the code for targets working now somehow, I feel as if I addressed a majority of the issues I had previously been facing. I look forward to digging in further.
 
 ```{r}
 library(tidyverse)
@@ -33,6 +31,19 @@ NFLRosters<- load_rosters(
 NFL <- NFL %>% mutate(across(where(is.numeric), ~ replace_na(., 0)))
 ```
 
+```{r}
+WR_55 <- read_csv("~/code/mcharles317.github.io/WR55.csv")
+```
+```{r}
+RB_55 <- read_csv("~/code/mcharles317.github.io/RB55.csv")
+```
+```{r}
+TE_24 <- read_csv("~/code/mcharles317.github.io/TE24.csv")
+```
+```{r}
+
+QB24 <- read_csv("~/code/mcharles317.github.io/QB24.csv")
+```
 
 ```{r}
 TE <- NFL %>% 
@@ -196,7 +207,7 @@ All_QB <- EveryQB %>%
 
 ```{r}
 All_QB <- All_QB %>% 
-    group_by(full_name, fantasy_data_id,position) %>% 
+    group_by(full_name, gsis_id,position) %>% 
   summarise (Avg_comp_air_epa = mean(comp_air_epa), Total_comp_air_epa = sum (comp_air_epa), Total_pass_touchdown = sum (pass_touchdown), Total_complete_pass = sum(complete_pass), Total_Pass_attempt = sum(pass_attempt), Interceptions = sum(interception), TotalQBEPA =sum(qb_epa), Avg_QBEPA = mean(qb_epa), Avg_pass_oe = mean(pass_oe), Avg_comp_air_epa = mean(comp_air_epa), Total_comp_air_epa = sum(comp_air_epa), TotalDropbacks= sum (qb_dropback))
 ```
 
@@ -276,21 +287,6 @@ ggplot() +
 ```
 
 
-
-
-```{r}
-ggplot() + 
-  geom_point(data=All_WR, aes(x=Avg_AirYards, y=Avg_ReceivingYds)) +
-  geom_smooth(data=All_WR, aes(x=Avg_AirYards, y=Avg_ReceivingYds), method="lm") +
-  geom_point(data=DOUBS, aes(x=Avg_AirYards, y=Avg_ReceivingYds), color="red") 
-
-```
-
-
-```{r}
-DOUBS <- All_WR %>% 
-  filter(full_name == "Romeo Doubs")
-```
 
 ```{r}
 AJ <- All_WR %>% 
@@ -440,4 +436,22 @@ RB_Rushes<- NFL %>%
   group_by(rusher_player_id, rusher_player_name) %>% 
   summarise(count = n()) 
 ```
+```{r}
+ALL_WR_FP <- All_WR %>% 
+  inner_join(WR_55, by=c("fantasy_player_id"))
+```
 
+```{r}
+ALL_RB_FP <- All_RB %>% 
+  inner_join(RB_55, by=c("gsis_id"="fantasy_player_id"))
+```
+
+```{r}
+ALL_QB_FP <- All_QB %>% 
+  inner_join(QB24, by=c("gsis_id"="fantasy_player_id"))
+```
+
+```{r}
+ALL_TE_FP <- All_TE %>% 
+  inner_join(TE_24, by=c("gsis_id"="fantasy_player_id"))
+```
