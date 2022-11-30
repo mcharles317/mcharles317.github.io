@@ -358,22 +358,7 @@ Jeudy <- All_WR %>%
 
 
 
-```{r}
-ggplot() + 
-  geom_lollipop(
-    data=All_WR, 
-    aes(y=reorder(full_name, TotalEPA), x=TotalEPA), 
-    horizontal = TRUE
-    ) + 
-  geom_lollipop(
-    data=MyWR,
-    aes(y=full_name, x=TotalEPA),
-    horizontal = TRUE,
-    color = "red"
-  ) + 
-  theme_minimal() + 
-  labs(title = "All Season WR Total EPA", y="Receiver")
-```
+
 ```{r}
 WREPA<- All_WR %>% 
   group_by(full_name) %>% 
@@ -438,8 +423,13 @@ RB_Rushes<- NFL %>%
 ```
 ```{r}
 ALL_WR_FP <- All_WR %>% 
-  inner_join(WR_55, by=c("fantasy_player_id"))
+  inner_join(WR_55, by=c("fantasy_player_id")) 
 ```
+```{r}
+ ALL_WR_FP <- ALL_WR_FP %>% 
+   filter(full_name != "Emeka Emezie") 
+```
+
 
 ```{r}
 ALL_RB_FP <- All_RB %>% 
@@ -452,6 +442,502 @@ ALL_QB_FP <- All_QB %>%
 ```
 
 ```{r}
-ALL_TE_FP <- All_TE %>% 
+ALL_TE_FP <- EveryTE %>% 
   inner_join(TE_24, by=c("gsis_id"="fantasy_player_id"))
 ```
+
+
+
+
+
+```{r}
+ALL_WR_FP10 <- All_WR %>% 
+  inner_join(WR_55, by=c("fantasy_player_id")) %>% 
+  filter(full_name != "Emeka Emezie") %>% 
+  arrange(desc(`FPTS/G`)) %>% 
+  head(10)
+```
+
+
+
+```{r}
+ALL_RB_FP10<- All_RB %>% 
+  inner_join(RB_55, by=c("gsis_id"="fantasy_player_id")) %>% 
+  arrange(desc(`FPTS/G`)) %>% 
+  head(10)
+```
+
+```{r}
+ALL_QB_FP10 <- All_QB %>% 
+  inner_join(QB24, by=c("gsis_id"="fantasy_player_id")) %>% 
+  arrange(desc(`FPTS/G`)) %>% 
+  head(10)
+```
+
+```{r}
+ALL_TE_FP10 <- EveryTE %>% 
+  inner_join(TE_24, by=c("gsis_id"="fantasy_player_id")) %>% 
+    arrange(desc(`FPTS/G`)) %>% 
+  head(10)
+```
+ 
+#Quaretback Analysis
+My initial hunch was that rushing is a major factor in determining the value fantasy success by quarterbacks.
+```{r}
+ggplot() + 
+  geom_jitter(
+    data=ALL_QB_FP, 
+    aes(x=`FPTS/G`, y=R_ATT), color="grey")  +
+  geom_text_repel(
+    data=ALL_QB_FP, 
+    aes(x=`FPTS/G`, y=R_ATT, label=full_name)) +
+  geom_jitter(
+    data=ALL_QB_FP10, 
+    groupOnX=TRUE, 
+    aes(x=`FPTS/G`, y=R_ATT), color="red") +
+  labs(x="Fantasy Points Per Game", y="Rushing Attempts", title="Correlation Between Rushes and Fantasy Points Per Game by QBs", subtitle="**Data through Week 11**") +
+  theme_minimal()
+```
+#Note
+This first graph confirmed my initial hypothesis that there is a significant correlation between rushing attempts and fantasy points scored. However, in the next graphs, I had to chart some passing stats in order to determine its accurary. 
+```{r}
+ggplot() + 
+  geom_jitter(
+    data=ALL_QB_FP, 
+    aes(x=`FPTS/G`, y=TotalDropbacks), color="grey")  +
+  geom_text_repel(
+    data=ALL_QB_FP, 
+    aes(x=`FPTS/G`, y=TotalDropbacks, label=full_name)) +
+  geom_jitter(
+    data=ALL_QB_FP10, 
+    groupOnX=TRUE, 
+    aes(x=`FPTS/G`, y=TotalDropbacks), color="red") +
+  labs(x="Fantasy Points Per Game", y="Dropbacks", title="Correlation Between Dropbacks and Fantasy Points Per Game by QBs", subtitle="**Data through Week 11**") +
+  theme_minimal()
+```
+#Note
+Based on this chart, it becomes clear that drop backs directly correlates to fantasy points which seems obvious. The more chances you have to make a play, the more points you are likely to tally.
+```{r}
+ggplot() + 
+  geom_jitter(
+    data=ALL_QB_FP, 
+    aes(x=`FPTS/G`, y=Avg_QBEPA), color="grey")  +
+  geom_text_repel(
+    data=ALL_QB_FP, 
+    aes(x=`FPTS/G`, y=Avg_QBEPA, label=full_name)) +
+  geom_jitter(
+    data=ALL_QB_FP10, 
+    groupOnX=TRUE, 
+    aes(x=`FPTS/G`, y=Avg_QBEPA), color="red") +
+  labs(x="Fantasy Points Per Game", y="Average QB EPA", title="Correlation Between Average QB EPA and Fantasy Points Per Game by QBs", subtitle="**Data through Week 11**") +
+  theme_minimal()
+```
+#Note 
+EPA is defined as expected points added. In this case QB EPA, refers to points added by a QB with either their arms or legs and takes into account yards per attempt, yards per rush, YAC, ETC to accurately focus soley on the QB. Tua ranks lower in this metric because he is often benefited by short passes turning into explosive plays because of elite playmaker, as is Jimmy G. 
+
+
+```{r}
+ggplot() + 
+  geom_jitter(
+    data=ALL_QB_FP, 
+    aes(x=`FPTS/G`, y=ATT), color="grey")  +
+  geom_text_repel(
+    data=ALL_QB_FP, 
+    aes(x=`FPTS/G`, y=ATT, label=full_name)) +
+  geom_jitter(
+    data=ALL_QB_FP10, 
+    groupOnX=TRUE, 
+    aes(x=`FPTS/G`, y=ATT), color="red") +
+  labs(x="Fantasy Points Per Game", y="Attempts", title="Correlation Between Passing Attempts and Fantasy Points Per Game by QBs", subtitle="**Data through Week 11**") +
+  theme_minimal()
+```
+#Note
+Based on this data, there is no real correlation between passes thrown and fantasy relevance this season. Mahomes, Burrow and Allen are outliers, especially considering the pass volume of both Buffalo's and Kansas City's offenses.
+
+```{r}
+ggplot() + 
+  geom_jitter(
+    data=ALL_QB_FP, 
+    aes(x=`FPTS/G`, y=R_YDS), color="grey")  +
+  geom_text_repel(
+    data=ALL_QB_FP, 
+    aes(x=`FPTS/G`, y=R_YDS, label=full_name)) +
+  geom_jitter(
+    data=ALL_QB_FP10, 
+    groupOnX=TRUE, 
+    aes(x=`FPTS/G`, y=R_YDS), color="red") +
+  labs(x="Fantasy Points Per Game", y="Rushing Yards", title="Correlation Between Rushing Yards and Fantasy Points Per Game by QBs", subtitle="**Data through Week 11**") +
+  theme_minimal()
+```
+
+#Conclusion for QB
+Based on the four prior charts and sifting through other possible correlations , I believe that rushing is the primary determinant of success at the QB position, confirming my hypothesis. What specifically clarified this concept to me was the differentiation between attempts and dropbacks.
+
+Attempts refers to the amount of passes thrown versus drop backs which signify the amount of times they dropped back to pass. This is because dropbacks, especially for mobile quarterbacks, allow the opportunity for scrambling. In fantasy football, QBs recieve .1 point per yard rushed, as compared to .04 points for every passing yard. For passing touchdowns, QBs recieve 4 points as compared to 6 points for rushing touchdowns. 
+
+Justin Fields is a prime example. Around the NFL, Fields is known for his elite rushing but has struggled throwing the football early in his career. However, despite sub par throwing numbers, the 2nd year QB has emerged as an elite fantasy QB option primarily because of his legs. Daniel Jones is also not known as an elite thrower, but his versatility and volume in the run game make him a very viable. 
+
+Overall, it is clear that the days of picking a QB who does not really use his legs are behind us in fantasy football. Grabbing an elite rushing quarterback often means grabbing a a pretty good fantasy quarterback. By adding top tier throwing with a good mix of running, you venture into elite quarterback range. There are viable starting options on both the running and passing side of the spectrum. However, if you want an elite QB, you need a strong dosage of running.
+
+#Tight Ends
+For tight ends in fantasy football, it's either you have an obviously good player or you're rolling the dice in 2022. Especially at tight end, where efficiency is the name of the game due to lesser volume, explosive plays and touchdwons are typically the main dterminent of success. 
+```{r}
+ggplot() + 
+  geom_jitter(
+    data=ALL_TE_FP, 
+    aes(x=`FPTS/G`, y=`Y/R`), color="grey")  +
+  geom_text_repel(
+    data=ALL_TE_FP, 
+    aes(x=`FPTS/G`, y=`Y/R`, label=full_name)) +
+  geom_jitter(
+    data=ALL_TE_FP10, 
+    groupOnX=TRUE, 
+    aes(x=`FPTS/G`, y=`Y/R`), color="red") +
+  labs(x="Fantasy Points Per Game", y="Yards per Reception", title="Correlation Between Yards per Receptions and Fantasy Points Per Game by Tight Ends", subtitle="**Data through Week 11**") +
+  theme_minimal()
+```
+#Note
+This data supports this idea. All of these tight ends are often used vertically down the field and are extremely good at running after the catch, meaning they capitalize on their opportunities. 
+
+```{r}
+ggplot() + 
+  geom_jitter(
+    data=ALL_TE_FP, 
+    aes(x=`FPTS/G`, y=`20+`), color="grey")  +
+  geom_text_repel(
+    data=ALL_TE_FP, 
+    aes(x=`FPTS/G`, y=`20+`, label=full_name)) +
+  geom_jitter(
+    data=ALL_TE_FP10, 
+    groupOnX=TRUE, 
+    aes(x=`FPTS/G`, y=`20+`), color="red") +
+  labs(x="Fantasy Points Per Game", y="Number of 20+ Yard Receptions", title="Correlation Between Number of 20 Yard Receptions and Fantasy Points Per Game by Tight Ends", subtitle="**Data through Week 11**") +
+  theme_minimal()
+```
+
+#Note
+It appears that a majority of the top 10 tight ends also fall in the top 10 of number of 20+ yard receptions. This further confirms my inital thought.
+
+```{r}
+ggplot() + 
+  geom_jitter(
+    data=ALL_TE_FP, 
+    aes(x=`FPTS/G`, y=LG), color="grey")  +
+  geom_text_repel(
+    data=ALL_TE_FP, 
+    aes(x=`FPTS/G`, y=LG, label=full_name)) +
+  geom_jitter(
+    data=ALL_TE_FP10, 
+    groupOnX=TRUE, 
+    aes(x=`FPTS/G`, y=`LG`), color="red") +
+  labs(x="Fantasy Points Per Game", y="Longest Gain", title="Correlation Between Longest Gain this season and Fantasy Points Per Game by Tight Ends", subtitle="**Data through Week 11**") +
+  theme_minimal()
+```
+
+```{r}
+ggplot() + 
+  geom_jitter(
+    data=ALL_TE_FP, 
+    aes(x=`FPTS/G`, y=TD), color="grey")  +
+  geom_text_repel(
+    data=ALL_TE_FP, 
+    aes(x=`FPTS/G`, y=TD, label=full_name)) +
+  geom_jitter(
+    data=ALL_TE_FP10, 
+    groupOnX=TRUE, 
+    aes(x=`FPTS/G`, y=TD), color="red") +
+  labs(x="Fantasy Points Per Game", y="Touchdowns", title="Correlation Between Touchdowns and Fantasy Points Per Game by Tight Ends", subtitle="**Data through Week 11**") +
+  theme_minimal()
+```
+#Note
+Clearly, there is a correlation between touchdowns and fantasy points. However, I feel that this is not the best indicator of success at the tight end position though it factors.
+
+#Conclusion
+Tight end has always been a wild card in fantasy football, both in the drafting process and throughout the regular season. However, this reality was magnified even more so in 2022 and changes perspective on how the position should be valued. When Travis Kelce was projected in the first round in PPR formats, some including myself initially scoffed. However, based on the volatility of the position it appears that guaranteeing elite performance from a small group of elite tight ends may change drafting strategies moving forward.
+
+Furthermore, when evaluating tight ends specifically, it appears the biggest correlation to fantasy success is explosive plays. Tight ends tend receive less volume than other pass catchers. The players who can maximize these opportunities clearly thrive and are players you want on your team. 
+
+Another thing to note is competition for targets. Though YAC is king for tight ends, volume never hurts. Players like Kelce, Andrews, Hockenson, and Ertz are all elite talents that play in offenses who are lacking elite playmkers on the outside. This is interesting because these players are already explosive and are given more chances to be explosive due to lesser talent at WR. 
+
+With all this being said, it would be wise to target an elite TE that is a primary weapon in a good offense and is strong after the catch. In fact, because of depth at other positions, there is a legitimate cases that it is never too early to draft an elite tight end. 
+
+#Running Back
+First, I will analyze running specific categories before specifically focusing on passing. For running backs, volume appears to be your main target, especially when a large volume comes in the passing games. However, all great running backs have a steady floor as a rusher, elevating their ceiling with strong pass production. 
+
+```{r}
+ggplot() + 
+  geom_jitter(
+    data=ALL_RB_FP, 
+    aes(x=`FPTS/G`, y=TotalRushAttempts), color="grey")  +
+  geom_text_repel(
+    data=ALL_RB_FP, 
+    aes(x=`FPTS/G`, y=TotalRushAttempts, label=full_name)) +
+  geom_jitter(
+    data=ALL_RB_FP10, 
+    groupOnX=TRUE, 
+    aes(x=`FPTS/G`, y=TotalRushAttempts), color="red") +
+  labs(x="Fantasy Points Per Game", y="Total Rush Attempts", title="Correlation Between Rush Attempts and Fantasy Points Per Game by Running Backs", subtitle="**Data through Week 11**") +
+  theme_minimal()
+```
+#Note
+This chart tells you two main things. First, it clarifies that indeed there is a massive correlation between volume and fantasy strictly as a runner. Secondly, it clarifies that the best running backs are dominant in their committees. Split backfields are death in fantasy football so you are looking for high volume and a strong percentage of a team's uage.
+
+```{r}
+ggplot() + 
+  geom_jitter(
+    data=ALL_RB_FP, 
+    aes(x=`FPTS/G`, y=YPC), color="grey")  +
+  geom_text_repel(
+    data=ALL_RB_FP, 
+    aes(x=`FPTS/G`, y=YPC, label=full_name)) +
+  geom_jitter(
+    data=ALL_RB_FP10, 
+    groupOnX=TRUE, 
+    aes(x=`FPTS/G`, y=YPC), color="red") +
+  labs(x="Fantasy Points Per Game", y="Yards Per Carry", title="Correlation Between Yards per Carry and Fantasy Points Per Game by Running Backs", subtitle="**Data through Week 11**") +
+  theme_minimal()
+```
+#Note
+Interestingly there is not a strong correlation between yards per carry and FPPG. Tony Pollard for example, is elite in terms of YPC, however the Cowboys are deadset on feeding Zeke which prevents Pollard from being elite due to a lack of volume. You want to target high YPC runners with a solid volume floor. 
+
+```{r}
+ggplot() + 
+  geom_jitter(
+    data=ALL_RB_FP, 
+    aes(x=`FPTS/G`, y=`20+`), color="grey")  +
+  geom_text_repel(
+    data=ALL_RB_FP, 
+    aes(x=`FPTS/G`, y=`20+`, label=full_name)) +
+  geom_jitter(
+    data=ALL_RB_FP10, 
+    groupOnX=TRUE, 
+    aes(x=`FPTS/G`, y=`20+`), color="red") +
+  labs(x="Fantasy Points Per Game", y="Number of 20+ Yard Runs", title="Correlation Between 20+ Yard Runs and Fantasy Points Per Game by Running Backs", subtitle="**Data through Week 11**") +
+  theme_minimal()
+```
+
+#Note
+This graph points to a theme of volume. The best running backs have the most explosive runs which seems obvious. However, this is because their teams understand their home run potential, giving them ample opportunities to break a long run. The players outside the top 10 who have a lot of big runs had split backfields for a majority of the season, giving them less oppurutnity despite their obvious knack for it. 
+
+So many times we have seen a great running back struggle for stretches of games before pulling a 60-yard touchdown run out of his hat. The more chances you are given, the more likely you are to break free and gain points.
+
+```{r}
+ggplot() + 
+  geom_jitter(
+    data=ALL_RB_FP, 
+    aes(x=`FPTS/G`, y=`TD...6`), color="grey")  +
+  geom_text_repel(
+    data=ALL_RB_FP, 
+    aes(x=`FPTS/G`, y=`TD...6`, label=full_name)) +
+  geom_jitter(
+    data=ALL_RB_FP10, 
+    groupOnX=TRUE, 
+    aes(x=`FPTS/G`, y=`TD...6`), color="red") +
+  labs(x="Fantasy Points Per Game", y="Touchdowns", title="Correlation Between Touchdowns and Fantasy Points Per Game by Running Backs", subtitle="**Data through Week 11**") +
+  theme_minimal()
+```
+#Note
+Touchdowns are a direct correlation to success as well. Jamaal Williams proves something interesting however as a low volume runner with the lead league in touchdowns. This is because he receives a majority of the goal-line work. Goal-line volume is a clear correlation to fantasy points, continuing a trend at running back.
+
+```{r}
+ggplot() + 
+  geom_jitter(
+    data=ALL_RB_FP, 
+    aes(x=`FPTS/G`, y= TGT), color="grey")  +
+  geom_text_repel(
+    data=ALL_RB_FP, 
+    aes(x=`FPTS/G`, y=TGT, label=full_name)) +
+  geom_jitter(
+    data=ALL_RB_FP10, 
+    groupOnX=TRUE, 
+    aes(x=`FPTS/G`, y=TGT), color="red") +
+  labs(x="Fantasy Points Per Game", y="Targets", title="Correlation Between Targets and Fantasy Points Per Game by Running Backs", subtitle="**Data through Week 11**") +
+  theme_minimal()
+```
+#Note
+Interestingly, it seems that targets are less correlated to fantasy success unless you are Austin Eckeler or CMC, receiving a massive passing volume. However, a majority of the top running backs happen to fall in the upper regions of targets.  
+
+```{r}
+ggplot() + 
+  geom_jitter(
+    data=ALL_RB_FP, 
+    aes(x=`FPTS/G`, y=REC), color="grey")  +
+  geom_text_repel(
+    data=ALL_RB_FP, 
+    aes(x=`FPTS/G`, y=REC, label=full_name)) +
+  geom_jitter(
+    data=ALL_RB_FP10, 
+    groupOnX=TRUE, 
+    aes(x=`FPTS/G`, y=REC), color="red") +
+  labs(x="Fantasy Points Per Game", y="Receptions", title="Correlation Between Receptions and Fantasy Points Per Game by Running Backs", subtitle="**Data through Week 11**") +
+  theme_minimal()
+```
+#Note
+More targets mean more receptions. VOLUME! VOLUME! VOLUME!
+
+```{r}
+ggplot() + 
+  geom_jitter(
+    data=ALL_RB_FP, 
+    aes(x=`FPTS/G`, y=`Y/R`), color="grey")  +
+  geom_text_repel(
+    data=ALL_RB_FP, 
+    aes(x=`FPTS/G`, y=`Y/R`, label=full_name)) +
+  geom_jitter(
+    data=ALL_RB_FP10, 
+    groupOnX=TRUE, 
+    aes(x=`FPTS/G`, y=`Y/R`), color="red") +
+  labs(x="Fantasy Points Per Game", y="Yards per Reception", title="Correlation Between Yards per Reception and Fantasy Points Per Game by Running Backs", subtitle="**Data through Week 11**") +
+  theme_minimal()
+```
+#Note
+Yards per reception is clearly a vague stat, again likely having to be correlated to volume. 
+
+```{r}
+ggplot() + 
+  geom_jitter(
+    data=ALL_RB_FP, 
+    aes(x=`FPTS/G`, y=`TD...11`), color="grey")  +
+  geom_text_repel(
+    data=ALL_RB_FP, 
+    aes(x=`FPTS/G`, y=`TD...11`, label=full_name)) +
+  geom_jitter(
+    data=ALL_RB_FP10, 
+    groupOnX=TRUE, 
+    aes(x=`FPTS/G`, y=`TD...11`), color="red") +
+  labs(x="Fantasy Points Per Game", y="Receiving Touchdowns", title="Correlation Between Receiving Touchdowns and Fantasy Points Per Game by Running Backs", subtitle="**Data through Week 11**") +
+  theme_minimal()
+```
+
+#Note
+Not much correlation between receiving touchdowns and FPPG.
+
+#Conclusion
+Overall, my initial hypothesis was right. Volume is absolutely key.
+
+- Target running backs with limited competition in their backfield. This results in a more rush attempts, more targets, and more oppurunities to make big plays. 
+
+-Running backs who receive elite usgae and pretty good passing volume are elite running backs.
+
+-Passing volume alone is not even close to enough to maintain fantasy relevance. 
+
+- Avoid players in split backfields, especailly when their role is mainly as a pass catcher.
+
+- Goaline usage is massive for running backs as TD's correlate directly to increased fantasy points.
+
+#Receivers
+I know that volume is important for WRs as well, however I want to determine which type of volume is best.
+
+```{r}
+ggplot() + 
+  geom_jitter(
+    data=ALL_WR_FP, 
+    aes(x=`FPTS/G`, y=Total_AirYards), color="grey")  +
+  geom_text_repel(
+    data=ALL_WR_FP, 
+    aes(x=`FPTS/G`, y=Total_AirYards, label=full_name)) +
+  geom_jitter(
+    data=ALL_WR_FP10, 
+    groupOnX=TRUE, 
+    aes(x=`FPTS/G`, y=Total_AirYards), color="red") +
+  labs(x="Fantasy Points Per Game", y="Total Air Yards", title="Correlation Between Total Air Yards and Fantasy Points Per Game by Wide Receivers", subtitle="**Data through Week 11**") +
+  theme_minimal()
+```
+
+#Note
+Total air yards is representative of either fewer but longer targets or a lot of passes thrown a players way in general. It makes a lot of sense that some of the best receivers have the most total air yards. The elite receivers on this list not in the top percentage of air yards have missed a significant chunk of games, proving that air yards are vital. 
+
+```{r}
+ggplot() + 
+  geom_jitter(
+    data=ALL_WR_FP, 
+    aes(x=`FPTS/G`, y=Avg_AirYards), color="grey")  +
+  geom_text_repel(
+    data=ALL_WR_FP, 
+    aes(x=`FPTS/G`, y=Avg_AirYards, label=full_name)) +
+  geom_jitter(
+    data=ALL_WR_FP10, 
+    groupOnX=TRUE, 
+    aes(x=`FPTS/G`, y=Avg_AirYards), color="red") +
+  labs(x="Fantasy Points Per Game", y="Average Air Yards", title="Correlation Between Average Air Yards and Fantasy Points Per Game by Wide Receivers", subtitle="**Data through Week 11**") +
+  theme_minimal()
+```
+#Note
+This graph is similar to depth of target. While the best receivers are pretty high up there in average air yards, none appear to be elite in the category as their volume superseeds it.
+
+```{r}
+ggplot() + 
+  geom_jitter(
+    data=ALL_WR_FP, 
+    aes(x=`FPTS/G`, y=Avg__YAC), color="grey")  +
+  geom_text_repel(
+    data=ALL_WR_FP, 
+    aes(x=`FPTS/G`, y=Avg__YAC, label=full_name)) +
+  geom_jitter(
+    data=ALL_WR_FP10, 
+    groupOnX=TRUE, 
+    aes(x=`FPTS/G`, y=Avg__YAC), color="red") +
+  labs(x="Fantasy Points Per Game", y="Average Yards per Catch", title="Correlation Between Average Yards per Catch and Fantasy Points Per Game by Wide Receivers", subtitle="**Data through Week 11**") +
+  theme_minimal()
+```
+
+#Note
+It seems that YPC is a more random statisitc in determine fantasy success at WR.
+
+```{r}
+ggplot() + 
+  geom_jitter(
+    data=ALL_WR_FP, 
+    aes(x=`FPTS/G`, y=Avg_ReceivingYds), color="grey")  +
+  geom_text_repel(
+    data=ALL_WR_FP, 
+    aes(x=`FPTS/G`, y=Avg_ReceivingYds, label=full_name)) +
+  geom_jitter(
+    data=ALL_WR_FP10, 
+    groupOnX=TRUE, 
+    aes(x=`FPTS/G`, y=Avg_ReceivingYds), color="red") +
+  labs(x="Fantasy Points Per Game", y="Average Receiving Yards", title="Correlation Between Average Receiving Yards and Fantasy Points Per Game by Wide Receivers", subtitle="**Data through Week 11**") +
+  theme_minimal()
+```
+
+#Note
+Again less of a correlation. 
+
+```{r}
+ggplot() + 
+  geom_jitter(
+    data=ALL_WR_FP, 
+    aes(x=`FPTS/G`, y=TotalReceivingYds), color="grey")  +
+  geom_text_repel(
+    data=ALL_WR_FP, 
+    aes(x=`FPTS/G`, y=TotalReceivingYds, label=full_name)) +
+  geom_jitter(
+    data=ALL_WR_FP10, 
+    groupOnX=TRUE, 
+    aes(x=`FPTS/G`, y=TotalReceivingYds), color="red") +
+  labs(x="Fantasy Points Per Game", y="Total Receiving Yards", title="Correlation Between Total Receiving Yards and Fantasy Points Per Game by Wide Receivers", subtitle="**Data through Week 11**") +
+  theme_minimal()
+```
+#Conclusion
+Overall, even more so than running backs, volume is key at receiver. You want to target receivers in offenses who throw the ball a lot, have a good quarterback and are heavily featured in their offense. In fact, most of the elite receivers have offenses built around either their talent or their quarterbacks talent. Chase elite players in a clear and defined role. 
+
+#Overall Conclusions
+While fantasy is a majority luck, understanding these concepts will allow fantasy players to focus on specific markers to consider when drafting, making trades, determining who to start or who to grab off the waivers. However, for this final analysis, I will mainly focus on drafting purposes.
+
+#Drafting QBs
+If you are going to draft a quarterback early in the draft, they better be named Patrick Mahomes or offer either elite passing with a decent running floor or an elite running quarterback.
+
+#Drafting Running Backs
+-Chase volume as a runner
+-Target players who are clearly the main guy and will receive a majority of the running back snaps.
+- In 2022, running backs were a dime a dozen. Make sure if you draft a running back early, you are buying into a player who you know is worthy of the volume.
+- If a running back is known for his utilization in the passing game and is projected for a bigger role as a runner, they could be a sleeper.
+-You need running backs who receive goal-line work. Volume and yards alone are not enough for sustainability.
+-Avoid anything less than a 60/40 split of carries.
+
+#Drafting Tight Ends
+-If there is an elite guy there, go get him. I know that only refers to about four players, but this just shows how large the drop-off is.
+- Taking Kelce at any point in the first round is understandable and maybe even wise moving forward. - Target explosive players who are targeted down the field often and thrive on YAC.
+
+#Drafting WRs
+- At the top of the draft, aim for elite talents, in elite offenses with good quarterbacks, don't over think it.
