@@ -231,135 +231,6 @@ All_WR <-All_WR %>%
 ```
 
 ```{r}
-ggplot() + geom_point(data=All_WR, aes(x=Avg_AirEPA, y=Avg_YAC_Comp))
-```
-```{r}
-ggplot() + 
-  geom_point(data=All_WR, aes(x=Avg_AirEPA, y=Avg_comp_air_epa)) +
-  geom_smooth(data=All_WR, aes(x=Avg_AirEPA, y=Avg_comp_air_epa), method="lm") +
-  geom_point(data=MyWR, aes(x=Avg_AirEPA, y=Avg_comp_air_epa), color="red") +
-   geom_text_repel(
-    data=MyWR,
-    aes(x=Avg_AirEPA, y=Avg_comp_air_epa, label=fantasy_player_name))
-
-```
-
-
-```{r}
-ggplot() + 
-  geom_point(data=All_WR, aes(x=Total_AirYards, y=TotalReceivingYds)) +
-  geom_smooth(data=All_WR, aes(x=Total_AirYards, y=TotalReceivingYds), method="lm") +
-  geom_point(data=MyWR, aes(x=Total_AirYards, y=TotalReceivingYds), color="red") +
-geom_text_repel(
-    data=MyWR,
-    aes(x=Total_AirYards, y=TotalReceivingYds, label=fantasy_player_name))
-```
-```{r}
-ggplot() + 
-  geom_point(data=All_WR, aes(x=Avg_AirYards, y=Avg_ReceivingYds)) +
-  geom_smooth(data=All_WR, aes(x=Avg_AirYards, y=Avg_ReceivingYds), method="lm") +
-  geom_point(data=MyWR, aes(x=Avg_AirYards, y=Avg_ReceivingYds), color="red") 
-
-```
-
-
-```{r}
-ggplot() + 
-  geom_point(data=All_RB, aes(x=YPC, y=TotalRushAttempts)) +
-  geom_smooth(data=All_RB, aes(x=YPC, y=TotalRushAttempts), method="lm") +
-  geom_point(data=MyRB, aes(x=YPC, y=TotalRushAttempts), color="red") 
-
-```
-```{r}
-ggplot() + 
-  geom_point(data=EveryRBReceiving, aes(x=Avg_AirEPA, y=Avg_YAC_Comp)) +
-  geom_smooth(data=EveryRBReceiving, aes(x=Avg_AirEPA, y=Avg_YAC_Comp), method="lm") +
-  geom_point(data=MyRB_receiving, aes(x=Avg_AirEPA, y=Avg_YAC_Comp), color="red") 
-
-```
-
-```{r}
-ggplot() + 
-  geom_point(data=All_WR, aes(x=Total_AirEPA, y=TotalEPA)) +
-  geom_smooth(data=All_WR, aes(x=Total_AirEPA, y=TotalEPA), method="lm") +
-  geom_point(data=MyWR, aes(x=Total_AirEPA, y=TotalEPA), color="red") 
-
-```
-
-
-
-```{r}
-AJ <- All_WR %>% 
-  filter(full_name == "A.J. Brown")
-```
-```{r}
-Chase <- All_WR %>% 
-  filter(full_name == "Ja'Marr Chase")
-```
-
-
-Ja'Marr Chase
-
-```{r}
-ggplot() + 
-  geom_point(data=All_WR, aes(x=Avg_AirYards, y=Avg_ReceivingYds)) +
-  geom_smooth(data=All_WR, aes(x=Avg_AirYards, y=Avg_ReceivingYds), method="lm") +
-  geom_point(data=AJ, aes(x=Avg_AirYards, y=Avg_ReceivingYds), color="red") 
-
-```
-
-```{r}
-ggplot() + 
-  geom_point(data=All_WR, aes(x=Avg_AirYards, y=Avg_ReceivingYds)) +
-  geom_smooth(data=All_WR, aes(x=Avg_AirYards, y=Avg_ReceivingYds), method="lm") +
-  geom_point(data=Chase, aes(x=Avg_AirYards, y=Avg_ReceivingYds), color="red") 
-
-```
-
-Justin Jefferson
-
-```{r}
-Jetts <- All_WR %>% 
-  filter(full_name == "Justin Jefferson")
-```
-
-
-```{r}
-ggplot() + 
-  geom_point(data=All_WR, aes(x=Avg_AirYards, y=Avg_ReceivingYds)) +
-  geom_smooth(data=All_WR, aes(x=Avg_AirYards, y=Avg_ReceivingYds), method="lm") +
-  geom_point(data=Jetts, aes(x=Avg_AirYards, y=Avg_ReceivingYds), color="red") 
-
-```
-```{r}
-Gabe <- All_WR %>% 
-  filter(full_name == "Gabe Davis")
-```
-Gabe Davis
-```{r}
-ggplot() + 
-  geom_point(data=All_WR, aes(x=Avg_AirYards, y=Avg_ReceivingYds)) +
-  geom_smooth(data=All_WR, aes(x=Avg_AirYards, y=Avg_ReceivingYds), method="lm") +
-  geom_point(data=Gabe, aes(x=Avg_AirYards, y=Avg_ReceivingYds), color="red") 
-
-```
-```{r}
-ggplot() + 
-  geom_point(data=All_WR, aes(x=Avg_YACEPA, y=Avg_AirEPA)) +
-  geom_smooth(data=All_WR, aes(x=Avg_YACEPA, y=Avg_AirEPA), method="lm") +
-  geom_point(data=Chase, aes(x=Avg_YACEPA, y=Avg_AirEPA), color="red") 
-
-```
-
-```{r}
-Jeudy <- All_WR %>% 
-  filter(full_name == "Jerry Jeudy")
-```
-
-
-
-
-```{r}
 WREPA<- All_WR %>% 
   group_by(full_name) %>% 
   summarise(TotalEPA, Total_AirEPA, TotalExpectedYAC_EPA, AvgExpectedYAC_EPA, TotalReceivingYds)
@@ -393,20 +264,12 @@ WR_Targets <- NFL %>%
   mutate(targets = receptions + incompletions) %>% 
   inner_join(All_WR, by=c("receiver_player_id"="fantasy_player_id"))
 ```
+
+
+
 ```{r}
 WR_Targets_PG <- WR_Targets %>% 
   summarise( TargetsPegGame = targets/GamesPlayed)
-```
-
-
-```{r}
-ggplot() + 
-  geom_point(data=WR_Targets, aes(x=targets, y=TotalEPA)) +
-  geom_smooth(data=WR_Targets, aes(x=targets, y=TotalEPA), method="lm") +
-  geom_point(data=My_WR_Targets, aes(x=targets, y=TotalEPA), color="red") +
-geom_text_repel(
-    data=My_WR_Targets,
-    aes(x=targets, y=TotalEPA, label=fantasy_player_name))
 ```
 
 ```{r}
@@ -431,10 +294,17 @@ ALL_WR_FP <- All_WR %>%
 ```
 
 
+
 ```{r}
 ALL_RB_FP <- All_RB %>% 
   inner_join(RB_55, by=c("gsis_id"="fantasy_player_id"))
 ```
+
+```{r}
+ALL_RB_FP <-ALL_RB_FP %>% 
+  mutate(Opportunities = TotalRushAttempts + TGT)
+```
+
 
 ```{r}
 ALL_QB_FP <- All_QB %>% 
@@ -445,9 +315,6 @@ ALL_QB_FP <- All_QB %>%
 ALL_TE_FP <- EveryTE %>% 
   inner_join(TE_24, by=c("gsis_id"="fantasy_player_id"))
 ```
-
-
-
 
 
 ```{r}
@@ -480,7 +347,14 @@ ALL_TE_FP10 <- EveryTE %>%
     arrange(desc(`FPTS/G`)) %>% 
   head(10)
 ```
- 
+
+
+```{r}
+FP_Targets <- ALL_WR_FP %>% 
+   inner_join(WR_Targets, by=c("full_name"))
+```
+
+
 #Quaretback Analysis
 My initial hunch was that rushing is a major factor in determining the value fantasy success by quarterbacks.
 ```{r}
@@ -919,13 +793,15 @@ ggplot() +
   theme_minimal()
 ```
 #Conclusion
-Overall, even more so than running backs, volume is key at receiver. You want to target receivers in offenses who throw the ball a lot, have a good quarterback and are heavily featured in their offense. In fact, most of the elite receivers have offenses built around either their talent or their quarterbacks talent. Chase elite players in a clear and defined role. 
+Overall, even more so than running backs, volume is key at receiver. You want to target receivers in offenses who throw the ball a lot, have a good quarterback and are heavily featured in their offense. In fact, most of the elite receivers have offenses built around either their talent or their quarterbacks talent. Chase elite players in a clear and defined role.
+
 
 #Overall Conclusions
 While fantasy is a majority luck, understanding these concepts will allow fantasy players to focus on specific markers to consider when drafting, making trades, determining who to start or who to grab off the waivers. However, for this final analysis, I will mainly focus on drafting purposes.
 
 #Drafting QBs
 If you are going to draft a quarterback early in the draft, they better be named Patrick Mahomes or offer either elite passing with a decent running floor or an elite running quarterback.
+Examples for 2023: Jalen Hurts, Josh Allen, Justin Fields
 
 #Drafting Running Backs
 -Chase volume as a runner
@@ -934,6 +810,7 @@ If you are going to draft a quarterback early in the draft, they better be named
 - If a running back is known for his utilization in the passing game and is projected for a bigger role as a runner, they could be a sleeper.
 -You need running backs who receive goal-line work. Volume and yards alone are not enough for sustainability.
 -Avoid anything less than a 60/40 split of carries.
+
 
 #Drafting Tight Ends
 -If there is an elite guy there, go get him. I know that only refers to about four players, but this just shows how large the drop-off is.
